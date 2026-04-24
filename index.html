@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ניתוח מניות - דאשבורד</title>
+    <title>ניתוח מניות - דאשבורד חכם</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -44,272 +44,145 @@
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.19/index.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/fira-code@5.0.19/index.css" />
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/he.js"></script>
 
     <style>
-        /* אנימציות כניסה */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); filter: blur(4px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
-            50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.7); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); } 50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.7); } }
         
         .animateFadeInUp { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animateSlideDown { animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animatePulseGlow { animation: pulseGlow 2.5s ease-in-out infinite; }
         
-        .animation-delay-100 { animation-delay: 0.1s; }
-        .animation-delay-200 { animation-delay: 0.2s; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-
-        /* סקרולבר */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A1222; }
         ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
-
-        .inputTransition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        ::selection { background-color: #00F0FF; color: #060B14; }
 
         /* עיצוב מותאם ללוח השנה */
         .flatpickr-calendar {
-            background: rgba(10, 18, 34, 0.85) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
+            background: rgba(10, 18, 34, 0.9) !important;
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
-            border-radius: 16px !important;
-            font-family: 'Heebo', sans-serif !important;
-            color: #e2e8f0 !important;
-            direction: rtl !important;
+            border-radius: 20px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
         }
-        .flatpickr-months .flatpickr-month, 
-        .flatpickr-months .flatpickr-prev-month, 
-        .flatpickr-months .flatpickr-next-month { color: #fff !important; fill: #fff !important; }
-        .flatpickr-current-month .flatpickr-monthDropdown-months,
-        .flatpickr-current-month input.cur-year { font-weight: 700 !important; }
-        span.flatpickr-weekday { color: #60A5FA !important; font-weight: bold !important; }
-        .flatpickr-day { color: #cbd5e1 !important; border-radius: 8px !important; }
-        .flatpickr-day:hover, .flatpickr-day:focus { background: rgba(30, 58, 95, 0.8) !important; border-color: transparent !important; }
-        .flatpickr-day.selected { background: #00F0FF !important; border-color: #00F0FF !important; color: #060B14 !important; font-weight: bold !important; }
-        .flatpickr-day.today { border-color: #3B82F6 !important; }
+        .flatpickr-day.selected { background: #00F0FF !important; color: #060B14 !important; border: none !important; }
+        
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
     </style>
 </head>
-<body class="bg-finance-900 text-slate-200 font-sans min-h-screen overflow-x-hidden selection:bg-finance-accent selection:text-finance-900">
+<body class="bg-finance-900 text-slate-200 font-sans min-h-screen overflow-x-hidden">
     
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
         <div class="absolute top-0 -left-10 w-96 h-96 bg-finance-500/20 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-blob"></div>
-        <div class="absolute top-20 -right-10 w-96 h-96 bg-finance-accent/20 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-20 left-40 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-[80px] opacity-60 animate-blob animation-delay-4000"></div>
+        <div class="absolute top-20 -right-10 w-96 h-96 bg-finance-accent/20 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-blob"></div>
     </div>
 
-    <div class="relative z-10 max-w-3xl mx-auto px-4 py-12 sm:py-16">
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-12">
 
         <header class="text-center mb-10 animateFadeInUp">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-finance-700/80 to-finance-800/80 backdrop-blur-md border border-finance-500/30 shadow-[0_0_30px_rgba(29,78,216,0.3)] mb-6 transform transition-transform hover:scale-110 duration-500">
-                <svg class="w-10 h-10 text-finance-accent drop-shadow-[0_0_8px_rgba(0,240,255,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                </svg>
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-finance-800/80 border border-finance-500/30 mb-6 shadow-2xl">
+                <svg class="w-10 h-10 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
             </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400 tracking-tight mb-4">
-                ברוך הבא למערכת הניתוח
-            </h1>
-            <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-                דאשבורד חכם למשיכת נתוני שוק היסטוריים. הזן סימולי מניות, בחר טווח תאריכים, והמערכת תייצר עבורך דוח נתונים כרונולוגי מקיף ישירות ל-Google Sheets.
-            </p>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">שלום, ברוך הבא</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">מערכת הניתוח מוכנה. הזן את המניות המבוקשות לקבלת דוח נתונים כרונולוגי מאוחד.</p>
         </header>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animateFadeInUp animation-delay-100">
-            <div class="bg-finance-800/40 backdrop-blur-md border border-white/5 rounded-2xl p-4 flex justify-between items-center shadow-lg hover:bg-finance-800/60 transition-colors cursor-default">
-                <div>
-                    <p class="text-slate-400 text-xs font-semibold mb-1">S&P 500</p>
-                    <p class="text-white font-mono text-lg tracking-wide">5,234.18</p>
-                </div>
-                <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-1 rounded-lg flex items-center gap-1 text-sm font-bold">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    1.12%
-                </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animateFadeInUp" style="animation-delay: 0.1s;">
+            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg">
+                <div><p class="text-slate-500 text-xs font-bold">S&P 500</p><p class="text-white font-mono text-xl">5,234.1</p></div>
+                <div class="text-emerald-400 text-sm font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">+1.1%</div>
             </div>
-            <div class="bg-finance-800/40 backdrop-blur-md border border-white/5 rounded-2xl p-4 flex justify-between items-center shadow-lg hover:bg-finance-800/60 transition-colors cursor-default">
-                <div>
-                    <p class="text-slate-400 text-xs font-semibold mb-1">NASDAQ</p>
-                    <p class="text-white font-mono text-lg tracking-wide">16,396.83</p>
-                </div>
-                <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-1 rounded-lg flex items-center gap-1 text-sm font-bold">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    0.85%
-                </div>
+            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg">
+                <div><p class="text-slate-500 text-xs font-bold">NASDAQ</p><p class="text-white font-mono text-xl">16,396.8</p></div>
+                <div class="text-emerald-400 text-sm font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">+0.8%</div>
             </div>
-            <div class="bg-finance-800/40 backdrop-blur-md border border-white/5 rounded-2xl p-4 flex justify-between items-center shadow-lg hover:bg-finance-800/60 transition-colors cursor-default">
-                <div>
-                    <p class="text-slate-400 text-xs font-semibold mb-1">ת"א 35</p>
-                    <p class="text-white font-mono text-lg tracking-wide">2,031.50</p>
-                </div>
-                <div class="bg-red-500/10 border border-red-500/20 text-red-400 px-2 py-1 rounded-lg flex items-center gap-1 text-sm font-bold">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
-                    0.24%-
-                </div>
+            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg">
+                <div><p class="text-slate-500 text-xs font-bold">ת"א 35</p><p class="text-white font-mono text-xl">2,031.5</p></div>
+                <div class="text-red-400 text-sm font-bold bg-red-500/10 px-2 py-1 rounded-lg">-0.2%</div>
             </div>
         </div>
 
-        <main id="formSection" class="animateFadeInUp animation-delay-200">
-            <form id="stockForm" class="bg-finance-800/40 backdrop-blur-xl rounded-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] p-6 sm:p-10 space-y-8 relative overflow-visible group">
+        <main id="formSection" class="animateFadeInUp" style="animation-delay: 0.2s;">
+            <form id="stockForm" class="glass-panel rounded-3xl p-6 sm:p-10 space-y-8 shadow-2xl relative overflow-visible">
                 
-                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none rounded-3xl"></div>
+                <div class="relative">
+                    <label for="symbols" class="block text-sm font-bold text-slate-300 mb-2">סימולי מניות</label>
+                    <input type="text" id="symbols" name="symbols" placeholder="AAPL, TSLA, MSFT..." required class="w-full px-6 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 font-mono tracking-widest transition-all">
+                </div>
 
-                <div class="relative z-10">
-                    <label for="symbols" class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide">
-                        סימולי מניות לניתוח
-                    </label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="relative group">
+                        <label class="block text-sm font-bold text-slate-300 mb-2">תאריך התחלה</label>
+                        <div class="absolute left-4 bottom-4 text-slate-500 group-hover:text-finance-accent transition-colors z-10"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg></div>
+                        <input type="text" id="startDate" name="startDate" required class="w-full pl-12 pr-4 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white cursor-pointer focus:outline-none focus:border-finance-accent">
+                    </div>
+                    <div class="relative group">
+                        <label class="block text-sm font-bold text-slate-300 mb-2">תאריך סיום</label>
+                        <div class="absolute left-4 bottom-4 text-slate-500 group-hover:text-finance-accent transition-colors z-10"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg></div>
+                        <input type="text" id="endDate" name="endDate" required class="w-full pl-12 pr-4 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white cursor-pointer focus:outline-none focus:border-finance-accent">
+                    </div>
                     <div class="relative">
-                        <input
-                            type="text"
-                            id="symbols"
-                            name="symbols"
-                            placeholder="לדוגמה: TSLA, AAPL, AMZN"
-                            required
-                            class="inputTransition w-full px-5 py-4 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent font-mono text-base tracking-wider hover:bg-finance-900/70 shadow-inner"
-                        >
-                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-finance-accent/70 pointer-events-none">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-xs text-slate-500 mt-2 font-medium">יש להפריד בין הסימולים באמצעות פסיק (,)</p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 relative z-20">
-                    
-                    <div class="group/input relative cursor-pointer">
-                        <label class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide group-hover/input:text-white transition-colors">
-                            תאריך התחלה
-                        </label>
-                        <div class="absolute left-4 top-[2.4rem] text-slate-400 group-hover/input:text-finance-accent transition-colors duration-300 z-10 pointer-events-none">
-                            <svg class="w-5 h-5 transform transition-transform duration-300 group-hover/input:scale-125 group-hover/input:-rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <input
-                            type="text"
-                            id="startDate"
-                            name="startDate"
-                            required
-                            placeholder="בחר תאריך..."
-                            class="inputTransition w-full pl-12 pr-4 py-3.5 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent text-sm hover:bg-finance-900/70 cursor-pointer caret-transparent"
-                        >
-                    </div>
-
-                    <div class="group/input relative cursor-pointer">
-                        <label class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide group-hover/input:text-white transition-colors">
-                            תאריך סיום
-                        </label>
-                        <div class="absolute left-4 top-[2.4rem] text-slate-400 group-hover/input:text-finance-accent transition-colors duration-300 z-10 pointer-events-none">
-                            <svg class="w-5 h-5 transform transition-transform duration-300 group-hover/input:scale-125 group-hover/input:-rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <input
-                            type="text"
-                            id="endDate"
-                            name="endDate"
-                            required
-                            placeholder="בחר תאריך..."
-                            class="inputTransition w-full pl-12 pr-4 py-3.5 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent text-sm hover:bg-finance-900/70 cursor-pointer caret-transparent"
-                        >
-                    </div>
-
-                    <div class="group/select relative">
-                        <label class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide">
-                            תדירות נתונים
-                        </label>
-                        <input type="hidden" id="frequency" name="frequency" value="1d">
-                        
-                        <div id="customSelectBtn" class="inputTransition w-full px-4 py-3.5 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent text-sm hover:bg-finance-900/70 cursor-pointer flex justify-between items-center">
+                        <label class="block text-sm font-bold text-slate-300 mb-2">תדירות</label>
+                        <input type="hidden" id="frequency" value="1d">
+                        <div id="customSelectBtn" class="w-full px-5 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white flex justify-between items-center cursor-pointer hover:border-finance-accent transition-all">
                             <span id="customSelectText">יומי (Daily)</span>
-                            <svg id="customSelectArrow" class="w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
+                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2"/></svg>
                         </div>
-
-                        <div id="customSelectList" class="absolute left-0 right-0 mt-2 bg-finance-800/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.5)] overflow-hidden hidden z-50 transform opacity-0 scale-95 transition-all duration-200 origin-top">
-                            <div class="p-3 text-sm text-slate-200 hover:bg-finance-600 hover:text-white cursor-pointer transition-colors custom-option" data-value="1d">יומי (Daily)</div>
-                            <div class="p-3 text-sm text-slate-200 hover:bg-finance-600 hover:text-white cursor-pointer transition-colors custom-option border-t border-white/5" data-value="1wk">שבועי (Weekly)</div>
-                            <div class="p-3 text-sm text-slate-200 hover:bg-finance-600 hover:text-white cursor-pointer transition-colors custom-option border-t border-white/5" data-value="1mo">חודשי (Monthly)</div>
+                        <div id="customSelectList" class="absolute left-0 right-0 mt-2 bg-finance-800 border border-white/10 rounded-2xl shadow-2xl hidden z-50">
+                            <div class="p-4 hover:bg-finance-700 cursor-pointer rounded-t-2xl" data-value="1d">יומי (Daily)</div>
+                            <div class="p-4 hover:bg-finance-700 cursor-pointer" data-value="1wk">שבועי (Weekly)</div>
+                            <div class="p-4 hover:bg-finance-700 cursor-pointer rounded-b-2xl" data-value="1mo">חודשי (Monthly)</div>
                         </div>
                     </div>
                 </div>
 
-                <button
-                    type="submit"
-                    id="submitBtn"
-                    class="relative z-10 w-full py-4 px-6 bg-gradient-to-r from-finance-500 via-finance-400 to-finance-accent text-finance-900 font-extrabold text-lg rounded-2xl shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_35px_rgba(0,240,255,0.5)] transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-finance-accent/30 disabled:opacity-70 disabled:cursor-wait disabled:hover:transform-none overflow-hidden group/btn"
-                >
-                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"></div>
-                    <div class="relative flex items-center justify-center gap-3">
-                        <svg id="submitIcon" class="w-6 h-6 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
-                        </svg>
-                        <svg id="loadingSpinner" class="hidden w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span id="submitText">התחל ייצור דוח</span>
-                    </div>
+                <button type="submit" id="submitBtn" class="w-full py-5 bg-gradient-to-r from-finance-400 to-finance-accent text-finance-900 font-black text-xl rounded-2xl shadow-lg hover:shadow-finance-accent/30 transition-all transform hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-3">
+                    <svg id="submitIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+                    <svg id="loadingSpinner" class="hidden w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span>הפק ניתוח שוק</span>
                 </button>
             </form>
 
             <div id="errorSection" class="hidden mt-6 animateSlideDown">
-                <div class="bg-red-950/50 backdrop-blur-md border border-red-500/40 rounded-2xl p-4 flex items-center gap-4 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
-                    <div class="bg-red-500/20 p-2 rounded-full flex-shrink-0">
-                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p id="errorMessage" class="text-red-200 text-sm font-medium leading-snug"></p>
-                    </div>
+                <div class="bg-red-900/30 border border-red-500/50 rounded-2xl p-5 text-red-200 flex items-center gap-4">
+                    <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                    <p id="errorMessage"></p>
                 </div>
             </div>
         </main>
 
-        <section id="successSection" class="hidden animateFadeInUp mt-8">
-            <div class="bg-finance-800/40 backdrop-blur-xl rounded-3xl border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)] p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none"></div>
-                <div class="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 border border-emerald-400/40 shadow-[0_0_20px_rgba(52,211,153,0.3)] mx-auto animatePulseGlow">
-                    <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
+        <section id="successSection" class="hidden animateFadeInUp mt-8 space-y-6">
+            <div class="glass-panel rounded-3xl p-8 overflow-hidden shadow-2xl">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+                    <h3 class="text-2xl font-bold text-white flex items-center gap-3">
+                        <div class="bg-finance-accent/20 p-2 rounded-xl"><svg class="w-6 h-6 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                        תצוגה מקדימה (5 שורות ראשונות)
+                    </h3>
+                    <a id="openSheetBtn" href="#" target="_blank" class="px-6 py-3 bg-emerald-500 text-finance-900 font-bold rounded-xl shadow-lg hover:bg-emerald-400 transition-all flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        פתיחת הגיליון המלא
+                    </a>
                 </div>
-                <div>
-                    <h2 class="text-2xl font-bold text-white mb-2">הדוח שלך מוכן!</h2>
-                    <p class="text-slate-400 text-base">הנתונים נמשכו, מוזגו וסודרו בהצלחה בגיליון חכם.</p>
+                
+                <div class="overflow-x-auto rounded-xl border border-white/5">
+                    <table class="w-full text-right bg-black/20">
+                        <thead id="previewThead" class="bg-white/5 text-slate-400 text-xs font-mono"></thead>
+                        <tbody id="previewTbody" class="text-white text-sm font-mono"></tbody>
+                    </table>
                 </div>
-                <a id="openSheetBtn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full py-4 px-6 bg-gradient-to-r from-emerald-400 to-teal-500 text-finance-900 font-extrabold text-lg rounded-2xl shadow-[0_0_20px_rgba(52,211,153,0.4)] hover:shadow-[0_0_35px_rgba(52,211,153,0.6)] transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95 transition-all duration-300 focus:outline-none group">
-                    <span class="flex items-center justify-center gap-3">
-                        <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                        </svg>
-                        פתח את הדוח ב-Google Sheets
-                    </span>
-                </a>
-                <div class="pt-4 border-t border-white/5">
-                    <button id="resetBtn" type="button" class="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm font-semibold focus:outline-none transition-colors group">
-                        <svg class="w-4 h-4 transition-transform group-hover:-rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                        התחל בקשה חדשה
+                
+                <div class="mt-8 pt-8 border-t border-white/5 text-center">
+                    <button id="resetBtn" class="text-slate-500 hover:text-white flex items-center gap-2 mx-auto font-bold transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        ניתוח חדש
                     </button>
                 </div>
             </div>
@@ -317,167 +190,95 @@
     </div>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw7e4tlfUHRJpUSvucVI-iPu84Iazet5Qpa1UK9ThVVf-t63VkiCG5ez4EZnPEDy6GWJg/exec';
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwH0143gyxYlyGhxRAhMpQgzuEGPuYH_SKMGF1NGxbcEUxTeVlYjvK5zbEDbgQq3HRGzA/exec';
 
-        // ============================================
-        // הגדרת לוח השנה המותאם (Flatpickr)
-        // ============================================
-        var today = new Date();
-        var oneYearAgo = new Date(today);
-        oneYearAgo.setFullYear(today.getFullYear() - 1);
+        // הגדרת לוח שנה Flatpickr
+        const fpConfig = { locale: "he", dateFormat: "Y-m-d", disableMobile: true };
+        flatpickr("#startDate", { ...fpConfig, defaultDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)) });
+        flatpickr("#endDate", { ...fpConfig, defaultDate: new Date() });
 
-        const fpConfig = {
-            locale: "he",
-            dateFormat: "Y-m-d",
-            disableMobile: "true", 
-        };
-
-        flatpickr("#startDate", { ...fpConfig, defaultDate: oneYearAgo });
-        flatpickr("#endDate", { ...fpConfig, defaultDate: today });
-
-        // ============================================
-        // לוגיקה לתפריט הבחירה המותאם (Custom Select)
-        // ============================================
-        const customSelectBtn = document.getElementById('customSelectBtn');
-        const customSelectList = document.getElementById('customSelectList');
-        const customSelectText = document.getElementById('customSelectText');
-        const customSelectArrow = document.getElementById('customSelectArrow');
-        const hiddenFrequencyInput = document.getElementById('frequency');
-
-        customSelectBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isOpen = !customSelectList.classList.contains('hidden');
-            
-            if (isOpen) {
-                closeSelect();
-            } else {
-                customSelectList.classList.remove('hidden');
-                setTimeout(() => {
-                    customSelectList.classList.remove('opacity-0', 'scale-95');
-                    customSelectArrow.classList.add('rotate-180');
-                    customSelectBtn.classList.add('ring-2', 'ring-finance-accent/60', 'border-finance-accent');
-                }, 10);
-            }
+        // לוגיקה של Custom Select
+        const selectBtn = document.getElementById('customSelectBtn');
+        const selectList = document.getElementById('customSelectList');
+        selectBtn.onclick = (e) => { e.stopPropagation(); selectList.classList.toggle('hidden'); };
+        document.querySelectorAll('.custom-option').forEach(opt => {
+            opt.onclick = (e) => {
+                document.getElementById('frequency').value = opt.dataset.value;
+                document.getElementById('customSelectText').innerText = opt.innerText;
+                selectList.classList.add('hidden');
+            };
         });
+        window.onclick = () => selectList.classList.add('hidden');
 
-        document.querySelectorAll('.custom-option').forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                hiddenFrequencyInput.value = e.target.getAttribute('data-value');
-                customSelectText.innerText = e.target.innerText;
-                closeSelect();
-            });
-        });
-
-        document.addEventListener('click', () => { closeSelect(); });
-
-        function closeSelect() {
-            customSelectList.classList.add('opacity-0', 'scale-95');
-            customSelectArrow.classList.remove('rotate-180');
-            customSelectBtn.classList.remove('ring-2', 'ring-finance-accent/60', 'border-finance-accent');
-            setTimeout(() => { customSelectList.classList.add('hidden'); }, 200); 
-        }
-
-        // ============================================
-        // טיפול בשליחת הטופס
-        // ============================================
-        document.getElementById('stockForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            var submitBtn = document.getElementById('submitBtn');
-            var submitText = document.getElementById('submitText');
-            var submitIcon = document.getElementById('submitIcon');
-            var loadingSpinner = document.getElementById('loadingSpinner');
-            var errorSection = document.getElementById('errorSection');
-            var errorMessage = document.getElementById('errorMessage');
-            var successSection = document.getElementById('successSection');
-            var formSection = document.getElementById('formSection');
+        // שליחת הטופס
+        document.getElementById('stockForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const errorSection = document.getElementById('errorSection');
+            const successSection = document.getElementById('successSection');
+            const formSection = document.getElementById('formSection');
 
             errorSection.classList.add('hidden');
-            successSection.classList.add('hidden');
+            
+            const tickers = document.getElementById('symbols').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
+            const formData = {
+                tickers,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                frequency: document.getElementById('frequency').value
+            };
 
-            var rawSymbols = document.getElementById('symbols').value;
-            var tickersArray = rawSymbols.split(',')
-                .map(function(symbol) { return symbol.trim().toUpperCase(); })
-                .filter(function(symbol) { return symbol !== ''; });
-
-            if (tickersArray.length === 0) {
-                showError('אנא הזן לפחות סימול מניה אחד');
+            if (new Date(formData.startDate) > new Date(formData.endDate)) {
+                showError("שגיאה: תאריך ההתחלה לא יכול להיות מאוחר מתאריך הסיום.");
                 return;
             }
 
-            var formData = {
-                tickers: tickersArray,
-                startDate: document.getElementById('startDate').value,
-                endDate: document.getElementById('endDate').value,
-                frequency: document.getElementById('frequency').value,
-            };
-
-            var startObj = new Date(formData.startDate);
-            var endObj = new Date(formData.endDate);
-            
-            if (startObj > endObj) {
-                showError('שגיאה: תאריך ההתחלה לא יכול להיות מאוחר מתאריך הסיום.');
-                return; 
-            }
-
             submitBtn.disabled = true;
-            submitText.textContent = 'מייצר דוח, נא להמתין...';
-            submitText.classList.add('animate-pulse');
-            submitIcon.classList.add('hidden');
-            loadingSpinner.classList.remove('hidden');
+            document.getElementById('submitIcon').classList.add('hidden');
+            document.getElementById('loadingSpinner').classList.remove('hidden');
 
             try {
-                var response = await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(formData),
-                });
+                const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(formData) });
+                const data = await res.json();
+                
+                if (data.status === "error") throw new Error(data.message);
 
-                if (!response.ok) throw new Error('שגיאת תקשורת מול השרת (HTTP ' + response.status + ')');
+                // בניית תצוגה מקדימה
+                if (data.preview && data.preview.length > 0) {
+                    let hHtml = '<tr>', bHtml = '';
+                    data.preview[0].forEach(h => hHtml += `<th class="p-4 border-b border-white/5">${h}</th>`);
+                    data.preview.slice(1).forEach(row => {
+                        bHtml += '<tr class="border-b border-white/5 hover:bg-white/5 transition-colors">';
+                        row.forEach(cell => bHtml += `<td class="p-4">${typeof cell === 'number' ? cell.toFixed(2) : cell}</td>`);
+                        bHtml += '</tr>';
+                    });
+                    document.getElementById('previewThead').innerHTML = hHtml + '</tr>';
+                    document.getElementById('previewTbody').innerHTML = bHtml;
+                }
 
-                var data = await response.json();
-
-                if (data.status === "error") throw new Error(data.message || 'שגיאה כללית בעיבוד הנתונים');
-
-                var sheetUrl = data.sheetUrl;
-                if (!sheetUrl) throw new Error('לא התקבלה כתובת גיליון מהשרת');
-
-                document.getElementById('openSheetBtn').href = sheetUrl;
+                document.getElementById('openSheetBtn').href = data.sheetUrl;
                 formSection.classList.add('hidden');
                 successSection.classList.remove('hidden');
-
-            } catch (error) {
-                showError(error.message);
-                console.error('Fetch error:', error);
+            } catch (err) {
+                showError(err.message);
             } finally {
                 submitBtn.disabled = false;
-                submitText.textContent = 'התחל ייצור דוח';
-                submitText.classList.remove('animate-pulse');
-                submitIcon.classList.remove('hidden');
-                loadingSpinner.classList.add('hidden');
+                document.getElementById('submitIcon').classList.remove('hidden');
+                document.getElementById('loadingSpinner').classList.add('hidden');
             }
+        };
 
-            function showError(msg) {
-                errorMessage.textContent = msg;
-                errorSection.classList.remove('hidden');
-            }
-        });
+        function showError(msg) {
+            document.getElementById('errorMessage').innerText = msg;
+            document.getElementById('errorSection').classList.remove('hidden');
+        }
 
-        document.getElementById('resetBtn').addEventListener('click', function() {
-            var formSection = document.getElementById('formSection');
-            var successSection = document.getElementById('successSection');
+        document.getElementById('resetBtn').onclick = () => {
+            document.getElementById('successSection').classList.add('hidden');
+            document.getElementById('formSection').classList.remove('hidden');
+        };
 
-            successSection.classList.add('hidden');
-            formSection.classList.remove('hidden');
-            formSection.style.animation = 'none';
-            formSection.offsetHeight; 
-            formSection.style.animation = 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-        });
-
-        document.getElementById('symbols').addEventListener('input', function() {
-            this.value = this.value.toUpperCase();
-        });
+        document.getElementById('symbols').oninput = function() { this.value = this.value.toUpperCase(); };
     </script>
 </body>
 </html>
