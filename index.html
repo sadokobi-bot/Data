@@ -266,7 +266,9 @@
         // ============================================
         // הגדרות - כתובת ה-Web App של Google Apps Script
         // ============================================
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_1r3-1Haf2GEUwmxaLSjKb7fJJUL_QArBx2NFPymg0-clX3ZDZOVoxUF3ErwwgyJ3oA/exec';
+        
+        // הלינק החדש והמעודכן!
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw7e4tlfUHRJpUSvucVI-iPu84Iazet5Qpa1UK9ThVVf-t63VkiCG5ez4EZnPEDy6GWJg/exec';
 
         // ============================================
         // אתחול תאריכים ברירת מחדל
@@ -299,6 +301,7 @@
             var successSection = document.getElementById('successSection');
             var formSection = document.getElementById('formSection');
 
+            // איפוס שגיאות והודעות קודמות
             errorSection.classList.add('hidden');
             successSection.classList.add('hidden');
 
@@ -319,7 +322,20 @@
                 frequency: document.getElementById('frequency').value,
             };
 
-            // מעבר למצב טעינה עם מיקרו-אינטראקציה
+            // ==========================================
+            // ולידציית תאריכים בצד הלקוח
+            // ==========================================
+            var startObj = new Date(formData.startDate);
+            var endObj = new Date(formData.endDate);
+            
+            if (startObj > endObj) {
+                showError('שגיאה: תאריך ההתחלה לא יכול להיות מאוחר מתאריך הסיום.');
+                return; // עוצר כאן ולא שולח בקשה לשרת
+            }
+
+            // ==========================================
+            // מעבר למצב טעינה
+            // ==========================================
             submitBtn.disabled = true;
             submitText.textContent = 'מייצר דוח, נא להמתין...';
             submitText.classList.add('animate-pulse');
@@ -334,13 +350,14 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('שגיאת שרת (HTTP ' + response.status + ')');
+                    throw new Error('שגיאת תקשורת מול השרת (HTTP ' + response.status + ')');
                 }
 
                 var data = await response.json();
 
+                // בדיקה אם השרת החזיר לנו את השגיאה
                 if (data.status === "error") {
-                    throw new Error(data.message || 'שגיאה בעיבוד הנתונים');
+                    throw new Error(data.message || 'שגיאה כללית בעיבוד הנתונים');
                 }
 
                 var sheetUrl = data.sheetUrl;
@@ -354,9 +371,11 @@
                 successSection.classList.remove('hidden');
 
             } catch (error) {
-                showError('אופס, משהו השתבש: ' + error.message);
+                // הצגת השגיאה בחלונית האדומה
+                showError(error.message);
                 console.error('Fetch error:', error);
             } finally {
+                // החזרת הכפתור למצב פעיל
                 submitBtn.disabled = false;
                 submitText.textContent = 'התחל ניתוח נתונים';
                 submitText.classList.remove('animate-pulse');
@@ -385,7 +404,7 @@
             formSection.style.animation = 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
         });
 
-        // המרה בזמן אמת לאותיות גדולות
+        // המרה בזמן אמת לאותיות גדולות בשדה המניות
         document.getElementById('symbols').addEventListener('input', function() {
             this.value = this.value.toUpperCase();
         });
