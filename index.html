@@ -15,14 +15,25 @@
                     },
                     colors: {
                         finance: {
-                            900: '#0B1120',
-                            800: '#0F172A',
-                            700: '#1E293B',
+                            900: '#060B14',
+                            800: '#0A1222',
+                            700: '#14213D',
                             600: '#1E3A5F',
                             500: '#1D4ED8',
                             400: '#3B82F6',
                             300: '#60A5FA',
-                            accent: '#06B6D4',
+                            accent: '#00F0FF',
+                        }
+                    },
+                    animation: {
+                        blob: "blob 7s infinite",
+                    },
+                    keyframes: {
+                        blob: {
+                            "0%": { transform: "translate(0px, 0px) scale(1)" },
+                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                            "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                            "100%": { transform: "translate(0px, 0px) scale(1)" }
                         }
                     }
                 }
@@ -32,73 +43,81 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.19/index.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/fira-code@5.0.19/index.css" />
     <style>
-        /* אנימציות מותאמות אישית */
+        /* אנימציות כניסה */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-12px); }
+            from { opacity: 0; transform: translateY(-15px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 8px rgba(6, 182, 212, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.6); }
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.7); }
         }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
+        
         .animateFadeInUp {
-            animation: fadeInUp 0.6s ease-out forwards;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .animateSlideDown {
-            animation: slideDown 0.4s ease-out forwards;
+            animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .animatePulseGlow {
-            animation: pulseGlow 2s ease-in-out infinite;
+            animation: pulseGlow 2.5s ease-in-out infinite;
         }
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
+        
+        /* עיכובי אנימציה מותאמים ל-Blobs */
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
         /* סגנון סקרולבר מותאם */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0F172A; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        /* מעבר חלק לכל האלמנטים האינטראקטיביים */
-        .btnTransition { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .inputTransition { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A1222; }
+        ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
+
+        /* כוונון מעברים */
+        .inputTransition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* בחירת טקסט מעוצבת */
+        ::selection {
+            background-color: #00F0FF;
+            color: #060B14;
+        }
     </style>
 </head>
-<body class="bg-finance-900 text-slate-200 font-sans min-h-screen">
-    <div class="fixed inset-0 bg-gradient-to-br from-finance-900 via-finance-800 to-slate-900 pointer-events-none"></div>
-    <div class="fixed top-0 left-0 w-96 h-96 bg-finance-500/5 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="fixed bottom-0 right-0 w-96 h-96 bg-finance-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+<body class="bg-finance-900 text-slate-200 font-sans min-h-screen overflow-x-hidden selection:bg-finance-accent selection:text-finance-900">
+    
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 -left-10 w-96 h-96 bg-finance-500/20 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-blob"></div>
+        <div class="absolute top-20 -right-10 w-96 h-96 bg-finance-accent/20 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-20 left-40 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-[80px] opacity-60 animate-blob animation-delay-4000"></div>
+    </div>
 
-    <div class="relative z-10 max-w-2xl mx-auto px-4 py-8 sm:py-12">
+    <div class="relative z-10 max-w-2xl mx-auto px-4 py-12 sm:py-16">
 
-        <header class="text-center mb-10 animateFadeInUp">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-finance-600/30 border border-finance-500/20 mb-4">
-                <svg class="w-8 h-8 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <header class="text-center mb-12 animateFadeInUp">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-finance-700/80 to-finance-800/80 backdrop-blur-md border border-finance-500/30 shadow-[0_0_30px_rgba(29,78,216,0.3)] mb-6 transform transition-transform hover:scale-110 duration-500">
+                <svg class="w-10 h-10 text-finance-accent drop-shadow-[0_0_8px_rgba(0,240,255,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
                 </svg>
             </div>
-            <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-                ניתוח מניות
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400 tracking-tight">
+                ניתוח מניות מתקדם
             </h1>
-            <p class="text-slate-400 mt-2 text-sm sm:text-base">
-                הזן סימולי מניות, בחר תאריכים ותדירות — וקבל דוח מלא
+            <p class="text-slate-400 mt-4 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+                הזן סימולי מניות, בחר טווח תאריכים ותדירות, והמערכת תייצר עבורך דוח נתונים כרונולוגי מקיף.
             </p>
         </header>
 
-        <main id="formSection" class="animateFadeInUp" style="animation-delay: 0.15s; animation-fill-mode: both;">
-            <form id="stockForm" class="bg-finance-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-2xl shadow-black/20 p-6 sm:p-8 space-y-6">
+        <main id="formSection" class="animateFadeInUp" style="animation-delay: 0.1s; animation-fill-mode: both;">
+            <form id="stockForm" class="bg-finance-800/40 backdrop-blur-xl rounded-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] p-6 sm:p-10 space-y-8 relative overflow-hidden group">
+                
+                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
 
-                <div>
-                    <label for="symbols" class="block text-sm font-semibold text-slate-300 mb-2">
+                <div class="relative z-10">
+                    <label for="symbols" class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide">
                         סימולי מניות
                     </label>
                     <div class="relative">
@@ -106,22 +125,22 @@
                             type="text"
                             id="symbols"
                             name="symbols"
-                            placeholder="לדוגמה: TSLA, AAPL, AMZN, GOOGL"
+                            placeholder="לדוגמה: TSLA, AAPL, AMZN"
                             required
-                            class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent font-mono text-sm tracking-wide"
+                            class="inputTransition w-full px-5 py-4 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent font-mono text-base tracking-wider hover:bg-finance-900/70 shadow-inner"
                         >
-                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-finance-accent/70">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-500 mt-2">הפרד בין סימולים בפסיק</p>
+                    <p class="text-xs text-slate-500 mt-2 font-medium">יש להפריד בין הסימולים באמצעות פסיק (,)</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        <label for="startDate" class="block text-sm font-semibold text-slate-300 mb-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 relative z-10">
+                    <div class="group/input">
+                        <label for="startDate" class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide group-hover/input:text-white transition-colors">
                             תאריך התחלה
                         </label>
                         <input
@@ -129,11 +148,11 @@
                             id="startDate"
                             name="startDate"
                             required
-                            class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent text-sm"
+                            class="inputTransition w-full px-4 py-3.5 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent text-sm hover:bg-finance-900/70 [color-scheme:dark]"
                         >
                     </div>
-                    <div>
-                        <label for="endDate" class="block text-sm font-semibold text-slate-300 mb-2">
+                    <div class="group/input">
+                        <label for="endDate" class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide group-hover/input:text-white transition-colors">
                             תאריך סיום
                         </label>
                         <input
@@ -141,17 +160,17 @@
                             id="endDate"
                             name="endDate"
                             required
-                            class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent text-sm"
+                            class="inputTransition w-full px-4 py-3.5 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent text-sm hover:bg-finance-900/70 [color-scheme:dark]"
                         >
                     </div>
-                    <div>
-                        <label for="frequency" class="block text-sm font-semibold text-slate-300 mb-2">
+                    <div class="group/input">
+                        <label for="frequency" class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide group-hover/input:text-white transition-colors">
                             תדירות
                         </label>
                         <select
                             id="frequency"
                             name="frequency"
-                            class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent text-sm appearance-none cursor-pointer"
+                            class="inputTransition w-full px-4 py-3.5 bg-finance-900/50 border border-slate-600/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/60 focus:border-finance-accent text-sm appearance-none cursor-pointer hover:bg-finance-900/70"
                         >
                             <option value="1d">יומי (Daily)</option>
                             <option value="1wk">שבועי (Weekly)</option>
@@ -163,71 +182,86 @@
                 <button
                     type="submit"
                     id="submitBtn"
-                    class="btnTransition w-full py-4 px-6 bg-gradient-to-l from-finance-accent to-finance-400 hover:from-finance-400 hover:to-finance-accent text-finance-900 font-bold text-base rounded-xl shadow-lg shadow-finance-accent/20 hover:shadow-finance-accent/30 focus:outline-none focus:ring-2 focus:ring-finance-accent focus:ring-offset-2 focus:ring-offset-finance-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                    class="relative z-10 w-full py-4 px-6 bg-gradient-to-r from-finance-500 via-finance-400 to-finance-accent text-finance-900 font-extrabold text-lg rounded-2xl shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_35px_rgba(0,240,255,0.5)] transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-finance-accent/30 disabled:opacity-70 disabled:cursor-wait disabled:hover:transform-none overflow-hidden group/btn"
                 >
-                    <svg id="submitIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                    </svg>
-                    <svg id="loadingSpinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span id="submitText">שלח ובקש ניתוח</span>
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"></div>
+                    
+                    <div class="relative flex items-center justify-center gap-3">
+                        <svg id="submitIcon" class="w-6 h-6 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                        </svg>
+                        
+                        <svg id="loadingSpinner" class="hidden w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span id="submitText">התחל ניתוח נתונים</span>
+                    </div>
                 </button>
             </form>
 
-            <div id="errorSection" class="hidden mt-4 animateSlideDown">
-                <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
-                    <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                    </svg>
+            <div id="errorSection" class="hidden mt-6 animateSlideDown">
+                <div class="bg-red-950/50 backdrop-blur-md border border-red-500/40 rounded-2xl p-4 flex items-center gap-4 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                    <div class="bg-red-500/20 p-2 rounded-full flex-shrink-0">
+                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                        </svg>
+                    </div>
                     <div>
-                        <p id="errorMessage" class="text-red-300 text-sm font-medium"></p>
+                        <p id="errorMessage" class="text-red-200 text-sm font-medium leading-snug"></p>
                     </div>
                 </div>
             </div>
         </main>
 
         <section id="successSection" class="hidden animateFadeInUp mt-8">
-            <div class="bg-finance-800/60 backdrop-blur-sm rounded-2xl border border-emerald-500/20 shadow-2xl shadow-emerald-500/5 p-6 sm:p-8 text-center space-y-5">
-                <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                    <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            <div class="bg-finance-800/40 backdrop-blur-xl rounded-3xl border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.15)] p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
+                
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none"></div>
+
+                <div class="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 border border-emerald-400/40 shadow-[0_0_20px_rgba(52,211,153,0.3)] mx-auto animatePulseGlow">
+                    <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                 </div>
-                <h2 class="text-xl font-bold text-white">הניתוח הושלם בהצלחה!</h2>
-                <p class="text-slate-400 text-sm">הדוח שלך מוכן לצפייה. לחץ על הכפתור למטה כדי לפתוח אותו.</p>
+                
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-2">הדוח שלך מוכן!</h2>
+                    <p class="text-slate-400 text-base">הנתונים נמשכו, מוזגו וסודרו בהצלחה בגיליון חכם.</p>
+                </div>
 
                 <a
                     id="openSheetBtn"
                     href="#"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="btnTransition block w-full py-4 px-6 bg-gradient-to-l from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold text-lg rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-finance-800 animatePulseGlow"
+                    class="block w-full py-4 px-6 bg-gradient-to-r from-emerald-400 to-teal-500 text-finance-900 font-extrabold text-lg rounded-2xl shadow-[0_0_20px_rgba(52,211,153,0.4)] hover:shadow-[0_0_35px_rgba(52,211,153,0.6)] transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95 transition-all duration-300 focus:outline-none group"
                 >
                     <span class="flex items-center justify-center gap-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                         </svg>
-                        פתח את הדוח
+                        פתח את הדוח ב-Google Sheets
                     </span>
                 </a>
 
-                <button
-                    id="resetBtn"
-                    type="button"
-                    class="btnTransition inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm font-medium focus:outline-none"
-                >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    בקשה חדשה
-                </button>
+                <div class="pt-4 border-t border-white/5">
+                    <button
+                        id="resetBtn"
+                        type="button"
+                        class="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm font-semibold focus:outline-none transition-colors group"
+                    >
+                        <svg class="w-4 h-4 transition-transform group-hover:-rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        התחל בקשה חדשה
+                    </button>
+                </div>
             </div>
         </section>
 
-        <footer class="mt-12 text-center text-slate-600 text-xs animateFadeInUp" style="animation-delay: 0.3s; animation-fill-mode: both;">
-            <p>מבוסס על נתוני שוק בזמן אמת • כל הזכויות שמורות © 2024</p>
+        <footer class="mt-16 text-center text-slate-500 text-sm animateFadeInUp" style="animation-delay: 0.2s; animation-fill-mode: both;">
+            <p class="tracking-wide">מערכת נתונים כרונולוגית • כל הזכויות שמורות © 2024</p>
         </footer>
     </div>
 
@@ -235,8 +269,6 @@
         // ============================================
         // הגדרות - כתובת ה-Web App של Google Apps Script
         // ============================================
-        
-        // מעודכן לכתובת החדשה שסיפקת:
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_1r3-1Haf2GEUwmxaLSjKb7fJJUL_QArBx2NFPymg0-clX3ZDZOVoxUF3ErwwgyJ3oA/exec';
 
         // ============================================
@@ -247,7 +279,6 @@
             var oneYearAgo = new Date(today);
             oneYearAgo.setFullYear(today.getFullYear() - 1);
 
-            // המרה לפורמט YYYY-MM-DD
             var formatDate = function(dateObj) {
                 return dateObj.toISOString().split('T')[0];
             };
@@ -260,10 +291,8 @@
         // טיפול בשליחת הטופס
         // ============================================
         document.getElementById('stockForm').addEventListener('submit', async function(event) {
-            // מניעת שליחה רגילה של הטופס
             event.preventDefault();
 
-            // אחזור האלמנטים הנדרשים
             var submitBtn = document.getElementById('submitBtn');
             var submitText = document.getElementById('submitText');
             var submitIcon = document.getElementById('submitIcon');
@@ -273,23 +302,19 @@
             var successSection = document.getElementById('successSection');
             var formSection = document.getElementById('formSection');
 
-            // איפוס הודעות שגיאה קודמות
             errorSection.classList.add('hidden');
             successSection.classList.add('hidden');
 
-            // פיצול מחרוזת המניות למערך תקני
             var rawSymbols = document.getElementById('symbols').value;
             var tickersArray = rawSymbols.split(',')
                 .map(function(symbol) { return symbol.trim().toUpperCase(); })
                 .filter(function(symbol) { return symbol !== ''; });
 
-            // ולידציה בסיסית
             if (tickersArray.length === 0) {
                 showError('אנא הזן לפחות סימול מניה אחד');
                 return;
             }
 
-            // איסוף הנתונים מהטופס לתוך JSON
             var formData = {
                 tickers: tickersArray,
                 startDate: document.getElementById('startDate').value,
@@ -297,64 +322,51 @@
                 frequency: document.getElementById('frequency').value,
             };
 
-            // מעבר למצב טעינה - נעילת הכפתור והצגת ספינר
+            // מעבר למצב טעינה עם מיקרו-אינטראקציה
             submitBtn.disabled = true;
-            submitText.textContent = 'מושך נתונים ומכין גיליון...';
+            submitText.textContent = 'מייצר דוח, נא להמתין...';
+            submitText.classList.add('animate-pulse');
             submitIcon.classList.add('hidden');
             loadingSpinner.classList.remove('hidden');
 
             try {
-                // שליחת הבקשה בשיטת POST לשרת
                 var response = await fetch(WEB_APP_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(formData),
                 });
 
-                // בדיקה אם התשובה תקינה מבחינת רשת (HTTP 200)
                 if (!response.ok) {
-                    throw new Error('שגיאת שרת: ' + response.status);
+                    throw new Error('שגיאת שרת (HTTP ' + response.status + ')');
                 }
 
-                // עיבוד התשובה מהשרת
                 var data = await response.json();
 
-                // בדיקה אם השרת החזיר שגיאה לוגית מבוססת קוד
                 if (data.status === "error") {
-                    throw new Error(data.message || 'שגיאה כללית בשרת');
+                    throw new Error(data.message || 'שגיאה בעיבוד הנתונים');
                 }
 
-                // שליפת כתובת הגיליון
                 var sheetUrl = data.sheetUrl;
                 if (!sheetUrl) {
                     throw new Error('לא התקבלה כתובת גיליון מהשרת');
                 }
 
-                // עדכון הכפתור עם הלינק לגיליון שנוצר
-                var openSheetBtn = document.getElementById('openSheetBtn');
-                openSheetBtn.href = sheetUrl;
-
-                // הצגת אזור ההצלחה והסתרת הטופס
+                document.getElementById('openSheetBtn').href = sheetUrl;
+                
                 formSection.classList.add('hidden');
                 successSection.classList.remove('hidden');
 
             } catch (error) {
-                // הצגת הודעת שגיאה במקרה של כשל
-                showError('התרחשה שגיאה: ' + error.message);
-                console.error('Error during fetch:', error);
+                showError('אופס, משהו השתבש: ' + error.message);
+                console.error('Fetch error:', error);
             } finally {
-                // חזרה למצב רגיל של הכפתור (בין אם הצליח או נכשל)
                 submitBtn.disabled = false;
-                submitText.textContent = 'שלח ובקש ניתוח';
+                submitText.textContent = 'התחל ניתוח נתונים';
+                submitText.classList.remove('animate-pulse');
                 submitIcon.classList.remove('hidden');
                 loadingSpinner.classList.add('hidden');
             }
 
-            // ============================================
-            // פונקציית הצגת שגיאה
-            // ============================================
             function showError(msg) {
                 errorMessage.textContent = msg;
                 errorSection.classList.remove('hidden');
@@ -362,27 +374,22 @@
         });
 
         // ============================================
-        // כפתור איפוס - חזרה לטופס
+        // כפתור חזרה
         // ============================================
         document.getElementById('resetBtn').addEventListener('click', function() {
             var formSection = document.getElementById('formSection');
             var successSection = document.getElementById('successSection');
 
-            // הסתרת אזור ההצלחה והצגת הטופס מחדש
             successSection.classList.add('hidden');
             formSection.classList.remove('hidden');
 
-            // רענון אנימציה
             formSection.style.animation = 'none';
-            formSection.offsetHeight; // Trigger reflow
-            formSection.style.animation = 'fadeInUp 0.5s ease-out forwards';
+            formSection.offsetHeight; 
+            formSection.style.animation = 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
         });
 
-        // ============================================
-        // פיצ'ר נוסף: ולידציה בזמן אמת לסימולים
-        // ============================================
+        // המרה בזמן אמת לאותיות גדולות
         document.getElementById('symbols').addEventListener('input', function() {
-            // המרה אוטומטית לאותיות גדולות
             this.value = this.value.toUpperCase();
         });
     </script>
