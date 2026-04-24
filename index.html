@@ -89,6 +89,25 @@
         .flatpickr-months .flatpickr-next-month:hover svg {
             fill: #00F0FF !important; 
         }
+
+        /* תיקון לרשימת החודשים הנפתחת (הלבן שקופץ) */
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background: transparent !important;
+            padding: 0 5px !important;
+            outline: none !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-radius: 4px;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
+            background-color: #060B14 !important; /* רקע כהה לרשימה */
+            color: #ffffff !important;
+            font-weight: normal !important;
+        }
         
         /* כותרות ימים (א', ב', ג'...) */
         span.flatpickr-weekday { color: #60A5FA !important; font-weight: bold !important; }
@@ -280,7 +299,7 @@
                 
                 if (data.status === "error") throw new Error(data.message);
 
-                // בניית תצוגה מקדימה לטבלה
+                // בניית תצוגה מקדימה
                 if (data.preview && data.preview.length > 0) {
                     let hHtml = '<tr>', bHtml = '';
                     data.preview[0].forEach(h => hHtml += `<th class="p-4 border-b border-white/5">${h}</th>`);
