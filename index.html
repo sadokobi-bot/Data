@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ניתוח מניות - פאנל ניהול</title>
-    <!-- טעינת Tailwind CSS מ-CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,7 +29,6 @@
             }
         }
     </script>
-    <!-- טעינת פונט Heebo מ-Fontsource -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.19/index.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/fira-code@5.0.19/index.css" />
     <style>
@@ -76,16 +74,12 @@
     </style>
 </head>
 <body class="bg-finance-900 text-slate-200 font-sans min-h-screen">
-    <!-- רקע עם גרדיאנט עדין -->
     <div class="fixed inset-0 bg-gradient-to-br from-finance-900 via-finance-800 to-slate-900 pointer-events-none"></div>
-    <!-- אלמנטים דקורטיביים ברקע -->
     <div class="fixed top-0 left-0 w-96 h-96 bg-finance-500/5 rounded-full blur-3xl pointer-events-none"></div>
     <div class="fixed bottom-0 right-0 w-96 h-96 bg-finance-accent/5 rounded-full blur-3xl pointer-events-none"></div>
 
-    <!-- תוכן ראשי -->
     <div class="relative z-10 max-w-2xl mx-auto px-4 py-8 sm:py-12">
 
-        <!-- כותרת עליונה עם לוגו -->
         <header class="text-center mb-10 animateFadeInUp">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-finance-600/30 border border-finance-500/20 mb-4">
                 <svg class="w-8 h-8 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,11 +94,9 @@
             </p>
         </header>
 
-        <!-- טופס ראשי -->
         <main id="formSection" class="animateFadeInUp" style="animation-delay: 0.15s; animation-fill-mode: both;">
             <form id="stockForm" class="bg-finance-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-2xl shadow-black/20 p-6 sm:p-8 space-y-6">
 
-                <!-- שדה סימולי מניות -->
                 <div>
                     <label for="symbols" class="block text-sm font-semibold text-slate-300 mb-2">
                         סימולי מניות
@@ -118,7 +110,6 @@
                             required
                             class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent font-mono text-sm tracking-wide"
                         >
-                        <!-- אייקון מניות -->
                         <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
@@ -128,9 +119,7 @@
                     <p class="text-xs text-slate-500 mt-2">הפרד בין סימולים בפסיק</p>
                 </div>
 
-                <!-- שדות תאריכים ותדירות בשורה אחת -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <!-- תאריך התחלה -->
                     <div>
                         <label for="startDate" class="block text-sm font-semibold text-slate-300 mb-2">
                             תאריך התחלה
@@ -143,7 +132,6 @@
                             class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent text-sm"
                         >
                     </div>
-                    <!-- תאריך סיום -->
                     <div>
                         <label for="endDate" class="block text-sm font-semibold text-slate-300 mb-2">
                             תאריך סיום
@@ -156,7 +144,6 @@
                             class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent text-sm"
                         >
                     </div>
-                    <!-- תדירות -->
                     <div>
                         <label for="frequency" class="block text-sm font-semibold text-slate-300 mb-2">
                             תדירות
@@ -166,24 +153,21 @@
                             name="frequency"
                             class="inputTransition w-full px-4 py-3.5 bg-finance-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 focus:border-finance-accent text-sm appearance-none cursor-pointer"
                         >
-                            <option value="Daily">יומי (Daily)</option>
-                            <option value="Weekly">שבועי (Weekly)</option>
-                            <option value="Monthly">חודשי (Monthly)</option>
+                            <option value="1d">יומי (Daily)</option>
+                            <option value="1wk">שבועי (Weekly)</option>
+                            <option value="1mo">חודשי (Monthly)</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- כפתור שליחה -->
                 <button
                     type="submit"
                     id="submitBtn"
                     class="btnTransition w-full py-4 px-6 bg-gradient-to-l from-finance-accent to-finance-400 hover:from-finance-400 hover:to-finance-accent text-finance-900 font-bold text-base rounded-xl shadow-lg shadow-finance-accent/20 hover:shadow-finance-accent/30 focus:outline-none focus:ring-2 focus:ring-finance-accent focus:ring-offset-2 focus:ring-offset-finance-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 >
-                    <!-- אייקון שליחה -->
                     <svg id="submitIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                     </svg>
-                    <!-- ספינר טעינה (מוסתר כברירת מחדל) -->
                     <svg id="loadingSpinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -192,7 +176,6 @@
                 </button>
             </form>
 
-            <!-- הודעת שגיאה (מוסברת כברירת מחדל) -->
             <div id="errorSection" class="hidden mt-4 animateSlideDown">
                 <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
                     <svg class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -205,10 +188,8 @@
             </div>
         </main>
 
-        <!-- אזור הצלחה - מוצג לאחר קבלת תשובה מהשרת -->
         <section id="successSection" class="hidden animateFadeInUp mt-8">
             <div class="bg-finance-800/60 backdrop-blur-sm rounded-2xl border border-emerald-500/20 shadow-2xl shadow-emerald-500/5 p-6 sm:p-8 text-center space-y-5">
-                <!-- אייקון הצלחה -->
                 <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                     <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -217,7 +198,6 @@
                 <h2 class="text-xl font-bold text-white">הניתוח הושלם בהצלחה!</h2>
                 <p class="text-slate-400 text-sm">הדוח שלך מוכן לצפייה. לחץ על הכפתור למטה כדי לפתוח אותו.</p>
 
-                <!-- כפתור פתיחת גיליון -->
                 <a
                     id="openSheetBtn"
                     href="#"
@@ -233,7 +213,6 @@
                     </span>
                 </a>
 
-                <!-- כפתור חזרה לטופס -->
                 <button
                     id="resetBtn"
                     type="button"
@@ -247,7 +226,6 @@
             </div>
         </section>
 
-        <!-- פוטר -->
         <footer class="mt-12 text-center text-slate-600 text-xs animateFadeInUp" style="animation-delay: 0.3s; animation-fill-mode: both;">
             <p>מבוסס על נתוני שוק בזמן אמת • כל הזכויות שמורות © 2024</p>
         </footer>
@@ -257,8 +235,9 @@
         // ============================================
         // הגדרות - כתובת ה-Web App של Google Apps Script
         // ============================================
-        /** כתובת ה-Web App שאליה תישלח הבקשה */
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxLk-n2zJoJA4aG7RTXQMO_8yNMcVaVqBuXs5UhWeWEjhbqFk9bChTnxCt1cmXm2h6FHg/exec';
+        
+        // מעודכן לכתובת החדשה שסיפקת:
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzs5R7Rfsepxc4RjfFyPvcVUpEeEoiE2JqoTSNX51po1VocuIwEF611qrYp9W7S39sS-g/exec';
 
         // ============================================
         // אתחול תאריכים ברירת מחדל
@@ -298,35 +277,34 @@
             errorSection.classList.add('hidden');
             successSection.classList.add('hidden');
 
-            // איסוף הנתונים מהטופס
-          var formData = {
-                // 1. שינינו את שם המפתח מ-symbols ל-tickers (כפי שהשרת מצפה)
-                // 2. פיצלנו את המחרוזת למערך של מניות, ניקינו רווחים מיותרים וסיננו תאים ריקים
-                tickers: document.getElementById('symbols').value
-                            .split(',')
-                            .map(function(symbol) { return symbol.trim().toUpperCase(); })
-                            .filter(function(symbol) { return symbol !== ''; }),
-                
+            // פיצול מחרוזת המניות למערך תקני
+            var rawSymbols = document.getElementById('symbols').value;
+            var tickersArray = rawSymbols.split(',')
+                .map(function(symbol) { return symbol.trim().toUpperCase(); })
+                .filter(function(symbol) { return symbol !== ''; });
+
+            // ולידציה בסיסית
+            if (tickersArray.length === 0) {
+                showError('אנא הזן לפחות סימול מניה אחד');
+                return;
+            }
+
+            // איסוף הנתונים מהטופס לתוך JSON
+            var formData = {
+                tickers: tickersArray,
                 startDate: document.getElementById('startDate').value,
                 endDate: document.getElementById('endDate').value,
                 frequency: document.getElementById('frequency').value,
             };
 
-            // ולידציה בסיסית
-            if (!formData.symbols) {
-                showError('אנא הזן לפחות סימול מניה אחד');
-                return;
-            }
-
             // מעבר למצב טעינה - נעילת הכפתור והצגת ספינר
             submitBtn.disabled = true;
-            submitText.textContent = 'טוען נתונים...';
+            submitText.textContent = 'מושך נתונים ומכין גיליון...';
             submitIcon.classList.add('hidden');
             loadingSpinner.classList.remove('hidden');
 
             try {
                 // שליחת הבקשה בשיטת POST לשרת
-                // הגדרת ה-Header כ-text/plain;charset=utf-8 למניעת שגיאות CORS
                 var response = await fetch(WEB_APP_URL, {
                     method: 'POST',
                     headers: {
@@ -335,22 +313,26 @@
                     body: JSON.stringify(formData),
                 });
 
-                // בדיקה אם התשובה תקינה
+                // בדיקה אם התשובה תקינה מבחינת רשת (HTTP 200)
                 if (!response.ok) {
-                    throw new Error('שגיאת שרת: ' + response.status + ' ' + response.statusText);
+                    throw new Error('שגיאת שרת: ' + response.status);
                 }
 
                 // עיבוד התשובה מהשרת
                 var data = await response.json();
 
-                // שליפת כתובת הגיליון מהתשובה
-                var sheetUrl = data.sheetUrl || data.url || '';
+                // בדיקה אם השרת החזיר שגיאה לוגית מבוססת קוד
+                if (data.status === "error") {
+                    throw new Error(data.message || 'שגיאה כללית בשרת');
+                }
 
+                // שליפת כתובת הגיליון
+                var sheetUrl = data.sheetUrl;
                 if (!sheetUrl) {
                     throw new Error('לא התקבלה כתובת גיליון מהשרת');
                 }
 
-                // עדכון הכפתור עם הלינק
+                // עדכון הכפתור עם הלינק לגיליון שנוצר
                 var openSheetBtn = document.getElementById('openSheetBtn');
                 openSheetBtn.href = sheetUrl;
 
@@ -400,10 +382,9 @@
         // פיצ'ר נוסף: ולידציה בזמן אמת לסימולים
         // ============================================
         document.getElementById('symbols').addEventListener('input', function() {
-            // המרה אוטומטית לאותיות גדולות (נהוג בסימולי מניות)
+            // המרה אוטומטית לאותיות גדולות
             this.value = this.value.toUpperCase();
         });
     </script>
 </body>
 </html>
-
