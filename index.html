@@ -27,12 +27,12 @@
                             accent: '#00F0FF',
                         },
                         light: {
-                            bg: '#F8FAFC',
+                            bg: '#F0F4F8',
                             card: '#FFFFFF',
                             border: '#E2E8F0',
                             text: '#1E293B',
                             textMuted: '#64748B',
-                            input: '#F1F5F9',
+                            input: '#F8FAFC',
                             inputBorder: '#CBD5E1',
                         }
                     },
@@ -114,21 +114,11 @@
         ::-webkit-scrollbar-track { background: #0A1222; }
         ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 10px; }
 
-        .dark ::-webkit-scrollbar-track { background: #0A1222; }
-        .dark ::-webkit-scrollbar-thumb { background: #1E3A5F; }
-        :not(.dark) ::-webkit-scrollbar-track { background: #F1F5F9; }
-        :not(.dark) ::-webkit-scrollbar-thumb { background: #CBD5E1; }
-
         .bg-grid-pattern {
             background-image: 
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
             background-size: 60px 60px;
-        }
-        :not(.dark) .bg-grid-pattern {
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
         }
 
         .flatpickr-calendar {
@@ -141,17 +131,13 @@
             direction: rtl !important;
         }
         
-        .flatpickr-months,
-        .flatpickr-current-month,
+        .flatpickr-months, .flatpickr-current-month,
         .flatpickr-current-month .flatpickr-monthDropdown-months,
-        .flatpickr-current-month input.cur-year {
-            color: #ffffff !important;
-        }
+        .flatpickr-current-month input.cur-year { color: #ffffff !important; }
         .flatpickr-months .flatpickr-prev-month svg, 
         .flatpickr-months .flatpickr-next-month svg { fill: #ffffff !important; }
         .flatpickr-months .flatpickr-prev-month:hover svg, 
         .flatpickr-months .flatpickr-next-month:hover svg { fill: #00F0FF !important; }
-
         .flatpickr-current-month .flatpickr-monthDropdown-months {
             appearance: none; -moz-appearance: none; -webkit-appearance: none;
             background: transparent !important; padding: 0 5px !important; outline: none !important;
@@ -160,7 +146,6 @@
         .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
             background-color: #060B14 !important; color: #ffffff !important; font-weight: normal !important;
         }
-        
         span.flatpickr-weekday { color: #60A5FA !important; font-weight: bold !important; }
         .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
         .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay { color: #64748b !important; }
@@ -169,17 +154,14 @@
         .flatpickr-day.today { border-color: #3B82F6 !important; }
         
         .glass-panel {
-            background: rgba(15, 23, 42, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: background-color 0.5s ease, border-color 0.5s ease;
         }
 
-        .theme-transition,
-        .theme-transition *,
-        .theme-transition *:before,
-        .theme-transition *:after {
+        .theme-transition, .theme-transition *, .theme-transition *:before, .theme-transition *:after {
             transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
                         border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
                         color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -194,9 +176,6 @@
             cursor: pointer;
             transition: background-color 0.4s ease;
         }
-        .dark .toggle-track { background: linear-gradient(135deg, #1E293B, #334155); }
-        :not(.dark) .toggle-track { background: linear-gradient(135deg, #3B82F6, #00F0FF); }
-        
         .toggle-thumb {
             width: 24px;
             height: 24px;
@@ -205,8 +184,6 @@
             top: 3px;
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-        .dark .toggle-thumb { right: 3px; background: #94A3B8; }
-        :not(.dark) .toggle-thumb { left: 3px; background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
         .energy-btn {
             background-size: 200% 200%;
@@ -220,178 +197,139 @@
             animation: particleBurst 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        :not(.dark) .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        /* === טיקר משופר - עיצוב גריד === */
-        .ticker-section {
-            position: relative;
-            overflow: hidden;
-            border-radius: 16px;
-        }
-
-        .ticker-track {
-            display: flex;
-            gap: 8px;
-            will-change: transform;
-        }
-
-        .ticker-row-scroll {
-            display: flex;
-            gap: 8px;
-            white-space: nowrap;
-        }
-
-        .ticker-row-scroll:nth-child(1) { animation: tickerScrollRow1 45s linear infinite; }
-        .ticker-row-scroll:nth-child(2) { animation: tickerScrollRow2 50s linear infinite; }
+        /* === טיקר === */
+        .ticker-section { position: relative; overflow: hidden; }
+        .ticker-track { display: flex; flex-direction: column; gap: 6px; will-change: transform; }
+        .ticker-row-scroll { display: flex; gap: 8px; white-space: nowrap; }
+        .ticker-row-scroll:nth-child(1) { animation: tickerScrollRow1 50s linear infinite; }
+        .ticker-row-scroll:nth-child(2) { animation: tickerScrollRow2 45s linear infinite; }
         .ticker-row-scroll:nth-child(3) { animation: tickerScrollRow3 55s linear infinite; }
 
-        @keyframes tickerScrollRow1 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        @keyframes tickerScrollRow2 {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-        }
-        @keyframes tickerScrollRow3 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+        @keyframes tickerScrollRow1 { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes tickerScrollRow2 { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        @keyframes tickerScrollRow3 { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         .ticker-chip {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 10px;
             font-family: 'Fira Code', monospace;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             flex-shrink: 0;
             cursor: default;
             transition: all 0.25s ease;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .dark .ticker-chip {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
+        .ticker-chip-symbol { font-weight: 700; font-size: 13px; }
+        .ticker-chip-price { font-weight: 500; }
+        .ticker-chip-change { font-weight: 700; font-size: 11px; padding: 2px 5px; border-radius: 5px; }
+        .ticker-chip-change.up { color: #10b981; background: rgba(16, 185, 129, 0.12); }
+        .ticker-chip-change.down { color: #ef4444; background: rgba(239, 68, 68, 0.12); }
 
-        :not(.dark) .ticker-chip {
-            background: rgba(0, 0, 0, 0.025);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-        }
+        .ticker-fade-left { position: absolute; left: 0; top: 0; bottom: 0; width: 60px; z-index: 5; pointer-events: none; }
+        .ticker-fade-right { position: absolute; right: 0; top: 0; bottom: 0; width: 60px; z-index: 5; pointer-events: none; }
 
-        .ticker-chip:hover {
-            transform: translateY(-2px) scale(1.03);
+        /* ============================================ */
+        /* === DARK MODE (default) === */
+        /* ============================================ */
+        .dark .toggle-track { background: linear-gradient(135deg, #1E293B, #334155); }
+        .dark .toggle-thumb { right: 3px; background: #94A3B8; }
+        .dark ::-webkit-scrollbar-track { background: #0A1222; }
+        .dark ::-webkit-scrollbar-thumb { background: #1E3A5F; }
+        .dark .bg-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
         }
-
-        .dark .ticker-chip:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08);
-        }
-
-        :not(.dark) .ticker-chip:hover {
-            background: rgba(0, 0, 0, 0.05);
-            border-color: rgba(0, 0, 0, 0.12);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
-        }
-
-        .ticker-chip-symbol {
-            font-weight: 700;
-            font-size: 14px;
-        }
-
+        .dark .ticker-chip { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .dark .ticker-chip:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.12); box-shadow: 0 4px 15px rgba(0, 240, 255, 0.08); }
         .dark .ticker-chip-symbol { color: #f1f5f9; }
-        :not(.dark) .ticker-chip-symbol { color: #1e293b; }
-
-        .ticker-chip-price {
-            font-weight: 500;
-        }
-
         .dark .ticker-chip-price { color: #94a3b8; }
-        :not(.dark) .ticker-chip-price { color: #64748b; }
+        .dark .ticker-fade-left { background: linear-gradient(to right, #060B14, transparent); }
+        .dark .ticker-fade-right { background: linear-gradient(to left, #060B14, transparent); }
 
-        .ticker-chip-change {
-            font-weight: 700;
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 6px;
-        }
-
-        .ticker-chip-change.up {
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        .ticker-chip-change.down {
-            color: #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        /* גרדיאנטים בצדדים לטיקר */
-        .ticker-fade-left {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 80px;
-            z-index: 5;
-            pointer-events: none;
-        }
-        .ticker-fade-right {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 80px;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .dark .ticker-fade-left {
-            background: linear-gradient(to right, rgba(6, 11, 20, 0.95), transparent);
-        }
-        .dark .ticker-fade-right {
-            background: linear-gradient(to left, rgba(6, 11, 20, 0.95), transparent);
-        }
-
-        :not(.dark) .ticker-fade-left {
-            background: linear-gradient(to right, rgba(248, 250, 252, 0.95), transparent);
-        }
-        :not(.dark) .ticker-fade-right {
-            background: linear-gradient(to left, rgba(248, 250, 252, 0.95), transparent);
-        }
-
-        /* === סגנונות לייט מוד === */
-        :where(html:not(.dark)) {
-            background-color: #F8FAFC !important;
+        /* ============================================ */
+        /* === LIGHT MODE === */
+        /* ============================================ */
+        html:not(.dark) body {
+            background-color: #F0F4F8 !important;
             color: #1E293B;
         }
-
-        :where(html:not(.dark)) .toggle-track {
-            background: linear-gradient(135deg, #3B82F6, #00F0FF);
+        html:not(.dark) .toggle-track { background: linear-gradient(135deg, #3B82F6, #00F0FF); }
+        html:not(.dark) .toggle-thumb { left: 3px; background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        html:not(.dark) ::-webkit-scrollbar-track { background: #E2E8F0; }
+        html:not(.dark) ::-webkit-scrollbar-thumb { background: #CBD5E1; }
+        html:not(.dark) .bg-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
         }
-        :where(html:not(.dark)) .toggle-thumb {
-            left: 3px;
-            background: #FFFFFF;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        html:not(.dark) .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        }
+        html:not(.dark) .ticker-chip { background: rgba(0, 0, 0, 0.025); border: 1px solid rgba(0, 0, 0, 0.05); }
+        html:not(.dark) .ticker-chip:hover { background: rgba(0, 0, 0, 0.05); border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.08); }
+        html:not(.dark) .ticker-chip-symbol { color: #1e293b; }
+        html:not(.dark) .ticker-chip-price { color: #64748b; }
+        html:not(.dark) .ticker-fade-left { background: linear-gradient(to right, #F0F4F8, transparent); }
+        html:not(.dark) .ticker-fade-right { background: linear-gradient(to left, #F0F4F8, transparent); }
+        html:not(.dark) #floatingDots { display: none !important; }
+        html:not(.dark) .bg-gradient-to-b { background-image: linear-gradient(to bottom, transparent, transparent, rgba(0,0,0,0.02)); }
+
+        /* === Light mode: text colors === */
+        html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, html:not(.dark) .text-white { color: #1E293B !important; }
+        html:not(.dark) .text-slate-200, html:not(.dark) .text-slate-300, html:not(.dark) .text-slate-400 { color: #64748B !important; }
+        html:not(.dark) .text-slate-500 { color: #94A3B8 !important; }
+
+        /* === Light mode: inputs === */
+        html:not(.dark) input[type="text"],
+        html:not(.dark) input[type="date"] {
+            background-color: #F8FAFC !important;
+            border-color: #CBD5E1 !important;
+            color: #1E293B !important;
+        }
+        html:not(.dark) input[type="text"]::placeholder { color: #94A3B8 !important; }
+        html:not(.dark) #customSelectBtn {
+            background-color: #F8FAFC !important;
+            border-color: #CBD5E1 !important;
+            color: #1E293B !important;
         }
 
-        :where(html:not(.dark)) #floatingDots { display: none !important; }
+        /* === Light mode: labels === */
+        html:not(.dark) label { color: #475569 !important; }
 
-        :where(html:not(.dark)) .bg-gradient-to-b {
-            background-image: linear-gradient(to bottom, transparent, transparent, rgba(0,0,0,0.02));
+        /* === Light mode: error section === */
+        html:not(.dark) #errorSection .bg-red-900\/30 { background-color: rgba(239, 68, 68, 0.08) !important; }
+
+        /* === Light mode: success table === */
+        html:not(.dark) #previewThead { background-color: #F1F5F9 !important; color: #64748B !important; }
+        html:not(.dark) #previewTbody { color: #1E293B !important; }
+        html:not(.dark) #successSection table { background-color: #F8FAFC !important; }
+
+        /* === Light mode: system status bar === */
+        html:not(.dark) #systemStatus > div {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            border-color: #E2E8F0 !important;
         }
+
+        /* === Light mode: card stats === */
+        html:not(.dark) .text-slate-500 { color: #94A3B8 !important; }
+
+        /* === Light mode: logo container === */
+        html:not(.dark) .w-20.h-20 {
+            background-color: #F1F5F9 !important;
+            border-color: #E2E8F0 !important;
+        }
+
+        /* === Light mode: ticker header === */
+        html:not(.dark) .border-b { border-color: rgba(0,0,0,0.06) !important; }
     </style>
 </head>
 <body class="bg-finance-900 text-slate-200 font-sans min-h-screen overflow-x-hidden flex flex-col theme-transition" id="mainBody">
@@ -441,20 +379,20 @@
                 </div>
             </div>
 
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">שלום, ברוך הבא</h1>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-white">שלום, ברוך הבא</h1>
             <p class="text-slate-400 text-lg max-w-2xl mx-auto">מערכת הניתוח מוכנה. הזן את המניות המבוקשות לקבלת דוח נתונים כרונולוגי מאוחד.</p>
         </header>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animateFadeInUp" style="animation-delay: 0.1s;">
-            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,240,255,0.15)] hover:border-finance-accent/40 cursor-default">
+            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:border-finance-accent/40 cursor-default">
                 <div><p class="text-slate-500 text-xs font-bold">S&P 500</p><p class="text-white font-mono text-xl">5,234.1</p></div>
                 <div class="text-emerald-400 text-sm font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">+1.1%</div>
             </div>
-            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,240,255,0.15)] hover:border-finance-accent/40 cursor-default">
+            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:border-finance-accent/40 cursor-default">
                 <div><p class="text-slate-500 text-xs font-bold">NASDAQ</p><p class="text-white font-mono text-xl">16,396.8</p></div>
                 <div class="text-emerald-400 text-sm font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">+0.8%</div>
             </div>
-            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,240,255,0.15)] hover:border-finance-accent/40 cursor-default">
+            <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:border-finance-accent/40 cursor-default">
                 <div><p class="text-slate-500 text-xs font-bold">ת"א 35</p><p class="text-white font-mono text-xl">2,031.5</p></div>
                 <div class="text-red-400 text-sm font-bold bg-red-500/10 px-2 py-1 rounded-lg">-0.2%</div>
             </div>
@@ -544,7 +482,7 @@
 
         <div id="bottomContent" class="mt-16 space-y-8">
 
-            <!-- === טיקר מניות משופר === -->
+            <!-- טיקר מניות -->
             <div class="glass-panel rounded-2xl overflow-hidden animateFadeInUp" style="animation-delay: 0.5s;">
                 <div class="px-5 py-3 border-b border-white/5 flex items-center justify-between">
                     <div class="flex items-center gap-2">
@@ -560,13 +498,11 @@
                 <div class="ticker-section py-2" id="tickerSection">
                     <div class="ticker-fade-left"></div>
                     <div class="ticker-fade-right"></div>
-                    <div class="ticker-track" id="tickerTrack">
-                        <!-- ימולא דינמית -->
-                    </div>
+                    <div class="ticker-track" id="tickerTrack"></div>
                 </div>
             </div>
 
-            <!-- קנבס אינטראקטיבי -->
+            <!-- קנבס -->
             <div class="animateFadeInUp" style="animation-delay: 0.6s;">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-2 h-2 rounded-full bg-finance-accent animate-pulse"></div>
@@ -575,7 +511,7 @@
                 <canvas id="networkCanvas" class="w-full h-64 border border-white/10 rounded-2xl cursor-crosshair"></canvas>
             </div>
 
-            <!-- כרטיסי יכולות -->
+            <!-- כרטיסים -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 animateFadeInUp" style="animation-delay: 0.7s;">
                 <div class="glass-panel p-6 rounded-2xl transition-all duration-300 hover:border-finance-accent/30 hover:shadow-lg group cursor-default">
                     <div class="w-12 h-12 rounded-xl bg-finance-accent/10 flex items-center justify-center mb-4 group-hover:bg-finance-accent/20 transition-colors">
@@ -661,12 +597,14 @@
             function applyTheme(isDark) {
                 if (isDark) {
                     html.classList.add('dark');
+                    html.classList.remove('light');
                     toggleMoon.classList.remove('hidden');
                     toggleSun.classList.add('hidden');
                     body.classList.remove('bg-light-bg', 'text-light-text');
                     body.classList.add('bg-finance-900', 'text-slate-200');
                 } else {
                     html.classList.remove('dark');
+                    html.classList.add('light');
                     toggleMoon.classList.add('hidden');
                     toggleSun.classList.remove('hidden');
                     body.classList.remove('bg-finance-900', 'text-slate-200');
@@ -688,19 +626,11 @@
 
             toggle.addEventListener('click', switchTheme);
             toggle.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    switchTheme();
-                }
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); switchTheme(); }
             });
         })();
 
-        const fpConfig = { 
-            locale: "he", 
-            dateFormat: "Y-m-d", 
-            disableMobile: true,
-            allowInput: true 
-        };
+        const fpConfig = { locale: "he", dateFormat: "Y-m-d", disableMobile: true, allowInput: true };
         const fpStart = flatpickr("#startDate", { ...fpConfig, defaultDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)) });
         const fpEnd = flatpickr("#endDate", { ...fpConfig, defaultDate: new Date() });
 
@@ -723,53 +653,21 @@
             function createRipple(x, y, btnRect) {
                 const ripple = document.createElement('div');
                 const size = Math.max(btnRect.width, btnRect.height) * 2;
-                const relativeX = x - btnRect.left;
-                const relativeY = y - btnRect.top;
-                
-                ripple.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    left: ${relativeX - size/2}px;
-                    top: ${relativeY - size/2}px;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.3);
-                    transform: scale(0);
-                    animation: ripple 0.6s ease-out forwards;
-                    pointer-events: none;
-                `;
-                
+                ripple.style.cssText = `position:absolute;width:${size}px;height:${size}px;left:${x - btnRect.left - size/2}px;top:${y - btnRect.top - size/2}px;border-radius:50%;background:rgba(255,255,255,0.3);transform:scale(0);animation:ripple 0.6s ease-out forwards;pointer-events:none;`;
                 particleContainer.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 700);
             }
 
             function createParticles(x, y, btnRect) {
-                const particleCount = 12;
                 const colors = ['#00F0FF', '#3B82F6', '#60A5FA', '#FFFFFF', '#10B981'];
-                
-                for (let i = 0; i < particleCount; i++) {
+                for (let i = 0; i < 12; i++) {
                     const particle = document.createElement('div');
-                    const angle = (i / particleCount) * Math.PI * 2;
+                    const angle = (i / 12) * Math.PI * 2;
                     const velocity = 40 + Math.random() * 60;
-                    const tx = Math.cos(angle) * velocity;
-                    const ty = Math.sin(angle) * velocity;
                     const size = 3 + Math.random() * 5;
                     const color = colors[Math.floor(Math.random() * colors.length)];
-                    const relativeX = x - btnRect.left;
-                    const relativeY = y - btnRect.top;
-                    
                     particle.classList.add('particle');
-                    particle.style.cssText = `
-                        width: ${size}px;
-                        height: ${size}px;
-                        background: ${color};
-                        left: ${relativeX}px;
-                        top: ${relativeY}px;
-                        --tx: ${tx}px;
-                        --ty: ${ty}px;
-                        box-shadow: 0 0 ${size * 2}px ${color};
-                    `;
-                    
+                    particle.style.cssText = `width:${size}px;height:${size}px;background:${color};left:${x - btnRect.left}px;top:${y - btnRect.top}px;--tx:${Math.cos(angle) * velocity}px;--ty:${Math.sin(angle) * velocity}px;box-shadow:0 0 ${size*2}px ${color};`;
                     particleContainer.appendChild(particle);
                     setTimeout(() => particle.remove(), 900);
                 }
@@ -782,9 +680,7 @@
                 submitBtn.classList.add('animateShockwave');
                 setTimeout(() => submitBtn.classList.remove('animateShockwave'), 700);
                 submitBtn.style.boxShadow = '0 0 40px rgba(0, 240, 255, 0.8), 0 0 80px rgba(0, 240, 255, 0.4), 0 0 120px rgba(0, 240, 255, 0.2)';
-                setTimeout(() => {
-                    submitBtn.style.boxShadow = '';
-                }, 400);
+                setTimeout(() => { submitBtn.style.boxShadow = ''; }, 400);
             });
         })();
 
@@ -793,7 +689,7 @@
             document.getElementById('errorMessage').innerText = msg;
             errSec.classList.remove('hidden');
             errSec.classList.remove('animateSlideDown');
-            void errSec.offsetWidth; 
+            void errSec.offsetWidth;
             errSec.classList.add('animateSlideDown');
         }
 
@@ -803,28 +699,14 @@
             const errorSection = document.getElementById('errorSection');
             const successSection = document.getElementById('successSection');
             const formSection = document.getElementById('formSection');
-
             errorSection.classList.add('hidden');
             
             const tickers = document.getElementById('symbols').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
-            
-            if (tickers.length === 0) {
-                return showError("אנא הזן לפחות מניה אחת.");
-            }
+            if (tickers.length === 0) return showError("אנא הזן לפחות מניה אחת.");
+            if (fpStart.selectedDates.length === 0 || fpEnd.selectedDates.length === 0) return showError("שגיאה: אנא ודא שהוזנו תאריך התחלה ותאריך סיום תקינים.");
+            if (fpStart.selectedDates[0] > fpEnd.selectedDates[0]) return showError("שגיאה: תאריך ההתחלה לא יכול להיות מאוחר מתאריך הסיום.");
 
-            if (fpStart.selectedDates.length === 0 || fpEnd.selectedDates.length === 0) {
-                return showError("שגיאה: אנא ודא שהוזנו תאריך התחלה ותאריך סיום תקינים.");
-            }
-            if (fpStart.selectedDates[0] > fpEnd.selectedDates[0]) {
-                return showError("שגיאה: תאריך ההתחלה לא יכול להיות מאוחר מתאריך הסיום.");
-            }
-
-            const formData = {
-                tickers,
-                startDate: document.getElementById('startDate').value,
-                endDate: document.getElementById('endDate').value,
-                frequency: document.getElementById('frequency').value
-            };
+            const formData = { tickers, startDate: document.getElementById('startDate').value, endDate: document.getElementById('endDate').value, frequency: document.getElementById('frequency').value };
 
             submitBtn.disabled = true;
             document.getElementById('submitIcon').classList.add('hidden');
@@ -834,10 +716,7 @@
             try {
                 const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(formData) });
                 const data = await res.json();
-                
-                if (data.status === "error") {
-                    throw new Error(data.message);
-                }
+                if (data.status === "error") throw new Error(data.message);
 
                 if (data.preview && data.preview.length > 0) {
                     let hHtml = '<tr>', bHtml = '';
@@ -855,11 +734,7 @@
                 formSection.classList.add('hidden');
                 successSection.classList.remove('hidden');
             } catch (err) {
-                let errorMsg = err.message;
-                if (errorMsg === 'Failed to fetch') {
-                    errorMsg = 'שגיאת תקשורת מול השרת. ודא שחיבור האינטרנט תקין.';
-                }
-                showError(errorMsg);
+                showError(err.message === 'Failed to fetch' ? 'שגיאת תקשורת מול השרת. ודא שחיבור האינטרנט תקין.' : err.message);
             } finally {
                 submitBtn.disabled = false;
                 document.getElementById('submitIcon').classList.remove('hidden');
@@ -875,9 +750,6 @@
 
         document.getElementById('symbols').oninput = function() { this.value = this.value.toUpperCase(); };
 
-        // ============================================
-        // טיקר מניות - עיצוב גריד מקצועי עם 3 שורות
-        // ============================================
         (function initTicker() {
             const stockData = [
                 { symbol: 'AAPL', price: '$198.11', change: '+2.34%', up: true },
@@ -907,53 +779,27 @@
             ];
 
             function createChip(stock) {
-                const changeDir = stock.up ? 'up' : 'down';
+                const dir = stock.up ? 'up' : 'down';
                 const arrow = stock.up ? '▲' : '▼';
-                return `<div class="ticker-chip">
-                    <span class="ticker-chip-symbol">${stock.symbol}</span>
-                    <span class="ticker-chip-price">${stock.price}</span>
-                    <span class="ticker-chip-change ${changeDir}">${arrow} ${stock.change}</span>
-                </div>`;
+                return `<div class="ticker-chip"><span class="ticker-chip-symbol">${stock.symbol}</span><span class="ticker-chip-price">${stock.price}</span><span class="ticker-chip-change ${dir}">${arrow} ${stock.change}</span></div>`;
             }
 
-            function buildRows() {
-                const track = document.getElementById('tickerTrack');
-                if (!track) return;
+            const row1 = stockData.slice(0, 12);
+            const row2 = stockData.slice(6, 18);
+            const row3 = stockData.slice(12).concat(stockData.slice(0, 6));
 
-                // שורה 1: מניות 0-11
-                const row1 = stockData.slice(0, 12);
-                // שורה 2: מניות 6-17 (חפיפה)
-                const row2 = stockData.slice(6, 18);
-                // שורה 3: מניות 12-23
-                const row3 = stockData.slice(12).concat(stockData.slice(0, 6));
+            function dup(list) { return list.map(createChip).join('') + list.map(createChip).join(''); }
 
-                function duplicateRow(stockList) {
-                    const html = stockList.map(createChip).join('');
-                    return html + html; // כפילות למעבר חלק אינסופי
-                }
+            document.getElementById('tickerTrack').innerHTML = `
+                <div class="ticker-row-scroll">${dup(row1)}</div>
+                <div class="ticker-row-scroll">${dup(row2)}</div>
+                <div class="ticker-row-scroll">${dup(row3)}</div>
+            `;
 
-                track.innerHTML = `
-                    <div class="ticker-row-scroll">${duplicateRow(row1)}</div>
-                    <div class="ticker-row-scroll">${duplicateRow(row2)}</div>
-                    <div class="ticker-row-scroll">${duplicateRow(row3)}</div>
-                `;
-            }
-
-            buildRows();
-
-            // עצירת אנימציה על הובר
             const tickerSection = document.getElementById('tickerSection');
             if (tickerSection) {
-                tickerSection.addEventListener('mouseenter', () => {
-                    tickerSection.querySelectorAll('.ticker-row-scroll').forEach(row => {
-                        row.style.animationPlayState = 'paused';
-                    });
-                });
-                tickerSection.addEventListener('mouseleave', () => {
-                    tickerSection.querySelectorAll('.ticker-row-scroll').forEach(row => {
-                        row.style.animationPlayState = 'running';
-                    });
-                });
+                tickerSection.addEventListener('mouseenter', () => tickerSection.querySelectorAll('.ticker-row-scroll').forEach(r => r.style.animationPlayState = 'paused'));
+                tickerSection.addEventListener('mouseleave', () => tickerSection.querySelectorAll('.ticker-row-scroll').forEach(r => r.style.animationPlayState = 'running'));
             }
         })();
 
@@ -963,125 +809,74 @@
             var ctx = canvas.getContext('2d');
             var dpr = window.devicePixelRatio || 1;
             var w, h, nodes = [], mouse = { x: null, y: null };
-            var nodeCount = 45;
-            var connectionDist = 120;
 
             function resize() {
                 var rect = canvas.getBoundingClientRect();
-                w = rect.width;
-                h = rect.height;
-                canvas.width = w * dpr;
-                canvas.height = h * dpr;
-                canvas.style.width = w + 'px';
-                canvas.style.height = h + 'px';
+                w = rect.width; h = rect.height;
+                canvas.width = w * dpr; canvas.height = h * dpr;
+                canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             }
 
             function createNodes() {
                 nodes = [];
-                for (var i = 0; i < nodeCount; i++) {
-                    nodes.push({
-                        x: Math.random() * w,
-                        y: Math.random() * h,
-                        vx: (Math.random() - 0.5) * 0.5,
-                        vy: (Math.random() - 0.5) * 0.5,
-                        r: Math.random() * 2 + 1,
-                    });
+                for (var i = 0; i < 45; i++) {
+                    nodes.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, r: Math.random() * 2 + 1 });
                 }
             }
 
             function drawNetwork() {
                 ctx.clearRect(0, 0, w, h);
-                var html = document.documentElement;
-                var isDark = html.classList.contains('dark');
+                var isDark = document.documentElement.classList.contains('dark');
                 var lineColor = isDark ? '0, 240, 255' : '59, 130, 246';
                 var nodeColors = isDark ? ['#00F0FF', '#3B82F6'] : ['#3B82F6', '#1D4ED8'];
 
                 for (var i = 0; i < nodes.length; i++) {
                     var nd = nodes[i];
-                    nd.x += nd.vx;
-                    nd.y += nd.vy;
+                    nd.x += nd.vx; nd.y += nd.vy;
                     if (nd.x < 0 || nd.x > w) nd.vx *= -1;
                     if (nd.y < 0 || nd.y > h) nd.vy *= -1;
                     if (mouse.x !== null) {
-                        var dx = nd.x - mouse.x;
-                        var dy = nd.y - mouse.y;
-                        var dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 150) {
-                            var force = (150 - dist) / 150;
-                            nd.vx += (dx / dist) * force * 0.15;
-                            nd.vy += (dy / dist) * force * 0.15;
-                        }
+                        var dx = nd.x - mouse.x, dy = nd.y - mouse.y, dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 150) { var force = (150 - dist) / 150; nd.vx += (dx/dist) * force * 0.15; nd.vy += (dy/dist) * force * 0.15; }
                     }
-                    var speed = Math.sqrt(nd.vx * nd.vx + nd.vy * nd.vy);
-                    if (speed > 2) {
-                        nd.vx = (nd.vx / speed) * 2;
-                        nd.vy = (nd.vy / speed) * 2;
-                    }
-                    ctx.beginPath();
-                    ctx.arc(nd.x, nd.y, nd.r, 0, Math.PI * 2);
-                    ctx.fillStyle = nodeColors[i % 2];
-                    ctx.globalAlpha = isDark ? 0.8 : 0.6;
-                    ctx.fill();
-                    ctx.globalAlpha = 1;
+                    var speed = Math.sqrt(nd.vx*nd.vx + nd.vy*nd.vy);
+                    if (speed > 2) { nd.vx = (nd.vx/speed)*2; nd.vy = (nd.vy/speed)*2; }
+                    ctx.beginPath(); ctx.arc(nd.x, nd.y, nd.r, 0, Math.PI * 2);
+                    ctx.fillStyle = nodeColors[i % 2]; ctx.globalAlpha = isDark ? 0.8 : 0.6; ctx.fill(); ctx.globalAlpha = 1;
                 }
 
                 for (var a = 0; a < nodes.length; a++) {
                     for (var b = a + 1; b < nodes.length; b++) {
-                        var dx = nodes[a].x - nodes[b].x;
-                        var dy = nodes[a].y - nodes[b].y;
-                        var dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < connectionDist) {
-                            var opacity = (1 - dist / connectionDist) * (isDark ? 0.4 : 0.2);
-                            ctx.beginPath();
-                            ctx.moveTo(nodes[a].x, nodes[a].y);
-                            ctx.lineTo(nodes[b].x, nodes[b].y);
-                            ctx.strokeStyle = 'rgb(' + lineColor + ')';
-                            ctx.globalAlpha = opacity;
-                            ctx.lineWidth = 0.5;
-                            ctx.stroke();
-                            ctx.globalAlpha = 1;
+                        var dx = nodes[a].x - nodes[b].x, dy = nodes[a].y - nodes[b].y, dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 120) {
+                            ctx.beginPath(); ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y);
+                            ctx.strokeStyle = 'rgb(' + lineColor + ')'; ctx.globalAlpha = (1 - dist/120) * (isDark ? 0.4 : 0.2); ctx.lineWidth = 0.5; ctx.stroke(); ctx.globalAlpha = 1;
                         }
                     }
                 }
-
                 requestAnimationFrame(drawNetwork);
             }
 
-            canvas.addEventListener('mousemove', function(e) {
-                var rect = canvas.getBoundingClientRect();
-                mouse.x = e.clientX - rect.left;
-                mouse.y = e.clientY - rect.top;
-            });
-            canvas.addEventListener('mouseleave', function() {
-                mouse.x = null;
-                mouse.y = null;
-            });
+            canvas.addEventListener('mousemove', function(e) { var rect = canvas.getBoundingClientRect(); mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top; });
+            canvas.addEventListener('mouseleave', function() { mouse.x = null; mouse.y = null; });
+            window.addEventListener('resize', function() { resize(); createNodes(); });
 
-            window.addEventListener('resize', function() {
-                resize();
-                createNodes();
-            });
-
-            resize();
-            createNodes();
-            drawNetwork();
+            resize(); createNodes(); drawNetwork();
         })();
 
         (function animateCounters() {
             function animateValue(el, start, end, duration) {
                 var startTime = null;
-                var step = function(timestamp) {
+                function step(timestamp) {
                     if (!startTime) startTime = timestamp;
                     var progress = Math.min((timestamp - startTime) / duration, 1);
                     var eased = 1 - Math.pow(1 - progress, 3);
-                    var currentVal = Math.floor(eased * (end - start) + start);
-                    el.textContent = currentVal.toLocaleString();
+                    el.textContent = Math.floor(eased * (end - start) + start).toLocaleString();
                     if (progress < 1) requestAnimationFrame(step);
-                };
+                }
                 requestAnimationFrame(step);
             }
-
             var observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
@@ -1092,7 +887,6 @@
                     }
                 });
             }, { threshold: 0.3 });
-
             var statEl = document.getElementById('statAnalyses');
             if (statEl) observer.observe(statEl);
         })();
