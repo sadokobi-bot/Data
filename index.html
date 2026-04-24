@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" id="rootHtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -24,17 +25,35 @@
                             400: '#3B82F6',
                             300: '#60A5FA',
                             accent: '#00F0FF',
+                        },
+                        light: {
+                            bg: '#F8FAFC',
+                            card: '#FFFFFF',
+                            border: '#E2E8F0',
+                            text: '#1E293B',
+                            textMuted: '#64748B',
+                            input: '#F1F5F9',
+                            inputBorder: '#CBD5E1',
                         }
                     },
                     animation: {
                         blob: "blob 7s infinite",
+                        blob2: "blob2 10s infinite",
+                        spinSlow: "spin 8s linear infinite",
                     },
                     keyframes: {
                         blob: {
                             "0%": { transform: "translate(0px, 0px) scale(1)" },
-                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                            "33%": { transform: "translate(30px, -50px) scale(1.15)" },
                             "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
                             "100%": { transform: "translate(0px, 0px) scale(1)" }
+                        },
+                        blob2: {
+                            "0%": { transform: "translate(0px, 0px) scale(1.1)" },
+                            "25%": { transform: "translate(-40px, 30px) scale(0.95)" },
+                            "50%": { transform: "translate(20px, -20px) scale(1.05)" },
+                            "75%": { transform: "translate(30px, 40px) scale(1)" },
+                            "100%": { transform: "translate(0px, 0px) scale(1.1)" }
                         }
                     }
                 }
@@ -49,6 +68,7 @@
     <script src="https://npmcdn.com/flatpickr/dist/l10n/he.js"></script>
 
     <style>
+        /* === אנימציות בסיסיות === */
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); } 50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.7); } }
@@ -60,11 +80,40 @@
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
         @keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* === אנימציות כפתור מתקדמות === */
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 0.6; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        @keyframes shockwave {
+            0% { transform: scale(1); }
+            15% { transform: scale(0.92); }
+            30% { transform: scale(1.08); }
+            50% { transform: scale(0.97); }
+            70% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        @keyframes particleBurst {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+        @keyframes btnGlowPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.5), 0 0 60px rgba(0, 240, 255, 0.2), 0 0 80px rgba(0, 240, 255, 0.1); }
+        }
+        @keyframes energyFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .animateFadeInUp { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animateSlideDown { animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animatePulseGlow { animation: pulseGlow 2.5s ease-in-out infinite; }
         .animateFloat { animation: float 3s ease-in-out infinite; }
         .animateCountUp { animation: countUp 0.6s ease-out forwards; }
+        .animateShockwave { animation: shockwave 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+        .animateBtnGlowPulse { animation: btnGlowPulse 2s ease-in-out infinite; }
         
         .animate-bar { transform-origin: bottom; animation: bounceBar ease-in-out infinite; }
         .bar-1 { animation-duration: 0.8s; }
@@ -72,10 +121,31 @@
         .bar-3 { animation-duration: 0.9s; }
         .bar-4 { animation-duration: 1.1s; }
 
+        /* === סקרולבר === */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A1222; }
         ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 10px; }
+        
+        /* סקרולבר ללייט מוד */
+        .dark ::-webkit-scrollbar-track { background: #0A1222; }
+        .dark ::-webkit-scrollbar-thumb { background: #1E3A5F; }
+        :not(.dark) ::-webkit-scrollbar-track { background: #F1F5F9; }
+        :not(.dark) ::-webkit-scrollbar-thumb { background: #CBD5E1; }
 
+        /* === תבנית רקע - רשת עדינה === */
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .light .bg-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+        }
+
+        /* === עיצוב לוח שנה (Flatpickr) === */
         .flatpickr-calendar {
             background: rgba(10, 18, 34, 0.95) !important;
             backdrop-filter: blur(16px);
@@ -119,114 +189,216 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* טיקר נגלל */
-        .ticker-wrap {
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .ticker-content {
-            display: inline-block;
-            animation: tickerScroll 30s linear infinite;
-        }
-        .ticker-content:hover {
-            animation-play-state: paused;
+        /* === מעבר חלק בין מצבים === */
+        .theme-transition,
+        .theme-transition *,
+        .theme-transition *:before,
+        .theme-transition *:after {
+            transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* קנבס לרשת הנתונים */
-        #networkCanvas {
-            border-radius: 16px;
+        /* === כפתור טוגל אור === */
+        .toggle-track {
+            width: 56px;
+            height: 30px;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.4s ease;
         }
+        .dark .toggle-track { background: linear-gradient(135deg, #1E293B, #334155); }
+        :not(.dark) .toggle-track { background: linear-gradient(135deg, #3B82F6, #00F0FF); }
+        
+        .toggle-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .dark .toggle-thumb { right: 3px; background: #94A3B8; }
+        :not(.dark) .toggle-thumb { left: 3px; background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+        /* === סגנונות כפתור נוספים === */
+        .energy-btn {
+            background-size: 200% 200%;
+            animation: energyFlow 3s ease infinite;
+        }
+        
+        /* Particles container */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleBurst 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* === סגנונות לייט מוד === */
+        .light .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .light .ticker-wrap { color: #1E293B; }
     </style>
 </head>
-<body class="bg-finance-900 text-slate-200 font-sans min-h-screen overflow-x-hidden flex flex-col">
+<body class="bg-light-bg dark:bg-finance-900 text-light-text dark:text-slate-200 font-sans min-h-screen overflow-x-hidden flex flex-col theme-transition">
     
+    <!-- === רקע מורחב ומשופר === -->
+    <!-- שכבה 1: בלובים גדולים -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-0 -left-10 w-96 h-96 bg-finance-500/20 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-blob"></div>
-        <div class="absolute top-20 -right-10 w-96 h-96 bg-finance-accent/20 rounded-full mix-blend-screen filter blur-[80px] opacity-70 animate-blob" style="animation-delay: 2s;"></div>
-        <div class="absolute -bottom-20 left-40 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-[80px] opacity-60 animate-blob" style="animation-delay: 4s;"></div>
+        <!-- בלוב כחול עליון שמאל -->
+        <div class="absolute top-0 -left-20 w-[500px] h-[500px] bg-finance-500/25 dark:bg-finance-500/20 rounded-full mix-blend-screen dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob"></div>
+        <!-- בלוב ציאן עליון ימין -->
+        <div class="absolute top-20 -right-20 w-[500px] h-[500px] bg-finance-accent/20 dark:bg-finance-accent/15 rounded-full mix-blend-screen dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob2"></div>
+        <!-- בלוב סגול תחתון -->
+        <div class="absolute -bottom-32 left-40 w-[450px] h-[450px] bg-purple-500/20 dark:bg-purple-500/15 rounded-full mix-blend-screen dark:mix-blend-screen filter blur-[100px] opacity-60 animate-blob" style="animation-delay: 4s;"></div>
+        <!-- בלוב כתום/זהוב קטן -->
+        <div class="absolute top-1/2 right-1/4 w-64 h-64 bg-amber-500/15 dark:bg-amber-500/10 rounded-full mix-blend-screen dark:mix-blend-screen filter blur-[80px] opacity-40 animate-blob2" style="animation-delay: 1s;"></div>
+        <!-- בלוב ורוד קטן -->
+        <div class="absolute top-1/3 left-1/3 w-48 h-48 bg-rose-500/15 dark:bg-rose-500/10 rounded-full mix-blend-screen dark:mix-blend-screen filter blur-[60px] opacity-30 animate-blob" style="animation-delay: 3s;"></div>
     </div>
 
-    <div class="relative z-10 max-w-5xl mx-auto px-4 py-12 flex-1 flex flex-col">
+    <!-- שכבה 2: תבנית רשת -->
+    <div class="fixed inset-0 pointer-events-none bg-grid-pattern"></div>
 
+    <!-- שכבה 3: גרדיאנט גלובלי -->
+    <div class="fixed inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-black/20 dark:to-black/40"></div>
+
+    <!-- שכבה 4: נקודות אור צפות (בדארק מוד בלבד) -->
+    <div id="floatingDots" class="fixed inset-0 pointer-events-none hidden dark:block">
+        <div class="absolute top-1/4 left-1/4 w-1 h-1 bg-finance-accent/60 rounded-full animateFloat" style="animation-delay: 0s;"></div>
+        <div class="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-finance-400/40 rounded-full animateFloat" style="animation-delay: 1s;"></div>
+        <div class="absolute top-2/3 left-1/2 w-1 h-1 bg-purple-400/50 rounded-full animateFloat" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/6 right-1/4 w-2 h-2 bg-emerald-400/30 rounded-full animateFloat" style="animation-delay: 0.5s;"></div>
+        <div class="absolute bottom-1/4 right-1/3 w-1 h-1 bg-amber-400/40 rounded-full animateFloat" style="animation-delay: 1.5s;"></div>
+        <div class="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-rose-400/30 rounded-full animateFloat" style="animation-delay: 3s;"></div>
+        <div class="absolute bottom-1/3 left-1/3 w-1 h-1 bg-finance-accent/50 rounded-full animateFloat" style="animation-delay: 2.5s;"></div>
+    </div>
+
+    <!-- תוכן ראשי -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 py-8 flex-1 flex flex-col">
+
+        <!-- === כותרת עליונה עם כפתור מעבר אור === -->
         <header class="text-center mb-10 animateFadeInUp">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-finance-800/80 border border-finance-500/30 mb-6 shadow-2xl">
-                <svg class="w-10 h-10 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <!-- שורת כותרת + טוגל -->
+            <div class="flex justify-between items-start mb-6">
+                <!-- צד ימין - לוגו -->
+                <div class="flex items-center gap-4">
+                    <div class="w-20 h-20 rounded-3xl bg-light-input dark:bg-finance-800/80 border border-light-border dark:border-finance-500/30 shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-105">
+                        <svg class="w-10 h-10 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                </div>
+                
+                <!-- צד שמאל - כפתור מעבר אור/חושך -->
+                <div class="flex items-center gap-3">
+                    <!-- אייקון שמש/ירח -->
+                    <svg id="moonIcon" class="w-5 h-5 text-light-textMuted dark:text-slate-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
+                    
+                    <div id="themeToggle" class="toggle-track flex items-center" role="button" tabindex="0" aria-label="החלף מצב תצוגה">
+                        <div class="toggle-thumb flex items-center justify-center">
+                            <!-- אייקון ירח בפנים (במצב חושך) -->
+                            <svg id="toggleMoon" class="w-3 h-3 text-finance-800 hidden dark:block" fill="currentColor" viewBox="0 0 24 24"><path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
+                            <!-- אייקון שמש בפנים (במצב אור) -->
+                            <svg id="toggleSun" class="w-3 h-3 text-amber-500 block dark:hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zm11.394-5.834a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg>
+                        </div>
+                    </div>
+                    
+                    <svg id="sunIcon" class="w-5 h-5 text-light-textMuted dark:text-slate-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zm11.394-5.834a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg>
+                </div>
             </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">שלום, ברוך הבא</h1>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto">מערכת הניתוח מוכנה. הזן את המניות המבוקשות לקבלת דוח נתונים כרונולוגי מאוחד.</p>
+
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-light-text dark:text-white tracking-tight mb-4">שלום, ברוך הבא</h1>
+            <p class="text-light-textMuted dark:text-slate-400 text-lg max-w-2xl mx-auto">מערכת הניתוח מוכנה. הזן את המניות המבוקשות לקבלת דוח נתונים כרונולוגי מאוחד.</p>
         </header>
 
-        <!-- אינדיקטורים של מדדים -->
+        <!-- === אינדיקטורים של מדדים === -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animateFadeInUp" style="animation-delay: 0.1s;">
             <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,240,255,0.15)] hover:border-finance-accent/40 cursor-default">
-                <div><p class="text-slate-500 text-xs font-bold">S&P 500</p><p class="text-white font-mono text-xl">5,234.1</p></div>
+                <div><p class="text-light-textMuted dark:text-slate-500 text-xs font-bold">S&P 500</p><p class="text-light-text dark:text-white font-mono text-xl">5,234.1</p></div>
                 <div class="text-emerald-400 text-sm font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">+1.1%</div>
             </div>
             <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,240,255,0.15)] hover:border-finance-accent/40 cursor-default">
-                <div><p class="text-slate-500 text-xs font-bold">NASDAQ</p><p class="text-white font-mono text-xl">16,396.8</p></div>
+                <div><p class="text-light-textMuted dark:text-slate-500 text-xs font-bold">NASDAQ</p><p class="text-light-text dark:text-white font-mono text-xl">16,396.8</p></div>
                 <div class="text-emerald-400 text-sm font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">+0.8%</div>
             </div>
             <div class="glass-panel p-4 rounded-2xl flex justify-between items-center shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,240,255,0.15)] hover:border-finance-accent/40 cursor-default">
-                <div><p class="text-slate-500 text-xs font-bold">ת"א 35</p><p class="text-white font-mono text-xl">2,031.5</p></div>
+                <div><p class="text-light-textMuted dark:text-slate-500 text-xs font-bold">ת"א 35</p><p class="text-light-text dark:text-white font-mono text-xl">2,031.5</p></div>
                 <div class="text-red-400 text-sm font-bold bg-red-500/10 px-2 py-1 rounded-lg">-0.2%</div>
             </div>
         </div>
 
-        <!-- טופס ראשי -->
+        <!-- === טופס ראשי === -->
         <main id="formSection" class="animateFadeInUp" style="animation-delay: 0.2s;">
             <form id="stockForm" class="glass-panel rounded-3xl p-6 sm:p-10 space-y-8 shadow-2xl relative overflow-visible">
                 
                 <div class="relative">
-                    <label for="symbols" class="block text-sm font-bold text-slate-300 mb-2">סימולי מניות</label>
-                    <input type="text" id="symbols" name="symbols" placeholder="AAPL, TSLA, MSFT..." required class="w-full px-6 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-finance-accent/50 font-mono tracking-widest transition-all">
+                    <label for="symbols" class="block text-sm font-bold text-light-text dark:text-slate-300 mb-2">סימולי מניות</label>
+                    <input type="text" id="symbols" name="symbols" placeholder="AAPL, TSLA, MSFT..." required class="w-full px-6 py-4 bg-light-input dark:bg-finance-900/50 border border-light-inputBorder dark:border-slate-700/50 rounded-2xl text-light-text dark:text-white placeholder-light-textMuted dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-finance-accent/50 dark:focus:ring-finance-accent/50 focus:border-finance-accent font-mono tracking-widest transition-all">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div class="relative group">
-                        <label class="block text-sm font-bold text-slate-300 mb-2">תאריך התחלה</label>
-                        <div class="absolute left-4 bottom-4 text-slate-500 group-hover:text-finance-accent transition-colors z-10 pointer-events-none"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg></div>
-                        <input type="text" id="startDate" name="startDate" required class="w-full pl-12 pr-4 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white cursor-pointer focus:outline-none focus:border-finance-accent">
+                        <label class="block text-sm font-bold text-light-text dark:text-slate-300 mb-2">תאריך התחלה</label>
+                        <div class="absolute left-4 bottom-4 text-light-textMuted dark:text-slate-500 group-hover:text-finance-accent transition-colors z-10 pointer-events-none"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg></div>
+                        <input type="text" id="startDate" name="startDate" required class="w-full pl-12 pr-4 py-4 bg-light-input dark:bg-finance-900/50 border border-light-inputBorder dark:border-slate-700/50 rounded-2xl text-light-text dark:text-white placeholder-light-textMuted dark:placeholder-slate-500 cursor-pointer focus:outline-none focus:border-finance-accent">
                     </div>
                     <div class="relative group">
-                        <label class="block text-sm font-bold text-slate-300 mb-2">תאריך סיום</label>
-                        <div class="absolute left-4 bottom-4 text-slate-500 group-hover:text-finance-accent transition-colors z-10 pointer-events-none"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg></div>
-                        <input type="text" id="endDate" name="endDate" required class="w-full pl-12 pr-4 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white cursor-pointer focus:outline-none focus:border-finance-accent">
+                        <label class="block text-sm font-bold text-light-text dark:text-slate-300 mb-2">תאריך סיום</label>
+                        <div class="absolute left-4 bottom-4 text-light-textMuted dark:text-slate-500 group-hover:text-finance-accent transition-colors z-10 pointer-events-none"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg></div>
+                        <input type="text" id="endDate" name="endDate" required class="w-full pl-12 pr-4 py-4 bg-light-input dark:bg-finance-900/50 border border-light-inputBorder dark:border-slate-700/50 rounded-2xl text-light-text dark:text-white placeholder-light-textMuted dark:placeholder-slate-500 cursor-pointer focus:outline-none focus:border-finance-accent">
                     </div>
                     <div class="relative">
-                        <label class="block text-sm font-bold text-slate-300 mb-2">תדירות</label>
+                        <label class="block text-sm font-bold text-light-text dark:text-slate-300 mb-2">תדירות</label>
                         <input type="hidden" id="frequency" value="1d">
-                        <div id="customSelectBtn" class="w-full px-5 py-4 bg-finance-900/50 border border-slate-700/50 rounded-2xl text-white flex justify-between items-center cursor-pointer hover:border-finance-accent transition-all">
+                        <div id="customSelectBtn" class="w-full px-5 py-4 bg-light-input dark:bg-finance-900/50 border border-light-inputBorder dark:border-slate-700/50 rounded-2xl text-light-text dark:text-white flex justify-between items-center cursor-pointer hover:border-finance-accent transition-all">
                             <span id="customSelectText">יומי (Daily)</span>
-                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2"/></svg>
+                            <svg class="w-5 h-5 text-light-textMuted dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2"/></svg>
                         </div>
-                        <div id="customSelectList" class="absolute left-0 right-0 mt-2 bg-finance-800 border border-white/10 rounded-2xl shadow-2xl hidden z-50">
-                            <div class="p-4 hover:bg-finance-700 cursor-pointer rounded-t-2xl custom-option" data-value="1d">יומי (Daily)</div>
-                            <div class="p-4 hover:bg-finance-700 cursor-pointer custom-option" data-value="1wk">שבועי (Weekly)</div>
-                            <div class="p-4 hover:bg-finance-700 cursor-pointer rounded-b-2xl custom-option" data-value="1mo">חודשי (Monthly)</div>
+                        <div id="customSelectList" class="absolute left-0 right-0 mt-2 bg-white dark:bg-finance-800 border border-light-border dark:border-white/10 rounded-2xl shadow-2xl hidden z-50 text-light-text dark:text-white">
+                            <div class="p-4 hover:bg-finance-700 hover:text-white dark:hover:bg-finance-700 cursor-pointer rounded-t-2xl custom-option" data-value="1d">יומי (Daily)</div>
+                            <div class="p-4 hover:bg-finance-700 hover:text-white dark:hover:bg-finance-700 cursor-pointer custom-option" data-value="1wk">שבועי (Weekly)</div>
+                            <div class="p-4 hover:bg-finance-700 hover:text-white dark:hover:bg-finance-700 cursor-pointer rounded-b-2xl custom-option" data-value="1mo">חודשי (Monthly)</div>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" id="submitBtn" class="w-full py-5 bg-gradient-to-r from-finance-400 to-finance-accent text-finance-900 font-black text-xl rounded-2xl shadow-lg hover:shadow-finance-accent/30 transition-all transform hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-3">
-                    <svg id="submitIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
-                    <svg id="loadingSpinner" class="hidden w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <span>הפק ניתוח שוק</span>
-                </button>
+                <!-- === כפתור שליחה משופר עם אנימציה === -->
+                <div class="relative" id="submitWrapper">
+                    <button type="submit" id="submitBtn" class="energy-btn relative overflow-hidden w-full py-5 bg-gradient-to-r from-finance-400 via-finance-accent to-finance-400 text-finance-900 font-black text-xl rounded-2xl shadow-lg hover:shadow-finance-accent/30 transition-all duration-300 transform hover:-translate-y-1 active:scale-[0.98] flex justify-center items-center gap-3 animateBtnGlowPulse z-10">
+                        <!-- שכבת זוהר פנימית -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <!-- שכבת חלקיקים (מיוצרים דינמית) -->
+                        <div id="particleContainer" class="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl"></div>
+                        
+                        <!-- תוכן הכפתור -->
+                        <svg id="submitIcon" class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+                        <svg id="loadingSpinner" class="hidden w-6 h-6 animate-spin relative z-10" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <span class="relative z-10">הפק ניתוח שוק</span>
+                    </button>
+                </div>
             </form>
 
             <div id="errorSection" class="hidden mt-6">
-                <div class="bg-red-900/30 border border-red-500/50 rounded-2xl p-5 text-red-200 flex items-center gap-4">
+                <div class="bg-red-900/30 dark:bg-red-900/30 border border-red-500/50 rounded-2xl p-5 text-red-200 flex items-center gap-4">
                     <svg class="w-6 h-6 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
                     <p id="errorMessage" class="font-medium text-lg"></p>
                 </div>
             </div>
         </main>
 
-        <!-- אזור הצלחה -->
+        <!-- === אזור הצלחה === -->
         <section id="successSection" class="hidden animateFadeInUp mt-8 space-y-6">
             <div class="glass-panel rounded-3xl p-8 overflow-hidden shadow-2xl">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-                    <h3 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <h3 class="text-2xl font-bold text-light-text dark:text-white flex items-center gap-3">
                         <div class="bg-finance-accent/20 p-2 rounded-xl"><svg class="w-6 h-6 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
                         תצוגה מקדימה (5 שורות ראשונות)
                     </h3>
@@ -236,15 +408,15 @@
                     </a>
                 </div>
                 
-                <div class="overflow-x-auto rounded-xl border border-white/5">
-                    <table class="w-full text-right bg-black/20">
-                        <thead id="previewThead" class="bg-white/5 text-slate-400 text-xs font-mono"></thead>
-                        <tbody id="previewTbody" class="text-white text-sm font-mono"></tbody>
+                <div class="overflow-x-auto rounded-xl border border-light-border dark:border-white/5">
+                    <table class="w-full text-right bg-black/5 dark:bg-black/20">
+                        <thead id="previewThead" class="bg-light-input dark:bg-white/5 text-light-textMuted dark:text-slate-400 text-xs font-mono"></thead>
+                        <tbody id="previewTbody" class="text-light-text dark:text-white text-sm font-mono"></tbody>
                     </table>
                 </div>
                 
-                <div class="mt-8 pt-8 border-t border-white/5 text-center">
-                    <button id="resetBtn" class="text-slate-500 hover:text-white flex items-center gap-2 mx-auto font-bold transition-colors">
+                <div class="mt-8 pt-8 border-t border-light-border dark:border-white/5 text-center">
+                    <button id="resetBtn" class="text-light-textMuted dark:text-slate-500 hover:text-light-text dark:hover:text-white flex items-center gap-2 mx-auto font-bold transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                         ניתוח חדש
                     </button>
@@ -252,51 +424,49 @@
             </div>
         </section>
 
-        <!-- ========================================== -->
-        <!-- תוכן חדש למטה - חיבור לרשת נתונים -->
-        <!-- ========================================== -->
+        <!-- === תוכן תחתון === -->
         <div id="bottomContent" class="mt-16 space-y-8">
 
-            <!-- טיקר נגלל של מניות -->
+            <!-- טיקר נגלל -->
             <div class="glass-panel rounded-2xl p-1 animateFadeInUp" style="animation-delay: 0.5s;">
                 <div class="ticker-wrap py-3">
                     <div class="ticker-content text-sm font-mono">
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">AAPL</span><span class="text-white">$198.11</span><span class="text-emerald-400">+2.34%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">TSLA</span><span class="text-white">$177.48</span><span class="text-red-400">-1.12%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">MSFT</span><span class="text-white">$425.53</span><span class="text-emerald-400">+0.87%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">GOOGL</span><span class="text-white">$155.89</span><span class="text-emerald-400">+1.56%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">AMZN</span><span class="text-white">$186.49</span><span class="text-emerald-400">+3.21%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">NVDA</span><span class="text-white">$875.28</span><span class="text-emerald-400">+4.78%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">META</span><span class="text-white">$505.75</span><span class="text-red-400">-0.45%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">JPM</span><span class="text-white">$198.32</span><span class="text-emerald-400">+0.93%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">V</span><span class="text-white">$279.14</span><span class="text-emerald-400">+0.62%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">WMT</span><span class="text-white">$59.87</span><span class="text-red-400">-0.31%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">JNJ</span><span class="text-white">$156.74</span><span class="text-emerald-400">+0.18%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">PG</span><span class="text-white">$162.35</span><span class="text-emerald-400">+0.44%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">AAPL</span><span class="text-light-text dark:text-white">$198.11</span><span class="text-emerald-400">+2.34%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">TSLA</span><span class="text-light-text dark:text-white">$177.48</span><span class="text-red-400">-1.12%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">MSFT</span><span class="text-light-text dark:text-white">$425.53</span><span class="text-emerald-400">+0.87%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">GOOGL</span><span class="text-light-text dark:text-white">$155.89</span><span class="text-emerald-400">+1.56%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">AMZN</span><span class="text-light-text dark:text-white">$186.49</span><span class="text-emerald-400">+3.21%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">NVDA</span><span class="text-light-text dark:text-white">$875.28</span><span class="text-emerald-400">+4.78%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">META</span><span class="text-light-text dark:text-white">$505.75</span><span class="text-red-400">-0.45%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">JPM</span><span class="text-light-text dark:text-white">$198.32</span><span class="text-emerald-400">+0.93%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">V</span><span class="text-light-text dark:text-white">$279.14</span><span class="text-emerald-400">+0.62%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">WMT</span><span class="text-light-text dark:text-white">$59.87</span><span class="text-red-400">-0.31%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">JNJ</span><span class="text-light-text dark:text-white">$156.74</span><span class="text-emerald-400">+0.18%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">PG</span><span class="text-light-text dark:text-white">$162.35</span><span class="text-emerald-400">+0.44%</span></span>
                         <!-- עותק נוסף למעבר חלק -->
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">AAPL</span><span class="text-white">$198.11</span><span class="text-emerald-400">+2.34%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">TSLA</span><span class="text-white">$177.48</span><span class="text-red-400">-1.12%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">MSFT</span><span class="text-white">$425.53</span><span class="text-emerald-400">+0.87%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">GOOGL</span><span class="text-white">$155.89</span><span class="text-emerald-400">+1.56%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">AMZN</span><span class="text-white">$186.49</span><span class="text-emerald-400">+3.21%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">NVDA</span><span class="text-white">$875.28</span><span class="text-emerald-400">+4.78%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">META</span><span class="text-white">$505.75</span><span class="text-red-400">-0.45%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">JPM</span><span class="text-white">$198.32</span><span class="text-emerald-400">+0.93%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">V</span><span class="text-white">$279.14</span><span class="text-emerald-400">+0.62%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">WMT</span><span class="text-white">$59.87</span><span class="text-red-400">-0.31%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">JNJ</span><span class="text-white">$156.74</span><span class="text-emerald-400">+0.18%</span></span>
-                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-slate-400">PG</span><span class="text-white">$162.35</span><span class="text-emerald-400">+0.44%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">AAPL</span><span class="text-light-text dark:text-white">$198.11</span><span class="text-emerald-400">+2.34%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">TSLA</span><span class="text-light-text dark:text-white">$177.48</span><span class="text-red-400">-1.12%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">MSFT</span><span class="text-light-text dark:text-white">$425.53</span><span class="text-emerald-400">+0.87%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">GOOGL</span><span class="text-light-text dark:text-white">$155.89</span><span class="text-emerald-400">+1.56%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">AMZN</span><span class="text-light-text dark:text-white">$186.49</span><span class="text-emerald-400">+3.21%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">NVDA</span><span class="text-light-text dark:text-white">$875.28</span><span class="text-emerald-400">+4.78%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">META</span><span class="text-light-text dark:text-white">$505.75</span><span class="text-red-400">-0.45%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">JPM</span><span class="text-light-text dark:text-white">$198.32</span><span class="text-emerald-400">+0.93%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">V</span><span class="text-light-text dark:text-white">$279.14</span><span class="text-emerald-400">+0.62%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">WMT</span><span class="text-light-text dark:text-white">$59.87</span><span class="text-red-400">-0.31%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">JNJ</span><span class="text-light-text dark:text-white">$156.74</span><span class="text-emerald-400">+0.18%</span></span>
+                        <span class="inline-flex items-center gap-1 mx-4"><span class="text-light-textMuted dark:text-slate-400">PG</span><span class="text-light-text dark:text-white">$162.35</span><span class="text-emerald-400">+0.44%</span></span>
                     </div>
                 </div>
             </div>
 
-            <!-- קנבס אינטראקטיבי - רשת נתונים -->
+            <!-- קנבס אינטראקטיבי -->
             <div class="animateFadeInUp" style="animation-delay: 0.6s;">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-2 h-2 rounded-full bg-finance-accent animate-pulse"></div>
-                    <h3 class="text-lg font-bold text-white">חיבור לרשת נתונים גלובלית</h3>
+                    <h3 class="text-lg font-bold text-light-text dark:text-white">חיבור לרשת נתונים גלובלית</h3>
                 </div>
-                <canvas id="networkCanvas" class="w-full h-64 border border-white/10 cursor-crosshair"></canvas>
+                <canvas id="networkCanvas" class="w-full h-64 border border-light-border dark:border-white/10 rounded-2xl cursor-crosshair"></canvas>
             </div>
 
             <!-- כרטיסי יכולות -->
@@ -305,47 +475,47 @@
                     <div class="w-12 h-12 rounded-xl bg-finance-accent/10 flex items-center justify-center mb-4 group-hover:bg-finance-accent/20 transition-colors">
                         <svg class="w-6 h-6 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     </div>
-                    <h4 class="text-white font-bold mb-2">ניתוח מהיר</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">עיבוד נתונים בזמן אמת עם אלגוריתמים מתקדמים לניתוח מגמות שוק.</p>
+                    <h4 class="text-light-text dark:text-white font-bold mb-2">ניתוח מהיר</h4>
+                    <p class="text-light-textMuted dark:text-slate-400 text-sm leading-relaxed">עיבוד נתונים בזמן אמת עם אלגוריתמים מתקדמים לניתוח מגמות שוק.</p>
                 </div>
                 <div class="glass-panel p-6 rounded-2xl transition-all duration-300 hover:border-finance-accent/30 hover:shadow-lg group cursor-default">
                     <div class="w-12 h-12 rounded-xl bg-finance-accent/10 flex items-center justify-center mb-4 group-hover:bg-finance-accent/20 transition-colors">
                         <svg class="w-6 h-6 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     </div>
-                    <h4 class="text-white font-bold mb-2">דוחות מפורטים</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">ייצוא אוטומטי לגיליונות נתונים עם תצוגה מקדימה של המידע החשוב.</p>
+                    <h4 class="text-light-text dark:text-white font-bold mb-2">דוחות מפורטים</h4>
+                    <p class="text-light-textMuted dark:text-slate-400 text-sm leading-relaxed">ייצוא אוטומטי לגיליונות נתונים עם תצוגה מקדימה של המידע החשוב.</p>
                 </div>
                 <div class="glass-panel p-6 rounded-2xl transition-all duration-300 hover:border-finance-accent/30 hover:shadow-lg group cursor-default">
                     <div class="w-12 h-12 rounded-xl bg-finance-accent/10 flex items-center justify-center mb-4 group-hover:bg-finance-accent/20 transition-colors">
                         <svg class="w-6 h-6 text-finance-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </div>
-                    <h4 class="text-white font-bold mb-2">אבטחה מתקדמת</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">הצפנה מקצה לקצה ושמירה על פרטיות מלאה של כל הנתונים שלך.</p>
+                    <h4 class="text-light-text dark:text-white font-bold mb-2">אבטחה מתקדמת</h4>
+                    <p class="text-light-textMuted dark:text-slate-400 text-sm leading-relaxed">הצפנה מקצה לקצה ושמירה על פרטיות מלאה של כל הנתונים שלך.</p>
                 </div>
             </div>
 
-            <!-- סטטיסטיקות חיות -->
+            <!-- סטטיסטיקות -->
             <div class="glass-panel rounded-2xl p-6 animateFadeInUp" style="animation-delay: 0.8s;">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-bold text-white">סטטיסטיקות מערכת</h3>
-                    <span class="text-xs text-slate-500 font-mono">מעודכן בזמן אמת</span>
+                    <h3 class="text-lg font-bold text-light-text dark:text-white">סטטיסטיקות מערכת</h3>
+                    <span class="text-xs text-light-textMuted dark:text-slate-500 font-mono">מעודכן בזמן אמת</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <div class="text-center">
                         <p class="text-3xl font-black text-finance-accent font-mono" id="statAnalyses">0</p>
-                        <p class="text-xs text-slate-500 mt-1">ניתוחים הושלמו</p>
+                        <p class="text-xs text-light-textMuted dark:text-slate-500 mt-1">ניתוחים הושלמו</p>
                     </div>
                     <div class="text-center">
                         <p class="text-3xl font-black text-emerald-400 font-mono" id="statTickers">0</p>
-                        <p class="text-xs text-slate-500 mt-1">מניות נותחו</p>
+                        <p class="text-xs text-light-textMuted dark:text-slate-500 mt-1">מניות נותחו</p>
                     </div>
                     <div class="text-center">
                         <p class="text-3xl font-black text-blue-400 font-mono" id="statData">0</p>
-                        <p class="text-xs text-slate-500 mt-1">נקודות נתונים</p>
+                        <p class="text-xs text-light-textMuted dark:text-slate-500 mt-1">נקודות נתונים</p>
                     </div>
                     <div class="text-center">
                         <p class="text-3xl font-black text-purple-400 font-mono" id="statUptime">99.9%</p>
-                        <p class="text-xs text-slate-500 mt-1">זמינות מערכת</p>
+                        <p class="text-xs text-light-textMuted dark:text-slate-500 mt-1">זמינות מערכת</p>
                     </div>
                 </div>
             </div>
@@ -354,14 +524,14 @@
 
         <!-- שורת סטטוס תחתונה -->
         <div id="systemStatus" class="mt-8 mb-4 flex justify-center animateFadeInUp" style="animation-delay: 0.9s;">
-            <div class="flex items-center gap-4 bg-finance-800/40 backdrop-blur-md border border-white/5 rounded-full px-6 py-3 shadow-[0_0_15px_rgba(0,0,0,0.3)]">
+            <div class="flex items-center gap-4 bg-finance-800/40 dark:bg-finance-800/40 bg-white/60 dark:bg-finance-800/40 backdrop-blur-md border border-light-border dark:border-white/5 rounded-full px-6 py-3 shadow-[0_0_15px_rgba(0,0,0,0.3)]">
                 
                 <div class="relative flex h-3 w-3">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </div>
                 
-                <span class="text-slate-400 text-sm font-medium tracking-wide">חיבור מאובטח לשרתי נתונים העולמיים פעיל</span>
+                <span class="text-light-textMuted dark:text-slate-400 text-sm font-medium tracking-wide">חיבור מאובטח לשרתי נתונים העולמיים פעיל</span>
                 
                 <div class="flex items-end gap-1 h-4 w-6">
                     <div class="w-1 bg-finance-accent rounded-full animate-bar bar-1"></div>
@@ -376,9 +546,56 @@
 
     <script>
         // ============================================
-        // כתובת הסקריפט של Google Apps Script
+        // כתובת הסקריפט
         // ============================================
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwH0143gyxYlyGhxRAhMpQgzuEGPuYH_SKMGF1NGxbcEUxTeVlYjvK5zbEDbgQq3HRGzA/exec';
+
+        // ============================================
+        // ניהול מצב תאורה (אור/חושך)
+        // ============================================
+        (function initTheme() {
+            const html = document.documentElement;
+            const toggle = document.getElementById('themeToggle');
+            
+            // בדיקה אם יש העדפה שמורה
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                html.classList.remove('dark');
+                html.classList.add('light');
+            } else {
+                // ברירת מחדל - חושך
+                html.classList.add('dark');
+                html.classList.remove('light');
+            }
+
+            function switchTheme() {
+                // הוספת קלאס מעבר חלק
+                document.body.classList.add('theme-transition');
+                
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.add('dark');
+                    html.classList.remove('light');
+                    localStorage.setItem('theme', 'dark');
+                }
+                
+                // הסרת קלאס מעבר לאחר האנימציה
+                setTimeout(() => {
+                    document.body.classList.remove('theme-transition');
+                }, 600);
+            }
+
+            toggle.addEventListener('click', switchTheme);
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    switchTheme();
+                }
+            });
+        })();
 
         // ============================================
         // אתחול תאריכים עם Flatpickr
@@ -406,6 +623,89 @@
             };
         });
         window.onclick = () => selectList.classList.add('hidden');
+
+        // ============================================
+        // אנימציית כפתור מתקדמת
+        // ============================================
+        (function initButtonAnimations() {
+            const submitBtn = document.getElementById('submitBtn');
+            const particleContainer = document.getElementById('particleContainer');
+
+            function createRipple(x, y, btnRect) {
+                const ripple = document.createElement('div');
+                const size = Math.max(btnRect.width, btnRect.height) * 2;
+                const relativeX = x - btnRect.left;
+                const relativeY = y - btnRect.top;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${relativeX - size/2}px;
+                    top: ${relativeY - size/2}px;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out forwards;
+                    pointer-events: none;
+                `;
+                
+                particleContainer.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 700);
+            }
+
+            function createParticles(x, y, btnRect) {
+                const particleCount = 12;
+                const colors = ['#00F0FF', '#3B82F6', '#60A5FA', '#FFFFFF', '#10B981'];
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    const angle = (i / particleCount) * Math.PI * 2;
+                    const velocity = 40 + Math.random() * 60;
+                    const tx = Math.cos(angle) * velocity;
+                    const ty = Math.sin(angle) * velocity;
+                    const size = 3 + Math.random() * 5;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const relativeX = x - btnRect.left;
+                    const relativeY = y - btnRect.top;
+                    
+                    particle.classList.add('particle');
+                    particle.style.cssText = `
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${color};
+                        left: ${relativeX}px;
+                        top: ${relativeY}px;
+                        --tx: ${tx}px;
+                        --ty: ${ty}px;
+                        box-shadow: 0 0 ${size * 2}px ${color};
+                    `;
+                    
+                    particleContainer.appendChild(particle);
+                    setTimeout(() => particle.remove(), 900);
+                }
+            }
+
+            submitBtn.addEventListener('click', function(e) {
+                const rect = submitBtn.getBoundingClientRect();
+                
+                // יצירת אפקט גל
+                createRipple(e.clientX, e.clientY, rect);
+                
+                // יצירת חלקיקים
+                createParticles(e.clientX, e.clientY, rect);
+                
+                // אפקט "הלם" - התכווצות והתרחבות
+                submitBtn.classList.add('animateShockwave');
+                setTimeout(() => submitBtn.classList.remove('animateShockwave'), 700);
+                
+                // הבהוב זוהר
+                submitBtn.style.boxShadow = '0 0 40px rgba(0, 240, 255, 0.8), 0 0 80px rgba(0, 240, 255, 0.4), 0 0 120px rgba(0, 240, 255, 0.2)';
+                setTimeout(() => {
+                    submitBtn.style.boxShadow = '';
+                }, 400);
+            });
+        })();
 
         // ============================================
         // פונקציית הצגת שגיאה
@@ -455,6 +755,9 @@
             submitBtn.disabled = true;
             document.getElementById('submitIcon').classList.add('hidden');
             document.getElementById('loadingSpinner').classList.remove('hidden');
+            
+            // הסרת אנימציית הזוהר בזמן טעינה
+            submitBtn.classList.remove('animateBtnGlowPulse');
 
             try {
                 const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(formData) });
@@ -466,9 +769,9 @@
 
                 if (data.preview && data.preview.length > 0) {
                     let hHtml = '<tr>', bHtml = '';
-                    data.preview[0].forEach(h => hHtml += `<th class="p-4 border-b border-white/5">${h}</th>`);
+                    data.preview[0].forEach(h => hHtml += `<th class="p-4 border-b border-light-border dark:border-white/5">${h}</th>`);
                     data.preview.slice(1).forEach(row => {
-                        bHtml += '<tr class="border-b border-white/5 hover:bg-white/5 transition-colors">';
+                        bHtml += '<tr class="border-b border-light-border dark:border-white/5 hover:bg-white/5 dark:hover:bg-white/5 transition-colors">';
                         row.forEach(cell => bHtml += `<td class="p-4">${typeof cell === 'number' ? cell.toFixed(2) : cell}</td>`);
                         bHtml += '</tr>';
                     });
@@ -489,6 +792,8 @@
                 submitBtn.disabled = false;
                 document.getElementById('submitIcon').classList.remove('hidden');
                 document.getElementById('loadingSpinner').classList.add('hidden');
+                // החזרת אנימציית הזוהר
+                submitBtn.classList.add('animateBtnGlowPulse');
             }
         };
 
@@ -542,6 +847,11 @@
             function drawNetwork() {
                 ctx.clearRect(0, 0, w, h);
 
+                // בדיקת מצב תאורה לצבעים
+                var isDark = document.documentElement.classList.contains('dark');
+                var lineColor = isDark ? '0, 240, 255' : '59, 130, 246';
+                var nodeColors = isDark ? ['#00F0FF', '#3B82F6'] : ['#3B82F6', '#1D4ED8'];
+
                 // עדכון מיקום כל נקודה
                 for (var i = 0; i < nodes.length; i++) {
                     var nd = nodes[i];
@@ -574,8 +884,8 @@
                     // ציור הנקודה
                     ctx.beginPath();
                     ctx.arc(nd.x, nd.y, nd.r, 0, Math.PI * 2);
-                    ctx.fillStyle = nd.color;
-                    ctx.globalAlpha = 0.8;
+                    ctx.fillStyle = nodeColors[i % 2];
+                    ctx.globalAlpha = isDark ? 0.8 : 0.6;
                     ctx.fill();
                     ctx.globalAlpha = 1;
                 }
@@ -588,11 +898,11 @@
                         var dist = Math.sqrt(dx * dx + dy * dy);
 
                         if (dist < connectionDist) {
-                            var opacity = (1 - dist / connectionDist) * 0.4;
+                            var opacity = (1 - dist / connectionDist) * (isDark ? 0.4 : 0.2);
                             ctx.beginPath();
                             ctx.moveTo(nodes[a].x, nodes[a].y);
                             ctx.lineTo(nodes[b].x, nodes[b].y);
-                            ctx.strokeStyle = '#00F0FF';
+                            ctx.strokeStyle = 'rgb(' + lineColor + ')';
                             ctx.globalAlpha = opacity;
                             ctx.lineWidth = 0.5;
                             ctx.stroke();
@@ -634,7 +944,6 @@
                 var step = function(timestamp) {
                     if (!startTime) startTime = timestamp;
                     var progress = Math.min((timestamp - startTime) / duration, 1);
-                    // פונקציית easing
                     var eased = 1 - Math.pow(1 - progress, 3);
                     var currentVal = Math.floor(eased * (end - start) + start);
                     el.textContent = currentVal.toLocaleString();
@@ -645,7 +954,6 @@
                 requestAnimationFrame(step);
             }
 
-            // הפעלת ספירה כשהאלמנט נראה במסך
             var observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
