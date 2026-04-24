@@ -299,8 +299,14 @@
             successSection.classList.add('hidden');
 
             // איסוף הנתונים מהטופס
-            var formData = {
-                symbols: document.getElementById('symbols').value.trim(),
+          var formData = {
+                // 1. שינינו את שם המפתח מ-symbols ל-tickers (כפי שהשרת מצפה)
+                // 2. פיצלנו את המחרוזת למערך של מניות, ניקינו רווחים מיותרים וסיננו תאים ריקים
+                tickers: document.getElementById('symbols').value
+                            .split(',')
+                            .map(function(symbol) { return symbol.trim().toUpperCase(); })
+                            .filter(function(symbol) { return symbol !== ''; }),
+                
                 startDate: document.getElementById('startDate').value,
                 endDate: document.getElementById('endDate').value,
                 frequency: document.getElementById('frequency').value,
