@@ -1,8 +1,890 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Play, CheckCircle2, XCircle, ArrowLeft, RotateCcw, Award, BookOpen, Zap, Target, TrendingUp, Flame, Star, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מבחן מסכם: מבוא למדע הנתונים</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const questions = [
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.1;
+            animation: floatCircle 20s infinite ease-in-out;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: 10%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatCircle {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 70px 50px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .icon-wrapper {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 40px;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+            animation: rotateIcon 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        @keyframes rotateIcon {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(5deg) scale(1.05);
+            }
+        }
+
+        .icon-wrapper svg {
+            width: 70px;
+            height: 70px;
+            fill: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .description {
+            font-size: 1.3em;
+            color: #5a6c7d;
+            margin-bottom: 50px;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.4em;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .start-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
+        }
+
+        .start-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .start-btn span,
+        .start-btn svg {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Quiz Screen */
+        .quiz-screen {
+            display: none;
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #5a6c7d;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: #e8ecf1;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .question-text {
+            font-size: 1.6em;
+            color: #2d3748;
+            margin-bottom: 40px;
+            line-height: 1.7;
+            font-weight: 700;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .option {
+            background: #f8fafc;
+            border: 3px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 25px 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.15em;
+            color: #4a5568;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.15), transparent);
+            transition: right 0.6s;
+        }
+
+        .option:hover:not(.disabled)::before {
+            right: 100%;
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: #667eea;
+            background: #edf2f7;
+            transform: translateX(-8px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            color: #667eea;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .option.correct {
+            border-color: #48bb78;
+            background: linear-gradient(135deg, #48bb7820 0%, #38a16920 100%);
+            color: #2f855a;
+            font-weight: 700;
+            animation: correctPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(72, 187, 120, 0.3);
+        }
+
+        @keyframes correctPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .option.incorrect {
+            border-color: #f56565;
+            background: linear-gradient(135deg, #f5656520 0%, #e53e3e20 100%);
+            color: #c53030;
+            font-weight: 700;
+            animation: shake 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(245, 101, 101, 0.3);
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-12px);
+            }
+            75% {
+                transform: translateX(12px);
+            }
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-icon {
+            width: 35px;
+            height: 35px;
+            display: none;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .option.correct .option-icon,
+        .option.incorrect .option-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-section {
+            border-top: 2px solid #e2e8f0;
+            padding-top: 30px;
+        }
+
+        .check-btn,
+        .next-btn {
+            width: 100%;
+            padding: 25px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .check-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .check-btn:hover:not(:disabled)::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .check-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
+        }
+
+        .check-btn:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            box-shadow: 0 15px 40px rgba(45, 55, 72, 0.3);
+        }
+
+        .next-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .next-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(45, 55, 72, 0.5);
+        }
+
+        .rationale {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-right: 6px solid #667eea;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .rationale-title {
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .rationale-text {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 35px;
+            padding: 70px 50px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .trophy-icon {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #f6e05e 0%, #ed8936 100%);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 40px;
+            animation: bounce 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 25px 70px rgba(246, 224, 94, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trophy-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-40px) scale(1.1);
+            }
+        }
+
+        .trophy-icon svg {
+            width: 100px;
+            height: 100px;
+            fill: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .results-title {
+            font-size: 3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        .score-display {
+            font-size: 5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 40px 0;
+            animation: scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .score-message {
+            font-size: 1.4em;
+            color: #4a5568;
+            margin-bottom: 50px;
+            line-height: 1.7;
+            font-weight: 600;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.4em;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .restart-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .restart-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
+        }
+
+        .restart-btn span,
+        .restart-btn svg {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #f6e05e;
+            position: absolute;
+            animation: confettiFall 3s linear;
+            z-index: 1000;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Streak Counter */
+        .streak-counter {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            font-weight: 800;
+            font-size: 1.4em;
+            z-index: 1000;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .streak-counter.active {
+            display: flex;
+        }
+
+        .streak-fire {
+            font-size: 2em;
+            animation: fireFlicker 0.6s infinite;
+        }
+
+        @keyframes fireFlicker {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .question-text {
+                font-size: 1.3em;
+            }
+            
+            .option {
+                font-size: 1em;
+                padding: 20px 25px;
+            }
+            
+            .score-display {
+                font-size: 3.5em;
+            }
+            
+            .streak-counter {
+                top: 15px;
+                left: 15px;
+                padding: 15px 25px;
+                font-size: 1.1em;
+            }
+            
+            .start-screen,
+            .results-screen {
+                padding: 50px 30px;
+            }
+            
+            .question-card {
+                padding: 35px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+    
+    <div class="streak-counter" id="streakCounter">
+        <span class="streak-fire">🔥</span>
+        <span id="streakCount">0</span>
+    </div>
+
+    <div class="container">
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 6.253V13M12 13V19.747M12 13H18.75C19.3023 13 19.75 12.5523 19.75 12V6.25C19.75 5.69772 19.3023 5.25 18.75 5.25H5.25C4.69772 5.25 4.25 5.69772 4.25 6.25V12C4.25 12.5523 4.69772 13 5.25 13H12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1>מבחן מסכם: מבוא למדע הנתונים</h1>
+            <p class="description">
+                80 שאלות שבודקות את כל מה שחשוב לדעת לקראת הבחינה. כולל Pandas, מודלים של Machine Learning, ויזואליזציה ומדדי הערכה.
+            </p>
+            <button class="start-btn" onclick="startQuiz()">
+                <span>התחל במבחן</span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5V19L19 12L8 5Z" fill="white"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div class="quiz-screen" id="quizScreen">
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span id="questionCounter">שאלה 1 מתוך 80</span>
+                    <span id="scoreDisplay">ציון ביניים: 0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <h2 class="question-text" id="questionText"></h2>
+                
+                <div class="options-container" id="optionsContainer"></div>
+
+                <div class="action-section">
+                    <button class="check-btn" id="checkBtn" onclick="checkAnswer()" disabled>
+                        <span>בדוק תשובה</span>
+                    </button>
+                    
+                    <div id="rationaleSection" style="display: none;">
+                        <div class="rationale">
+                            <div class="rationale-title">💡 הסבר:</div>
+                            <div class="rationale-text" id="rationaleText"></div>
+                        </div>
+                        <button class="next-btn" onclick="nextQuestion()">
+                            <span id="nextBtnText">לשאלה הבאה</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-screen" id="resultsScreen">
+            <div class="trophy-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 22H15M12 15V22M18 9H21M6 9H3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="results-title">תוצאות המבחן</h2>
+            <div class="score-display" id="finalScore"></div>
+            <p class="score-message" id="scoreMessage"></p>
+            <button class="restart-btn" onclick="restartQuiz()">
+                <span>תרגל שוב</span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4V9H4.58152M19.9381 11C19.446 7.05369 16.0796 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9M4.58152 9H9M20 20V15H19.4185M19.4185 15C18.2317 17.9318 15.3574 20 12 20C7.92038 20 4.55399 16.9463 4.06189 13M19.4185 15H15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
   {
     id: 1,
     text: "כיצד נסנן מתוך ה-DataFrame שורות שבהן הגיל (Age) מעל 20 וגם הציון (Score) מתחת ל-90?",
@@ -965,645 +1847,170 @@ const questions = [
   }
 ];
 
-// Confetti component
-function Confetti({ active }) {
-  const canvasRef = useRef(null);
+        let currentQuestionIndex = 0;
+        let selectedOption = null;
+        let isAnswerChecked = false;
+        let score = 0;
+        let streak = 0;
 
-  useEffect(() => {
-    if (!active) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444'];
-
-    for (let i = 0; i < 120; i++) {
-      particles.push({
-        x: canvas.width / 2 + (Math.random() - 0.5) * 200,
-        y: canvas.height / 2,
-        vx: (Math.random() - 0.5) * 20,
-        vy: Math.random() * -18 - 5,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        size: Math.random() * 8 + 3,
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 15,
-        gravity: 0.3 + Math.random() * 0.2,
-        opacity: 1,
-        shape: Math.random() > 0.5 ? 'rect' : 'circle'
-      });
-    }
-
-    let animId;
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let alive = false;
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.vy += p.gravity;
-        p.y += p.vy;
-        p.rotation += p.rotationSpeed;
-        p.opacity -= 0.008;
-        p.vx *= 0.99;
-        if (p.opacity > 0) {
-          alive = true;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate((p.rotation * Math.PI) / 180);
-          ctx.globalAlpha = Math.max(0, p.opacity);
-          ctx.fillStyle = p.color;
-          if (p.shape === 'rect') {
-            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
-          } else {
-            ctx.beginPath();
-            ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
-            ctx.fill();
-          }
-          ctx.restore();
+        function startQuiz() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            loadQuestion();
         }
-      });
-      if (alive) animId = requestAnimationFrame(animate);
-    };
-    animate();
-    return () => cancelAnimationFrame(animId);
-  }, [active]);
 
-  if (!active) return null;
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-50" />;
-}
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            
+            document.getElementById('questionText').textContent = question.text;
+            document.getElementById('questionCounter').textContent = `שאלה ${currentQuestionIndex + 1} מתוך ${questions.length}`;
+            document.getElementById('scoreDisplay').textContent = `ציון ביניים: ${score}`;
+            document.getElementById('progressFill').style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectOption(index);
+                
+                const icon = document.createElement('div');
+                icon.className = 'option-icon';
+                optionDiv.appendChild(icon);
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            document.getElementById('checkBtn').disabled = true;
+            document.getElementById('rationaleSection').style.display = 'none';
+            document.getElementById('checkBtn').style.display = 'block';
+            
+            selectedOption = null;
+            isAnswerChecked = false;
+        }
 
-// Floating particles background
-function FloatingParticles() {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animId;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    const dots = [];
-    for (let i = 0; i < 50; i++) {
-      dots.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 3 + 1,
-        opacity: Math.random() * 0.3 + 0.1
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      dots.forEach((d, i) => {
-        d.x += d.vx;
-        d.y += d.vy;
-        if (d.x < 0 || d.x > canvas.width) d.vx *= -1;
-        if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(139, 92, 246, ${d.opacity})`;
-        ctx.fill();
-
-        // Draw connections
-        dots.forEach((d2, j) => {
-          if (j <= i) return;
-          const dist = Math.hypot(d.x - d2.x, d.y - d2.y);
-          if (dist < 150) {
-            ctx.beginPath();
-            ctx.moveTo(d.x, d.y);
-            ctx.lineTo(d2.x, d2.y);
-            ctx.strokeStyle = `rgba(139, 92, 246, ${0.05 * (1 - dist / 150)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-      });
-      animId = requestAnimationFrame(animate);
-    };
-    animate();
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
-}
-
-// Streak fire animation
-function StreakFire({ streak }) {
-  if (streak < 2) return null;
-  return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
-      className="flex items-center gap-1"
-    >
-      <Flame size={18} className="text-orange-500" />
-      <span className="text-orange-500 font-bold text-sm">{streak}x</span>
-    </motion.div>
-  );
-}
-
-export default function App() {
-  const [started, setStarted] = useState(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isAnswerChecked, setIsAnswerChecked] = useState(false);
-  const [score, setScore] = useState(0);
-  const [showResults, setShowResults] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [streak, setStreak] = useState(0);
-  const [bestStreak, setBestStreak] = useState(0);
-  const [answers, setAnswers] = useState([]);
-  const [shake, setShake] = useState(false);
-  const [direction, setDirection] = useState(1);
-
-  const currentQuestion = questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-
-  const handleStart = () => setStarted(true);
-
-  const handleOptionClick = (index) => {
-    if (!isAnswerChecked) setSelectedOption(index);
-  };
-
-  const handleCheckAnswer = () => {
-    if (selectedOption === null) return;
-    setIsAnswerChecked(true);
-    const isCorrect = selectedOption === currentQuestion.correctIndex;
-    setAnswers(prev => [...prev, { questionId: currentQuestion.id, correct: isCorrect, selected: selectedOption }]);
-    if (isCorrect) {
-      setScore(score + 1);
-      setStreak(prev => {
-        const newStreak = prev + 1;
-        if (newStreak > bestStreak) setBestStreak(newStreak);
-        return newStreak;
-      });
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 2000);
-    } else {
-      setStreak(0);
-      setShake(true);
-      setTimeout(() => setShake(false), 500);
-    }
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setDirection(1);
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedOption(null);
-      setIsAnswerChecked(false);
-    } else {
-      setShowResults(true);
-    }
-  };
-
-  const handleRestart = () => {
-    setStarted(false);
-    setCurrentQuestionIndex(0);
-    setSelectedOption(null);
-    setIsAnswerChecked(false);
-    setScore(0);
-    setShowResults(false);
-    setStreak(0);
-    setBestStreak(0);
-    setAnswers([]);
-  };
-
-  const getScoreMessage = () => {
-    const percentage = (score / questions.length) * 100;
-    if (percentage === 100) return "🏆 מושלם! אתה שולט בחומר ברמה הגבוהה ביותר!";
-    if (percentage >= 85) return "🌟 מצוין! אתה בהחלט מוכן למבחן.";
-    if (percentage >= 70) return "👍 טוב מאוד. חזרה קטנה על ההסברים ותהיה מוכן לגמרי.";
-    if (percentage >= 55) return "📖 ציון עובר, אבל כדאי לעבור שוב על סיכום המושגים.";
-    return "💪 לא נורא, תרגול נוסף יעשה את ההבדל!";
-  };
-
-  const getScoreColor = () => {
-    const percentage = (score / questions.length) * 100;
-    if (percentage >= 85) return 'from-emerald-500 to-green-400';
-    if (percentage >= 70) return 'from-blue-500 to-cyan-400';
-    if (percentage >= 55) return 'from-amber-500 to-yellow-400';
-    return 'from-red-500 to-orange-400';
-  };
-
-  const getScoreEmoji = () => {
-    const percentage = (score / questions.length) * 100;
-    if (percentage === 100) return '👑';
-    if (percentage >= 85) return '🎯';
-    if (percentage >= 70) return '💪';
-    if (percentage >= 55) return '📚';
-    return '🔄';
-  };
-
-  // Start Screen
-  if (!started) {
-    return (
-      <div dir="rtl" className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-        <FloatingParticles />
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative z-10 w-full max-w-lg"
-        >
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl text-center space-y-8">
-            {/* Animated icon */}
-            <motion.div
-              animate={{ rotate: [0, -5, 5, -5, 0], scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-              className="w-24 h-24 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg shadow-violet-500/30"
-            >
-              <BookOpen size={48} className="text-white" />
-            </motion.div>
-
-            <div className="space-y-3">
-              <h1 className="text-3xl md:text-4xl font-black text-white leading-tight">
-                מבחן מסכם
-              </h1>
-              <p className="text-lg text-purple-200 font-medium">
-                מבוא למדע הנתונים
-              </p>
-            </div>
-
-            <p className="text-slate-300 text-base leading-relaxed">
-              {questions.length} שאלות שבודקות את כל מה שחשוב לדעת לקראת הבחינה.
-              <br />
-              <span className="text-purple-300">Pandas • Machine Learning • ויזואליזציה • מדדי הערכה</span>
-            </p>
-
-            {/* Stats preview */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-3">
-                <div className="text-2xl font-bold text-white">{questions.length}</div>
-                <div className="text-xs text-slate-400">שאלות</div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-3">
-                <div className="text-2xl font-bold text-white">4</div>
-                <div className="text-xs text-slate-400">תחומים</div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-3">
-                <div className="text-2xl font-bold text-white">∞</div>
-                <div className="text-xs text-slate-400">ניסיונות</div>
-              </div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleStart}
-              className="w-full py-5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-2xl text-xl font-bold transition-all shadow-lg shadow-violet-600/30 flex items-center justify-center gap-3"
-            >
-              <Play size={24} fill="white" />
-              התחל במבחן
-            </motion.button>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
-
-  // Results Screen
-  if (showResults) {
-    const percentage = Math.round((score / questions.length) * 100);
-    return (
-      <div dir="rtl" className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-        <FloatingParticles />
-        <Confetti active={percentage >= 70} />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 w-full max-w-lg space-y-6"
-        >
-          {/* Score card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 p-8 rounded-3xl shadow-2xl text-center space-y-6">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-              className="text-6xl"
-            >
-              {getScoreEmoji()}
-            </motion.div>
-
-            <h2 className="text-3xl font-black text-white">תוצאות המבחן</h2>
-
-            {/* Score circle */}
-            <div className="relative w-40 h-40 mx-auto">
-              <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="8" />
-                <motion.circle
-                  cx="60" cy="60" r="52" fill="none"
-                  strokeWidth="8" strokeLinecap="round"
-                  stroke="url(#scoreGradient)"
-                  strokeDasharray={`${2 * Math.PI * 52}`}
-                  initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
-                  animate={{ strokeDashoffset: 2 * Math.PI * 52 * (1 - percentage / 100) }}
-                  transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-                />
-                <defs>
-                  <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#8b5cf6" />
-                    <stop offset="100%" stopColor="#06b6d4" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-black text-white">{percentage}%</span>
-                <span className="text-sm text-slate-400">{score}/{questions.length}</span>
-              </div>
-            </div>
-
-            <p className="text-lg text-purple-200 font-medium">{getScoreMessage()}</p>
-
-            {/* Stats grid */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div className="text-2xl font-bold text-emerald-400">{score}</div>
-                <div className="text-xs text-slate-400 mt-1">נכונות</div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div className="text-2xl font-bold text-red-400">{questions.length - score}</div>
-                <div className="text-xs text-slate-400 mt-1">שגויות</div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div className="text-2xl font-bold text-orange-400 flex items-center justify-center gap-1">
-                  {bestStreak}<Flame size={16} />
-                </div>
-                <div className="text-xs text-slate-400 mt-1">רצף מקסימלי</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Answer breakdown */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 p-6 rounded-3xl shadow-2xl">
-            <h3 className="text-white font-bold text-lg mb-4">פירוט תשובות</h3>
-            <div className="flex flex-wrap gap-2">
-              {answers.map((a, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: i * 0.02 }}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${
-                    a.correct
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                  }`}
-                >
-                  {i + 1}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleRestart}
-            className="w-full py-5 backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 text-white rounded-2xl text-lg font-bold transition-all flex items-center justify-center gap-3"
-          >
-            <RotateCcw size={20} />
-            תרגל שוב
-          </motion.button>
-        </motion.div>
-      </div>
-    );
-  }
-
-  // Quiz Screen
-  return (
-    <div dir="rtl" className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-6 px-4 relative overflow-hidden">
-      <FloatingParticles />
-      <Confetti active={showConfetti} />
-
-      <div className="max-w-2xl mx-auto space-y-5 relative z-10">
-
-        {/* Top bar */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="backdrop-blur-xl bg-white/10 border border-white/20 p-4 rounded-2xl"
-        >
-          <div className="flex justify-between items-center mb-3">
-            <div className="flex items-center gap-3">
-              <span className="text-white font-bold text-sm">
-                שאלה {currentQuestionIndex + 1}/{questions.length}
-              </span>
-              {streak >= 2 && (
-                <AnimatePresence>
-                  <motion.div
-                    key={streak}
-                    initial={{ scale: 0, x: 10 }}
-                    animate={{ scale: 1, x: 0 }}
-                    exit={{ scale: 0, x: -10 }}
-                    className="flex items-center gap-1 bg-orange-500/20 border border-orange-500/30 rounded-full px-2 py-0.5"
-                  >
-                    <Flame size={14} className="text-orange-400" />
-                    <span className="text-orange-400 font-bold text-xs">{streak}x</span>
-                  </motion.div>
-                </AnimatePresence>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-3 py-1">
-                <Star size={14} className="text-emerald-400" />
-                <span className="text-emerald-400 font-bold text-sm">{score}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Progress bar */}
-          <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-r from-violet-500 to-cyan-400 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-          </div>
-        </motion.div>
-
-        {/* Question Card */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentQuestionIndex}
-            initial={{ opacity: 0, x: direction * 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction * -50 }}
-            transition={{ duration: 0.3 }}
-            className={`backdrop-blur-xl bg-white/10 border border-white/20 p-6 md:p-8 rounded-3xl shadow-2xl space-y-6 ${shake ? 'animate-pulse' : ''}`}
-            style={shake ? { animation: 'shake 0.5s ease-in-out' } : {}}
-          >
-            {/* Question number badge */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/20">
-                <Target size={20} className="text-white" />
-              </div>
-              <div>
-                <h2 className="text-lg md:text-xl font-bold text-white leading-relaxed">
-                  {currentQuestion.text}
-                </h2>
-              </div>
-            </div>
-
-            {/* Options */}
-            <div className="space-y-3">
-              {currentQuestion.options.map((option, index) => {
-                let optionStyle = "bg-white/5 border-white/10 hover:bg-white/10 hover:border-violet-400/50 text-slate-200";
-                let showIcon = null;
-                let iconContent = null;
-
-                if (selectedOption === index && !isAnswerChecked) {
-                  optionStyle = "bg-violet-500/20 border-violet-400 text-white shadow-lg shadow-violet-500/10";
-                } else if (isAnswerChecked) {
-                  if (index === currentQuestion.correctIndex) {
-                    optionStyle = "bg-emerald-500/20 border-emerald-400 text-emerald-200 shadow-lg shadow-emerald-500/10";
-                    iconContent = <CheckCircle2 className="text-emerald-400 shrink-0" size={22} />;
-                  } else if (index === selectedOption) {
-                    optionStyle = "bg-red-500/20 border-red-400 text-red-200 shadow-lg shadow-red-500/10";
-                    iconContent = <XCircle className="text-red-400 shrink-0" size={22} />;
-                  } else {
-                    optionStyle = "bg-white/5 border-white/5 text-slate-500 opacity-50";
-                  }
+        function selectOption(index) {
+            if (isAnswerChecked) return;
+            
+            selectedOption = index;
+            const options = document.querySelectorAll('.option');
+            options.forEach((opt, i) => {
+                opt.classList.remove('selected');
+                if (i === index) {
+                    opt.classList.add('selected');
                 }
-
-                return (
-                  <motion.button
-                    key={index}
-                    whileHover={!isAnswerChecked ? { scale: 1.01 } : {}}
-                    whileTap={!isAnswerChecked ? { scale: 0.99 } : {}}
-                    onClick={() => handleOptionClick(index)}
-                    disabled={isAnswerChecked}
-                    className={`w-full text-right p-4 rounded-2xl border-2 transition-all duration-200 flex items-center justify-between gap-4 ${optionStyle} ${!isAnswerChecked ? 'cursor-pointer' : 'cursor-default'}`}
-                  >
-                    <span className="font-medium text-base leading-relaxed" style={{ direction: 'ltr', display: 'inline-block', textAlign: 'right', width: '100%' }}>
-                      {option}
-                    </span>
-                    {iconContent}
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            {/* Action area */}
-            <div className="pt-4 border-t border-white/10">
-              {!isAnswerChecked ? (
-                <motion.button
-                  whileHover={selectedOption !== null ? { scale: 1.01 } : {}}
-                  whileTap={selectedOption !== null ? { scale: 0.99 } : {}}
-                  onClick={handleCheckAnswer}
-                  disabled={selectedOption === null}
-                  className={`w-full py-4 rounded-2xl text-lg font-bold transition-all flex items-center justify-center gap-2 ${
-                    selectedOption !== null
-                      ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-lg shadow-violet-600/30'
-                      : 'bg-white/5 text-slate-500 cursor-not-allowed border border-white/10'
-                  }`}
-                >
-                  <Zap size={20} />
-                  בדוק תשובה
-                </motion.button>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-4"
-                >
-                  {/* Result indicator */}
-                  <div className={`flex items-center gap-3 p-4 rounded-2xl ${
-                    selectedOption === currentQuestion.correctIndex
-                      ? 'bg-emerald-500/10 border border-emerald-500/20'
-                      : 'bg-red-500/10 border border-red-500/20'
-                  }`}>
-                    {selectedOption === currentQuestion.correctIndex ? (
-                      <div className="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center">
-                        <CheckCircle2 size={22} className="text-emerald-400" />
-                      </div>
-                    ) : (
-                      <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
-                        <XCircle size={22} className="text-red-400" />
-                      </div>
-                    )}
-                    <span className={`font-bold ${
-                      selectedOption === currentQuestion.correctIndex ? 'text-emerald-400' : 'text-red-400'
-                    }`}>
-                      {selectedOption === currentQuestion.correctIndex ? 'תשובה נכונה! 🎉' : 'תשובה שגויה 😔'}
-                    </span>
-                  </div>
-
-                  {/* Rationale */}
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Sparkles size={16} className="text-violet-400" />
-                      <span className="text-violet-400 font-bold text-sm">הסבר</span>
-                    </div>
-                    <p className="text-slate-300 text-base leading-relaxed">
-                      {currentQuestion.rationale}
-                    </p>
-                  </div>
-
-                  <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    onClick={() => {
-                      setDirection(1);
-                      handleNextQuestion();
-                    }}
-                    className="w-full py-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-2xl text-lg font-bold transition-all shadow-lg shadow-violet-600/30 flex items-center justify-center gap-2"
-                  >
-                    {currentQuestionIndex < questions.length - 1 ? 'לשאלה הבאה' : 'סיים מבחן וצפה בתוצאות'}
-                    <ArrowLeft size={20} />
-                  </motion.button>
-                </motion.div>
-              )}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Mini progress dots */}
-        <div className="flex justify-center gap-1 flex-wrap">
-          {questions.map((_, i) => (
-            <div
-              key={i}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i < currentQuestionIndex
-                  ? answers[i]?.correct
-                    ? 'bg-emerald-400'
-                    : 'bg-red-400'
-                  : i === currentQuestionIndex
-                    ? 'bg-violet-400 w-6'
-                    : 'bg-white/20'
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <style>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-          20%, 40%, 60%, 80% { transform: translateX(4px); }
+            });
+            
+            document.getElementById('checkBtn').disabled = false;
         }
-      `}</style>
-    </div>
-  );
-}
+
+        function checkAnswer() {
+            if (selectedOption === null) return;
+            
+            isAnswerChecked = true;
+            const question = questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((opt, i) => {
+                opt.classList.add('disabled');
+                if (i === question.correctIndex) {
+                    opt.classList.add('correct');
+                    opt.querySelector('.option-icon').innerHTML = '✓';
+                    opt.querySelector('.option-icon').style.color = '#48bb78';
+                } else if (i === selectedOption && i !== question.correctIndex) {
+                    opt.classList.add('incorrect');
+                    opt.querySelector('.option-icon').innerHTML = '✗';
+                    opt.querySelector('.option-icon').style.color = '#f56565';
+                }
+            });
+            
+            if (selectedOption === question.correctIndex) {
+                score++;
+                streak++;
+                updateStreak();
+            } else {
+                streak = 0;
+                updateStreak();
+            }
+            
+            document.getElementById('rationaleText').textContent = question.rationale;
+            document.getElementById('rationaleSection').style.display = 'block';
+            document.getElementById('checkBtn').style.display = 'none';
+        }
+
+        function updateStreak() {
+            const streakCounter = document.getElementById('streakCounter');
+            const streakCount = document.getElementById('streakCount');
+            
+            if (streak >= 3) {
+                streakCounter.classList.add('active');
+                streakCount.textContent = streak;
+            } else {
+                streakCounter.classList.remove('active');
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex >= questions.length) {
+                showResults();
+            } else {
+                loadQuestion();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+            document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
+            document.getElementById('scoreMessage').textContent = getScoreMessage();
+            
+            if (score >= questions.length * 0.7) {
+                createConfetti();
+            }
+        }
+
+        function getScoreMessage() {
+            const percentage = (score / questions.length) * 100;
+            if (percentage === 100) return "מושלם! אתה שולט בחומר ברמה הגבוהה ביותר.";
+            if (percentage >= 85) return "מצוין! אתה בהחלט מוכן למבחן.";
+            if (percentage >= 70) return "טוב מאוד. חזרה קטנה על ההסברים ותהיה מוכן לגמרי.";
+            if (percentage >= 55) return "ציון עובר, אבל כדאי לעבור שוב על סיכום המושגים.";
+            return "לא נורא, תרגול נוסף יעשה את ההבדל! מומלץ לקרוא שוב את הסיכום.";
+        }
+
+        function createConfetti() {
+            const colors = ['#f6e05e', '#667eea', '#764ba2', '#48bb78', '#f56565', '#ed8936'];
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.width = (Math.random() * 10 + 8) + 'px';
+                confetti.style.height = (Math.random() * 10 + 8) + 'px';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            selectedOption = null;
+            isAnswerChecked = false;
+            score = 0;
+            streak = 0;
+            
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('streakCounter').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
+
