@@ -3,2023 +3,796 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן מסכם: מבוא למדע הנתונים</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.0/index.css">
+    <title>מבחן סימולציה מתקדם: מדע הנתונים</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #a5b4fc;
-            --accent: #8b5cf6;
-            --success: #10b981;
-            --success-light: #d1fae5;
-            --error: #ef4444;
-            --error-light: #fee2e2;
-            --text-dark: #1e293b;
-            --text-medium: #475569;
-            --text-light: #64748b;
-            --bg-soft: #f8fafc;
-            --bg-card: #ffffff;
-            --border: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
-            --shadow-xl: 0 20px 40px -10px rgb(0 0 0 / 0.12);
+            --primary: #0ea5e9;
+            --secondary: #6366f1;
+            --dark-bg: #0b0f19;
+            --glass-bg: rgba(17, 24, 39, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
-
+        
         body {
-            font-family: 'Heebo', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #eef2ff 0%, #faf5ff 50%, #fdf4ff 100%);
+            font-family: 'Heebo', sans-serif;
+            background-color: var(--dark-bg);
+            color: #f8fafc;
             min-height: 100vh;
-            color: var(--text-dark);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            padding: 24px 16px;
+            overflow-x: hidden;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Subtle animated background */
-        .bg-decoration {
+        /* Animated Background Particles */
+        .particles {
             position: fixed;
-            inset: 0;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
             overflow: hidden;
-            pointer-events: none;
-            z-index: 0;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
         }
-
-        .bg-blob {
+        .particle {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.35;
-            animation: float 25s infinite ease-in-out;
+            background: rgba(14, 165, 233, 0.15);
+            animation: float 15s infinite linear;
         }
-
-        .bg-blob:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            background: #c7d2fe;
-            top: -100px;
-            right: -100px;
-        }
-
-        .bg-blob:nth-child(2) {
-            width: 350px;
-            height: 350px;
-            background: #ddd6fe;
-            bottom: -100px;
-            left: -100px;
-            animation-delay: -8s;
-        }
-
-        .bg-blob:nth-child(3) {
-            width: 300px;
-            height: 300px;
-            background: #fbcfe8;
-            top: 40%;
-            left: 50%;
-            animation-delay: -15s;
-        }
-
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(40px, -40px) scale(1.08); }
-            66% { transform: translate(-30px, 30px) scale(0.95); }
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
         }
 
-        .container {
-            max-width: 880px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
+        /* Deep Glassmorphism Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            border-radius: 1.5rem;
+            z-index: 10;
         }
 
-        /* ============ Start Screen ============ */
-        .start-screen {
-            background: var(--bg-card);
-            border-radius: 28px;
-            padding: 64px 48px;
-            box-shadow: var(--shadow-xl);
-            text-align: center;
-            animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
+        /* Smooth Animations */
+        .fade-enter { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .icon-wrapper {
-            width: 96px;
-            height: 96px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 32px;
-            box-shadow: 0 12px 30px -8px rgba(99, 102, 241, 0.5);
+        /* Interactive Options */
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-        }
-
-        .icon-wrapper svg {
-            width: 48px;
-            height: 48px;
-            stroke: white;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        h1 {
-            font-size: 2.4rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-            line-height: 1.25;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: 0.02em;
-        }
-
-        .description {
-            font-size: 1.05rem;
-            color: var(--text-medium);
-            margin-bottom: 40px;
-            max-width: 580px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.75;
-        }
-
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .feature {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-medium);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .feature-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--bg-soft);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .start-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            border: none;
-            padding: 18px 48px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: inherit;
-            box-shadow: 0 10px 25px -8px rgba(99, 102, 241, 0.5);
-        }
-
-        .start-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px -8px rgba(99, 102, 241, 0.6);
-        }
-
-        .start-btn:active {
-            transform: translateY(0);
-        }
-
-        .start-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        /* ============ Quiz Screen ============ */
-        .quiz-screen {
-            display: none;
-            animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 4px;
-        }
-
-        .quiz-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .quiz-badge {
-            background: var(--bg-card);
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-medium);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .quiz-badge strong {
-            color: var(--text-dark);
-            font-weight: 700;
-        }
-
-        .progress-container {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #eef2ff;
-            border-radius: 10px;
             overflow: hidden;
         }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 10px;
-            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        .option-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(14, 165, 233, 0.4);
+            transform: translateX(-5px);
+            box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
         }
-
-        .question-card {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 44px;
-            box-shadow: var(--shadow-lg);
-            animation: cardIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid var(--border);
+        
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.15) !important;
+            border-color: #10b981 !important;
+            color: #34d399;
         }
-
-        @keyframes cardIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+        .option-btn.incorrect {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border-color: #ef4444 !important;
+            color: #f87171;
         }
+        
+        .option-btn:disabled { cursor: default; }
 
-        .question-number {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: 0.02em;
-        }
-
-        .question-text {
-            font-size: 1.35rem;
-            color: var(--text-dark);
-            margin-bottom: 32px;
-            line-height: 1.7;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 28px;
-        }
-
-        .option {
-            background: var(--bg-soft);
-            border: 2px solid var(--border);
-            border-radius: 14px;
-            padding: 18px 22px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 1rem;
-            color: var(--text-dark);
-            position: relative;
-            font-weight: 500;
-            line-height: 1.55;
-        }
-
-        .option-letter {
-            flex-shrink: 0;
-            width: 32px;
-            height: 32px;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--text-medium);
-            transition: all 0.25s ease;
-        }
-
-        .option-text {
-            flex: 1;
-        }
-
-        .option-icon {
-            width: 28px;
-            height: 28px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .option:hover:not(.disabled) {
-            border-color: var(--primary-light);
-            background: white;
-            transform: translateX(-4px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .option:hover:not(.disabled) .option-letter {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .option.selected {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, #eef2ff 0%, #faf5ff 100%);
-            box-shadow: 0 4px 14px -4px rgba(99, 102, 241, 0.25);
-        }
-
-        .option.selected .option-letter {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .option.correct {
-            border-color: var(--success);
-            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
-            color: #065f46;
-        }
-
-        .option.correct .option-letter {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
-        }
-
-        .option.correct .option-icon {
-            display: flex;
-            color: var(--success);
-        }
-
-        .option.incorrect {
-            border-color: var(--error);
-            background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%);
-            color: #991b1b;
-            animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-        }
-
-        .option.incorrect .option-letter {
-            background: var(--error);
-            border-color: var(--error);
-            color: white;
-        }
-
-        .option.incorrect .option-icon {
-            display: flex;
-            color: var(--error);
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        .option.disabled {
-            cursor: not-allowed;
-            opacity: 0.75;
-        }
-
-        .option.correct.disabled,
-        .option.incorrect.disabled {
-            opacity: 1;
-        }
-
-        .action-section {
-            border-top: 1px solid var(--border);
-            padding-top: 24px;
-        }
-
-        .check-btn,
-        .next-btn {
-            width: 100%;
-            padding: 16px 24px;
-            border: none;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-family: inherit;
-        }
-
-        .check-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            box-shadow: 0 8px 20px -6px rgba(99, 102, 241, 0.45);
-        }
-
-        .check-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px -6px rgba(99, 102, 241, 0.55);
-        }
-
-        .check-btn:disabled {
-            background: #e2e8f0;
-            color: #94a3b8;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .next-btn {
-            background: var(--text-dark);
-            color: white;
-            box-shadow: var(--shadow-md);
-        }
-
-        .next-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .next-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: white;
-            fill: none;
-            stroke-width: 2.5;
-            transform: scaleX(-1);
-        }
-
-        .rationale {
-            background: linear-gradient(135deg, #eef2ff 0%, #faf5ff 100%);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border-right: 4px solid var(--primary);
-            animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(16px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .rationale-title {
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 10px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .rationale-text {
-            color: var(--text-medium);
-            line-height: 1.75;
-            font-size: 0.98rem;
-        }
-
-        /* ============ Streak Counter ============ */
-        .streak-counter {
-            position: fixed;
-            top: 24px;
-            left: 24px;
-            background: var(--bg-card);
-            padding: 12px 20px;
-            border-radius: 14px;
-            box-shadow: var(--shadow-lg);
-            display: none;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            z-index: 1000;
-            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid var(--border);
-        }
-
-        .streak-counter.active {
-            display: flex;
-        }
-
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .streak-fire {
-            font-size: 1.4rem;
-            animation: fireFlicker 0.8s infinite;
-        }
-
-        @keyframes fireFlicker {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.15) rotate(8deg); }
-        }
-
-        /* ============ Results Screen ============ */
-        .results-screen {
-            display: none;
-            background: var(--bg-card);
-            border-radius: 28px;
-            padding: 64px 48px;
-            box-shadow: var(--shadow-xl);
-            text-align: center;
-            animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid var(--border);
-        }
-
-        .trophy-icon {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            border-radius: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 32px;
-            animation: bounce 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 16px 40px -8px rgba(245, 158, 11, 0.4);
-        }
-
-        .trophy-icon svg {
-            width: 64px;
-            height: 64px;
-            stroke: white;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(-30px) scale(0.8); opacity: 0; }
-            60% { transform: translateY(8px) scale(1.05); }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        .results-title {
-            font-size: 2rem;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        .score-display {
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 24px 0;
-            letter-spacing: -0.03em;
-            animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .score-stats {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin: 24px 0 32px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            letter-spacing: -0.02em;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            font-weight: 500;
-            margin-top: 4px;
-        }
-
-        .score-message {
-            font-size: 1.1rem;
-            color: var(--text-medium);
-            margin-bottom: 40px;
-            line-height: 1.7;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .restart-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: inherit;
-            box-shadow: 0 10px 25px -8px rgba(99, 102, 241, 0.5);
-        }
-
-        .restart-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px -8px rgba(99, 102, 241, 0.6);
-        }
-
-        .restart-btn svg {
-            width: 20px;
-            height: 20px;
-            stroke: white;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        /* Confetti */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            top: -20px;
-            z-index: 1000;
-            animation: confettiFall linear forwards;
-        }
-
-        @keyframes confettiFall {
-            to {
-                transform: translateY(110vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 16px 12px; }
-            h1 { font-size: 1.75rem; }
-            .start-screen, .results-screen { padding: 40px 24px; }
-            .question-card { padding: 28px 22px; }
-            .question-text { font-size: 1.15rem; }
-            .option { padding: 16px 18px; font-size: 0.95rem; }
-            .option-letter { width: 28px; height: 28px; font-size: 0.8rem; }
-            .score-display { font-size: 3rem; }
-            .features { gap: 16px; }
-            .streak-counter { top: 12px; left: 12px; padding: 10px 16px; font-size: 0.95rem; }
-            .quiz-header { flex-direction: column; gap: 12px; align-items: stretch; }
+        .progress-glow {
+            box-shadow: 0 0 15px var(--primary);
         }
     </style>
 </head>
-<body>
-    <div class="bg-decoration">
-        <div class="bg-blob"></div>
-        <div class="bg-blob"></div>
-        <div class="bg-blob"></div>
-    </div>
+<body class="p-4 sm:p-8">
 
-    <div class="streak-counter" id="streakCounter">
-        <span class="streak-fire">🔥</span>
-        <span id="streakCount">0</span>
-        <span style="color: var(--text-light); font-weight: 500; font-size: 0.85rem;">רצף</span>
-    </div>
+    <!-- CSS Particles -->
+    <div class="particles" id="particles-js"></div>
 
-    <div class="container">
-        <!-- Start Screen -->
-        <div class="start-screen" id="startScreen">
-            <div class="icon-wrapper">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 6.253V13M12 13V19.747M12 13H18.75C19.3023 13 19.75 12.5523 19.75 12V6.25C19.75 5.69772 19.3023 5.25 18.75 5.25H5.25C4.69772 5.25 4.25 5.69772 4.25 6.25V12C4.25 12.5523 4.69772 13 5.25 13H12Z" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+    <div id="app" class="max-w-4xl w-full glass-card overflow-hidden">
+        
+        <!-- START SCREEN -->
+        <div id="start-screen" class="p-10 sm:p-20 text-center fade-enter">
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-sky-500/20 to-indigo-500/20 border border-sky-500/30 mb-8 shadow-[0_0_30px_rgba(14,165,233,0.3)]">
+                <i class="fa-solid fa-brain text-5xl text-sky-400"></i>
             </div>
-            <div class="subtitle">מבחן סיכום</div>
-            <h1>מבוא למדע הנתונים</h1>
-            <p class="description">
-                80 שאלות שבודקות את כל מה שחשוב לדעת לקראת הבחינה. כולל Pandas, מודלים של Machine Learning, ויזואליזציה ומדדי הערכה.
+            <h1 class="text-4xl sm:text-5xl font-black mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-l from-sky-300 via-indigo-300 to-sky-300">
+                מבחן האתגר: מדע הנתונים
+            </h1>
+            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto leading-relaxed font-light">
+                65 שאלות פרקטיות ומתחכמות. ללא "התשובה הארוכה היא הנכונה". 
+                מוכנים לבדוק את השליטה שלכם ב-Pandas, מודלים, מטריקות וניקוי נתונים באמת?
             </p>
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">📊</div>
-                    <span>80 שאלות</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">💡</div>
-                    <span>הסבר מפורט</span>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🎯</div>
-                    <span>משוב מיידי</span>
-                </div>
-            </div>
-            <button class="start-btn" onclick="startQuiz()">
-                <span>התחל במבחן</span>
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 5V19L19 12L8 5Z"/>
-                </svg>
+            <button onclick="startQuiz()" class="relative inline-flex items-center px-10 py-4 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-full font-bold text-lg text-white hover:from-sky-400 hover:to-indigo-500 transition-all shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_40px_rgba(99,102,241,0.6)] hover:scale-105">
+                <i class="fa-solid fa-rocket mr-3 ml-2"></i> בואו נתחיל
             </button>
         </div>
 
-        <!-- Quiz Screen -->
-        <div class="quiz-screen" id="quizScreen">
-            <div class="quiz-header">
-                <div class="quiz-meta">
-                    <div class="quiz-badge">
-                        <span>שאלה</span>
-                        <strong><span id="currentNum">1</span>/<span id="totalNum">80</span></strong>
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="hidden flex flex-col min-h-[600px]">
+            
+            <!-- Header -->
+            <div class="px-6 py-5 border-b border-white/5 bg-white/5 flex justify-between items-center backdrop-blur-md">
+                <div class="flex items-center gap-3 text-sky-400 font-medium">
+                    <div class="bg-sky-500/20 p-2 rounded-lg">
+                        <i class="fa-solid fa-layer-group"></i>
                     </div>
-                    <div class="quiz-badge">
-                        <span>ציון:</span>
-                        <strong id="scoreDisplay">0</strong>
-                    </div>
+                    <span>שאלה <span id="current-q-num" class="text-white font-bold">1</span> / 65</span>
+                </div>
+                <div class="flex items-center gap-2 bg-indigo-500/20 px-4 py-2 rounded-full text-indigo-300 border border-indigo-500/30">
+                    <i class="fa-solid fa-star"></i>
+                    <span id="score-display" class="font-bold text-white">0</span> נק'
                 </div>
             </div>
-
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
+            
+            <!-- Progress -->
+            <div class="h-1.5 w-full bg-slate-800">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-sky-400 to-indigo-500 progress-glow transition-all duration-300" style="width: 0%"></div>
             </div>
 
-            <div class="question-card" id="questionCard">
-                <div class="question-number" id="questionBadge">שאלה 1</div>
-                <h2 class="question-text" id="questionText"></h2>
+            <!-- Question -->
+            <div class="p-6 sm:p-10 flex-grow flex flex-col">
+                <h2 id="question-text" class="text-2xl sm:text-3xl font-bold leading-snug mb-8 text-slate-100"></h2>
+                
+                <div id="options-container" class="space-y-3 w-full">
+                    <!-- Options injected here -->
+                </div>
 
-                <div class="options-container" id="optionsContainer"></div>
-
-                <div class="action-section">
-                    <button class="check-btn" id="checkBtn" onclick="checkAnswer()" disabled>
-                        <span>בדוק תשובה</span>
+                <!-- Feedback Area -->
+                <div id="feedback-area" class="hidden mt-8 p-5 sm:p-6 rounded-2xl border border-white/10 bg-white/5 fade-enter">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i id="feedback-icon" class="text-2xl"></i>
+                        <h3 id="feedback-title" class="text-xl font-bold"></h3>
+                    </div>
+                    <p id="feedback-rationale" class="text-slate-300 text-sm sm:text-base leading-relaxed"></p>
+                    
+                    <button id="next-btn" onclick="nextQuestion()" class="mt-6 w-full py-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl font-medium transition-all text-white flex items-center justify-center gap-2">
+                        המשך לשאלה הבאה <i class="fa-solid fa-arrow-left"></i>
                     </button>
-
-                    <div id="rationaleSection" style="display: none;">
-                        <div class="rationale">
-                            <div class="rationale-title">💡 הסבר</div>
-                            <div class="rationale-text" id="rationaleText"></div>
-                        </div>
-                        <button class="next-btn" onclick="nextQuestion()">
-                            <span id="nextBtnText">לשאלה הבאה</span>
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Results Screen -->
-        <div class="results-screen" id="resultsScreen">
-            <div class="trophy-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 22H15M12 15V22M18 9H21M6 9H3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+        <!-- RESULTS SCREEN -->
+        <div id="result-screen" class="hidden p-10 sm:p-20 text-center fade-enter">
+            <div id="result-icon-container" class="inline-flex p-6 rounded-full mb-6 border-4 shadow-2xl">
+                <i id="result-icon" class="text-6xl"></i>
             </div>
-            <h2 class="results-title">תוצאות המבחן</h2>
-            <div class="score-display" id="finalScore"></div>
-            <div class="score-stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="percentScore">0%</div>
-                    <div class="stat-label">אחוז הצלחה</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="correctCount">0</div>
-                    <div class="stat-label">תשובות נכונות</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="bestStreak">0</div>
-                    <div class="stat-label">רצף מקסימלי</div>
+            <h2 id="result-title" class="text-3xl sm:text-4xl font-black mb-4 text-white"></h2>
+            <p id="result-subtitle" class="text-lg text-slate-400 mb-8"></p>
+            
+            <div class="relative inline-block mb-12">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="rgba(255,255,255,0.1)" stroke-width="12" fill="none" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="url(#gradient)" stroke-width="12" fill="none" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000 ease-out" />
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#38bdf8" />
+                            <stop offset="100%" stop-color="#818cf8" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl font-black text-white">
+                    <span id="final-percentage">0</span>%
                 </div>
             </div>
-            <p class="score-message" id="scoreMessage"></p>
-            <button class="restart-btn" onclick="restartQuiz()">
-                <span>תרגל שוב</span>
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 4V9H4.58152M19.9381 11C19.446 7.05369 16.0796 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9M4.58152 9H9M20 20V15H19.4185M19.4185 15C18.2317 17.9318 15.3574 20 12 20C7.92038 20 4.55399 16.9463 4.06189 13M19.4185 15H15" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="shareResults()" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg flex justify-center items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i> שתף תוצאה
+                </button>
+                <button onclick="location.reload()" class="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-xl font-medium transition-all flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> מבחן חוזר
+                </button>
+            </div>
+            <p id="share-toast" class="text-emerald-400 mt-4 text-sm font-medium h-5 opacity-0 transition-opacity">הטקסט הועתק ללוח!</p>
         </div>
     </div>
 
     <script>
+        // Generate simple particles for background
+        const particlesContainer = document.getElementById('particles-js');
+        for(let i=0; i<30; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            let size = Math.random() * 15 + 5;
+            p.style.width = `${size}px`;
+            p.style.height = `${size}px`;
+            p.style.left = `${Math.random() * 100}vw`;
+            p.style.animationDelay = `${Math.random() * 15}s`;
+            p.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            particlesContainer.appendChild(p);
+        }
+
+        // 65 HIGH-QUALITY EXAM QUESTIONS
         const questions = [
-  {
-    id: 1,
-    text: "כיצד נסנן מתוך ה-DataFrame שורות שבהן הגיל (Age) מעל 20 וגם הציון (Score) מתחת ל-90?",
-    options: [
-      "df[df['Age'] > 20 & df['Score'] < 90]",
-      "df[(df['Age'] > 20) and (df['Score'] < 90)]",
-      "df[(df['Age'] > 20) & (df['Score'] < 90)]",
-      "df.filter(Age > 20 & Score < 90)"
-    ],
-    correctIndex: 2,
-    rationale: "כאשר משלבים תנאים ב-Pandas (עם & או |), חובה לעטוף כל תנאי בסוגריים עגולים. אופרטור and של פייתון לא עובד על סדרות שלמות."
-  },
-  {
-    id: 2,
-    text: "איזו מבין הפעולות הבאות תמחק לחלוטין את העמודה 'City' מתוך הטבלה (ותשמור את השינוי)?",
-    options: [
-      "df = df.drop('City', axis=1)",
-      "df = df.drop('City', axis=0)",
-      "df.remove_column('City')",
-      "df.dropna(subset=['City'])"
-    ],
-    correctIndex: 0,
-    rationale: "הפקודה drop מוחקת עמודה כאשר מגדירים axis=1. מגדירים axis=0 למחיקת שורות. ההשמה בחזרה ל-df שומרת את השינוי."
-  },
-  {
-    id: 3,
-    text: "מהי המטרה של פרמטר fill_value=0 ביצירת טבלת ציר (Pivot Table)?",
-    options: [
-      "לאפס את כל הנתונים בטבלה כדי להתחיל חישוב חדש.",
-      "להחליף אוטומטית תאים ריקים (NaN), שנוצרים כשאין מידע עבור שילוב מסוים, בערך 0.",
-      "להשלים ערכים חסרים בעמודת האינדקס בלבד.",
-      "למחוק שורות שהסכום שלהן יוצא 0."
-    ],
-    correctIndex: 1,
-    rationale: "fill_value מחליף באופן אוטומטי ערכי NaN שנוצרים כאשר אין מידע עבור חיתוך ספציפי (למשל מוצר שלא נמכר בחודש מסוים) בערך קבוע."
-  },
-  {
-    id: 4,
-    text: "איזה מהמודלים הבאים *אינו* דורש Scaling (נרמול הנתונים) לפני שלב האימון?",
-    options: [
-      "K-Means",
-      "רגרסיה לינארית (Linear Regression)",
-      "רשתות נוירונים (Neural Networks)",
-      "יער אקראי (Random Forest)"
-    ],
-    correctIndex: 3,
-    rationale: "מודלים מבוססי עצים (יער אקראי, עץ החלטה, XGBoost) מבוססים על פיצול תנאים לוגיים ולא על חישובי מרחק, ולכן פטורים לחלוטין מ-Scaling."
-  },
-  {
-    id: 5,
-    text: "מהי המטרה העיקרית של שימוש בפונקציית הפסד (Loss Function) כגון MSE או Log-Loss?",
-    options: [
-      "להעריך את רמת 'אי-הטוהר' (הערבוב) בקבוצה של עץ החלטה.",
-      "למדוד 'כמה המודל טועה' כדי שהאלגוריתם יוכל למזער את הטעות הזו במהלך האימון.",
-      "לנרמל את הנתונים כך שכל העמודות יהיו באותו קנה מידה.",
-      "למנוע התאמת יתר (Overfitting) על ידי קיצוץ ענפים בעץ."
-    ],
-    correctIndex: 1,
-    rationale: "פונקציית הפסד (Loss) קיימת במודלים מתמטיים (רגרסיה, רשתות נוירונים) כדי למדוד את השגיאה לאורך האימון ולאפשר לאלגוריתם לצמצם אותה."
-  },
-  {
-    id: 6,
-    text: "אלגוריתם XGBoost נחשב למודל חזק מאוד לנתונים טבלאיים. מהו עקרון הפעולה המרכזי שלו?",
-    options: [
-      "בניית מאות עצים במקביל והצבעת רוב דמוקרטית ביניהם.",
-      "שימוש בחישוב מרחקים (כמו K-Means) כדי לסווג נתונים חדשים.",
-      "בניית עצים בצורה סדרתית, כאשר כל עץ חדש מנסה ללמוד ולתקן את הטעויות של העץ שקדם לו.",
-      "העברת הנתונים קדימה ואחורה ברשת של נוירונים."
-    ],
-    correctIndex: 2,
-    rationale: "XGBoost הוא אלגוריתם Boosting; הוא עובד בסדרתיות, בניגוד ליער אקראי שעובד במקביל. כל עץ ב-XGBoost 'לומד' מהשגיאות של קודמו."
-  },
-  {
-    id: 7,
-    text: "בשיטת המרפק (Elbow Method) עבור K-Means, מה אנחנו מחפשים בגרף האינרציה (WCSS)?",
-    options: [
-      "את נקודת המקסימום בגרף.",
-      "את הנקודה שבה הירידה בשגיאה הופכת למתונה מאוד ('כיפוף המרפק'), שמעידה על ה-K האופטימלי.",
-      "את הנקודה שבה הגרף חוצה את ציר ה-X.",
-      "את הנקודה הראשונה שבה הגרף מתחיל לעלות."
-    ],
-    correctIndex: 1,
-    rationale: "שיטת המרפק מחפשת את נקודת ההתמתנות בגרף (הכיפוף). זהו ה-K האופטימלי, שבו הוספת אשכולות נוספים כבר לא מקטינה משמעותית את השגיאה."
-  },
-  {
-    id: 8,
-    text: "יש לנו מאגר נתונים הסובל מחוסר איזון קיצוני (Imbalanced Data). באיזה מדד יהיה הכי נכון להשתמש כדי להעריך את המודל?",
-    options: [
-      "Accuracy (דיוק כללי)",
-      "Gini Impurity (מדד ג'יני)",
-      "F1 Score",
-      "WCSS"
-    ],
-    correctIndex: 2,
-    rationale: "במקרים של נתונים לא מאוזנים (Imbalanced), מדד Accuracy ישקר (כי המודל ינחש הכל בתור הרוב ויקבל 99%). F1 Score משלב Precision ו-Recall."
-  },
-  {
-    id: 9,
-    text: "במטריצת הבלבול (Confusion Matrix), מה מתאר מצב של False Negative (FN)?",
-    options: [
-      "המודל אמר 'חיובי', אבל המציאות היא 'שלילי' (אזעקת שווא).",
-      "המודל אמר 'שלילי', ובמציאות זה אכן 'שלילי' (הצלחה).",
-      "המודל אמר 'שלילי', אבל המציאות היא 'חיובי' (פספוס קריטי).",
-      "המודל אמר 'חיובי', ובמציאות זה אכן 'חיובי' (הצלחה)."
-    ],
-    correctIndex: 2,
-    rationale: "False Negative (שלילי שגוי) - המודל אמר Negative, אבל הוא טעה (False), משמע במציאות זה Positive. מדובר בפספוס חמור."
-  },
-  {
-    id: 10,
-    text: "מדוע פונקציית הפעלה (Activation Function) היא קריטית ברשתות נוירונים?",
-    options: [
-      "היא מנרמלת את הנתונים הנכנסים לרשת (Scaling).",
-      "היא מחליטה איזה משקולות לאפס כדי למנוע Overfitting.",
-      "היא מכניסה אי-ליניאריות לרשת, ובלעדיה הרשת הייתה מתפקדת כרגרסיה לינארית בסיסית.",
-      "היא מפצלת את הנתונים לאימון ומבחן."
-    ],
-    correctIndex: 2,
-    rationale: "פונקציית אקטיבציה שוברת את הליניאריות של המכפלות והחיבורים. בלעדיה, הרשת העצבית כולה קורסת מתמטית והופכת למשוואת רגרסיה פשוטה."
-  },
-  {
-    id: 11,
-    text: "איזה סוג גרף נבחר כדי להציג מגמה או שינויים של משתנה רציף לאורך זמן (Time Series)?",
-    options: [
-      "גרף פיזור (Scatter Plot)",
-      "גרף קופסה (Box Plot)",
-      "גרף קווי (Line Plot)",
-      "היסטוגרמה (Histogram)"
-    ],
-    correctIndex: 2,
-    rationale: "Line Plot (גרף קווי) הוא הסטנדרט המקובל להצגת מגמות ושינויים של ערך מספרי לאורך ציר רציף (לרוב זמן)."
-  },
-  {
-    id: 12,
-    text: "אנו מבצעים מיזוג (Join) בין טבלאות df1 ו-df2. אם אנו רוצים לשמור *רק* את השורות שיש להן התאמה בשתי הטבלאות, באיזה סוג חיבור נשתמש?",
-    options: [
-      "Outer Join",
-      "Inner Join",
-      "Left Join",
-      "Right Join"
-    ],
-    correctIndex: 1,
-    rationale: "Inner Join הוא חיתוך (Intersection). הוא משאיר רק שורות שבהן מפתח החיבור קיים גם ב-df1 וגם ב-df2."
-  },
-  {
-    id: 13,
-    text: "מה עושה הפקודה df.sum(axis=0)?",
-    options: [
-      "מחשבת את הסכום של כל הנתונים בטבלה למספר בודד.",
-      "מחשבת את הסכום הצידה (משמאל לימין) עבור כל שורה בנפרד.",
-      "מחשבת את הסכום למטה (לאורך השורות) עבור כל עמודה בנפרד.",
-      "מסכמת רק עמודות שמכילות טקסט."
-    ],
-    correctIndex: 2,
-    rationale: "axis=0 משמעותו תנועה לאורך ציר השורות (מלמעלה למטה). כתוצאה מכך הפונקציה תחשב את הסכום לכל עמודה."
-  },
-  {
-    id: 14,
-    text: "בתהליך הלמידה של רשת נוירונים, מהו תפקידו של ה-Backpropagation?",
-    options: [
-      "להעביר נתונים חדשים משכבת הקלט עד לשכבת הפלט.",
-      "למצוא את מספר האשכולות (K) האידיאלי.",
-      "להשתמש בנגזרות כדי לחשב את תרומת כל משקולת לשגיאה (Loss) ולעדכן אותה בכיוון ההפוך.",
-      "לפצל נתונים לענפים ולמזער את מדד ג'יני."
-    ],
-    correctIndex: 2,
-    rationale: "Backpropagation הוא תהליך העדכון. המודל מחשב נגזרות כדי לדעת איזה משקולת גרמה לטעות, ומעדכן אותה כדי למזער את השגיאה."
-  },
-  {
-    id: 15,
-    text: "בפונקציית train_test_split, מה תפקיד הפרמטר random_state=42?",
-    options: [
-      "הוא מחלק את הנתונים ל-42 קבוצות בדיקה שונות.",
-      "הוא מבטיח שהחלוקה האקראית תהיה זהה בכל פעם שנריץ את הקוד.",
-      "הוא מנרמל את הנתונים כך שיהיו בטווח שבין 0 ל-42.",
-      "הוא דואג ש-42% מהנתונים ילכו לקבוצת המבחן."
-    ],
-    correctIndex: 1,
-    rationale: "ה-random_state מתפקד כ'עוגן' (Seed). הוא מבטיח שאותה חלוקה אקראית תתבצע בדיוק באותו אופן בכל פעם, כדי שנוכל לשחזר תוצאות."
-  },
-  {
-    id: 16,
-    text: "מהו מדד ג'יני (Gini Impurity)?",
-    options: [
-      "פונקציית הפסד המשמשת לאימון רשתות נוירונים.",
-      "מדד להערכת השגיאה הריבועית הממוצעת (MSE) ברגרסיה לינארית.",
-      "מדד שנועד להעריך את איכות הפיצול של נתונים בעצי החלטה (מודד רמת 'אי-טוהר').",
-      "מדד למרחק בין נקודות באלגוריתם K-Means."
-    ],
-    correctIndex: 2,
-    rationale: "מדד ג'יני נועד להעריך 'אי-טוהר' בעצי החלטה (Classification). האלגוריתם מחפש בכל פיצול למזער אותו כדי להגיע לעלים טהורים."
-  },
-  {
-    id: 17,
-    text: "יצרנו DataFrame חדש באמצעות מילון: pd.DataFrame(data). למה יהפכו המפתחות (Keys) של המילון?",
-    options: [
-      "לשמות העמודות (Columns).",
-      "לתוויות השורות (Index).",
-      "לערכים בתוך הטבלה (Values).",
-      "לסוגי הנתונים (Dtypes)."
-    ],
-    correctIndex: 0,
-    rationale: "כשיוצרים DataFrame ממילון, המפתחות (Keys) תמיד הופכים באופן אוטומטי לשמות העמודות בטבלה."
-  },
-  {
-    id: 18,
-    text: "ברצוננו לחשב את המקסימום, המינימום והממוצע של השכר (Salary) לפי עיר (City). איזו פקודה היא הנכונה?",
-    options: [
-      "df.groupby('City')['Salary'].agg(['max', 'min', 'mean'])",
-      "df.pivot_table(index='City', values='Salary')",
-      "df.groupby('Salary')['City'].mean()",
-      "df['City'].agg(Salary=['max', 'min', 'mean'])"
-    ],
-    correctIndex: 0,
-    rationale: "שימוש ב-groupby ואחריו ב-agg עם רשימה של פונקציות מאפשר לבצע מספר חישובים סטטיסטיים שונים בו-זמנית על אותה עמודה."
-  },
-  {
-    id: 19,
-    text: "קו רגרסיה לינארית חושב בהצלחה. ב- model.coef_ מאוחסן ערך. מה הוא מייצג?",
-    options: [
-      "את נקודת החיתוך עם ציר ה-Y (Intercept).",
-      "את שגיאת המודל (MSE).",
-      "את שיפוע הישר.",
-      "את אחוז הדיוק של המודל."
-    ],
-    correctIndex: 2,
-    rationale: "ב-Scikit-Learn, ה-coef_ מכיל את המקדמים (השיפוע של הקו - כמה Y משתנה על כל שינוי ב-X), בעוד ש-intercept_ מכיל את נקודת החיתוך."
-  },
-  {
-    id: 20,
-    text: "קיבלנו ציון ROC AUC של 0.5. מה משמעות התוצאה?",
-    options: [
-      "המודל מושלם ומצליח להפריד בין המחלקות ב-100% מהמקרים.",
-      "המודל סובל מהתאמת יתר (Overfitting).",
-      "למודל אין יכולת הפרדה, הוא בעצם מנחש באופן אקראי.",
-      "יש חוסר איזון בנתונים, ועלינו להשתמש ב-F1."
-    ],
-    correctIndex: 2,
-    rationale: "בגרף ROC, שטח של 0.5 (הקו האלכסוני) שקול להטלת מטבע - המודל פשוט מנחש אקראית. ערך קרוב ל-1 מעיד על מודל מצוין."
-  },
-  {
-    id: 21,
-    text: "איזה מבין הגרפים הבאים יאפשר לנו לזהות בצורה הטובה ביותר ערכים חריגים (Outliers)?",
-    options: [
-      "היסטוגרמה (Histogram)",
-      "גרף קופסה (Boxplot)",
-      "גרף פיזור (Scatter Plot)",
-      "גרף עוגה (Pie Chart)"
-    ],
-    correctIndex: 1,
-    rationale: "גרף קופסה (Boxplot) הוא הכלי הוויזואלי המדויק והנפוץ ביותר להצגת ערכים חריגים, שיופיעו כנקודות מחוץ ל'שפמים' של הקופסה."
-  },
-  {
-    id: 22,
-    text: "אנו קוראים נתונים מקובץ והעמודה 'Price' מתקבלת כסוג נתונים 'Object' (טקסט). כיצד נמיר אותה למספר עשרוני?",
-    options: [
-      "df['Price'] = float(df['Price'])",
-      "df['Price'] = df['Price'].astype('float64')",
-      "df['Price'].change_type('float64')",
-      "df.convert_objects('Price')"
-    ],
-    correctIndex: 1,
-    rationale: "הפונקציה המובנית והנכונה בפנדס לשינוי טיפוס של עמודה (Casting) היא astype."
-  },
-  {
-    id: 23,
-    text: "אנו רצים בלולאה ועוטפים המרה ל-float בבלוק try-except ValueError. מה יקרה לשורה המכילה מילה במקום מספר?",
-    options: [
-      "התוכנית תקרוס ותיעצר.",
-      "התוכנית תתעלם מהשגיאה לחלוטין ותשאיר את המילה.",
-      "השגיאה תיתפס ב-except, מה שיאפשר לנו להריץ קוד חלופי (כמו מחיקה) ללא קריסה.",
-      "הפייתון ימיר את המילה אוטומטית ל-0."
-    ],
-    correctIndex: 2,
-    rationale: "זהו היתרון של try-except. במקום שהתוכנית תקרוס, בלוק ה-except תופס את שגיאת ההמרה ומאפשר להמשיך להריץ את הקוד בבטחה."
-  },
-  {
-    id: 24,
-    text: "מהו הצעד הראשון (והחשוב ביותר לפני איסוף נתונים) במחזור החיים של פרויקט במדע הנתונים?",
-    options: [
-      "Data Preparation (הכנת הנתונים)",
-      "Modeling (בניית המודל)",
-      "Data Understanding (הבנת הנתונים)",
-      "Business Understanding (הבנת הבעיה העסקית)"
-    ],
-    correctIndex: 3,
-    rationale: "לפי מחזור החיים הקלאסי (CRISP-DM), הכל מתחיל מהבנת הבעיה העסקית – מה בעצם אנחנו מנסים לפתור?"
-  },
-  {
-    id: 25,
-    text: "כיצד נשנה את שם העמודה 'old_name' ל-'new_name' כך שהשינוי יישמר בטבלה?",
-    options: [
-      "df.rename(columns={'old_name': 'new_name'}, inplace=True)",
-      "df['new_name'] = 'old_name'",
-      "df.columns['old_name'] = 'new_name'",
-      "df.rename('old_name', 'new_name')"
-    ],
-    correctIndex: 0,
-    rationale: "פונקציית rename דורשת מילון של {'old': 'new'} בפרמטר columns, ויש להוסיף inplace=True כדי לשמור בטבלה המקורית."
-  },
-  {
-    id: 26,
-    text: "מדד Precision (דיוק חיובי / רגישות) בוחן:",
-    options: [
-      "מתוך כל הדגימות במציאות, כמה חזינו נכון.",
-      "מתוך כל הדגימות שחזינו כ'חיובי', כמה מהן באמת חיוביות.",
-      "מתוך כל הדגימות החיוביות במציאות, כמה מהן הצלחנו לזהות.",
-      "ממוצע הרמוני של המודל."
-    ],
-    correctIndex: 1,
-    rationale: "Precision עונה על השאלה: 'מתוך מה שאני הכרזתי עליו כחיובי (התראות/זיהויים), כמה באמת היו חיוביים במציאות?'."
-  },
-  {
-    id: 27,
-    text: "לאיזה סוג למידה משתייך אלגוריתם K-Means?",
-    options: [
-      "למידה מונחית (Supervised Learning) - סיווג.",
-      "למידה מונחית (Supervised Learning) - רגרסיה.",
-      "למידה לא מונחית (Unsupervised Learning) - עובד על נתונים גולמיים ללא תוויות.",
-      "למידה עמוקה (Deep Learning)."
-    ],
-    correctIndex: 2,
-    rationale: "K-Means הוא אלגוריתם Clustering מובהק שמחלק נתונים לאשכולות ללא מטרת יעד (Labels) מוגדרת מראש, לכן הוא Unsupervised."
-  },
-  {
-    id: 28,
-    text: "איזו מהפקודות הבאות תייצר גרף שבודק קשר (Correlation) בין שתי עמודות: 'Age' ו-'Salary'?",
-    options: [
-      "df.plot(x='Age', y='Salary')",
-      "df.plot.scatter(x='Age', y='Salary')",
-      "df[['Age', 'Salary']].hist()",
-      "df.groupby('Age')['Salary'].bar()"
-    ],
-    correctIndex: 1,
-    rationale: "כדי להציג קשר ומתאם (Correlation) בין שני משתנים רציפים, הדרך הנכונה היא לצייר גרף פיזור באמצעות הפקודה scatter."
-  },
-  {
-    id: 29,
-    text: "מודל מבוסס עצי החלטה מבצע 'חיפוש חמדן' (Greedy Search) במהלך בניית העץ. למה הכוונה?",
-    options: [
-      "הוא בוחר בכל שלב את הפיצול (תנאי) שממזער את מדד ג'יני בצורה הגדולה ביותר לאותו רגע.",
-      "הוא מנסה לשמור את כל הנתונים בעלה אחד.",
-      "הוא מסנן את הנתונים לפי מדד קורלציה הגבוה ביותר.",
-      "הוא מבצע עדכון משקולות לאחור עד שהוא מגיע לשגיאה 0."
-    ],
-    correctIndex: 0,
-    rationale: "'חיפוש חמדן' פירושו שהאלגוריתם לא מסתכל על כל התמונה מראש, אלא בוחר בכל צומת את הפיצול המקומי שהכי 'משתלם' לו באותו רגע."
-  },
-  {
-    id: 30,
-    text: "במנגנון try-except-finally, מתי יתבצע הקוד שנמצא תחת הבלוק finally?",
-    options: [
-      "רק כאשר קרתה שגיאה שנתפסה ב-except.",
-      "רק כאשר הקוד ב-try עבר בהצלחה מלאה.",
-      "תמיד, בין אם הייתה שגיאה ובין אם לא.",
-      "רק כאשר הפונקציה מחזירה True."
-    ],
-    correctIndex: 2,
-    rationale: "בלוק ה-finally נועד לבצע פעולות סיום הכרחיות (כמו סגירת חיבור למסד נתונים) והוא תמיד מופעל, ללא קשר אם קרתה שגיאה או לא."
-  },
-  {
-    id: 31,
-    text: "במערך נתונים יש עמודת 'שכר' (בערכים של עשרות אלפים) ועמודת 'גיל' (בערכים של עשרות). שכחנו לבצע Scaling והפעלנו K-Means. מה תהיה התוצאה הסבירה?",
-    options: [
-      "האלגוריתם יתקן את הפערים אוטומטית ויחשב מרחקים באחוזים.",
-      "המודל יקרוס ויחזיר שגיאת ValueError בגלל פערי הגדלים.",
-      "מרחקי ה-K-Means יושפעו כמעט בלעדית מהשכר, והגיל יקבל משקל זניח, מה שיעוות את האשכולות.",
-      "האלגוריתם פשוט יתעלם מעמודת השכר ויפצל רק לפי הגיל."
-    ],
-    correctIndex: 2,
-    rationale: "מודלים מבוססי מרחק כגון K-Means מושפעים מתרומתם המתמטית של המספרים. ללא Scaling, המרחק הגיאומטרי יישלט לחלוטין על ידי העמודה בעלת הערכים הגדולים יותר."
-  },
-  {
-    id: 32,
-    text: "בנינו עץ החלטה (Decision Tree) ולא הגדרנו לו עומק מקסימלי (max_depth). מה צפוי לקרות בשלב האימון והבדיקה?",
-    options: [
-      "העץ יישאר כשורש אחד בלבד ויסווג הכל לאותה קטגוריה.",
-      "המודל יגיע לדיוק כמעט מושלם על נתוני האימון (Overfitting), אך ייכשל ויטעה רבות על נתוני הבדיקה.",
-      "המודל יסבול מתת-התאמה (Underfitting) ולא יצליח ללמוד את הנתונים כלל.",
-      "העץ יתקשה למצוא פיצולים כי מדד ג'יני יאפס את עצמו מיד."
-    ],
-    correctIndex: 1,
-    rationale: "ללא הגבלת עומק, עץ החלטה ימשיך להתפצל עד שכל עלה יכיל דגימה בודדת. הוא 'ילמד בעל פה' את נתוני האימון (כולל רעשים), אך לא יצליח להכליל נתונים חדשים."
-  },
-  {
-    id: 33,
-    text: "במהלך תהליך הלמידה של עץ החלטה, הגענו לצומת שבו מדד ג'יני (Gini Impurity) שווה ל-0. כיצד יפעל האלגוריתם?",
-    options: [
-      "הוא ימחק את הצומת הזה כיוון שהשגיאה קטנה מדי.",
-      "הוא יחזור אחורה (Backpropagation) וישנה את הפיצול הקודם.",
-      "הוא יעצור ויגדיר את הצומת כ'עלה' סופי, משום שהקבוצה טהורה לחלוטין (משתייכת לאותה קטגוריה).",
-      "הוא ימשיך לפצל את הצומת עד שיגיע למדד ג'יני שלילי."
-    ],
-    correctIndex: 2,
-    rationale: "מדד ג'יני של 0 מעיד על אפס 'אי-טוהר' (ערבוב). משמעות הדבר היא שכל הדגימות באותו צומת שייכות לאותה מחלקה בדיוק, ולכן אין צורך (ואי אפשר) לפצל יותר."
-  },
-  {
-    id: 34,
-    text: "יש לנו טבלה (DataFrame) שבה כל שורה היא תלמיד וכל עמודה היא מקצוע בבית הספר. אנו רוצים לחשב את הממוצע *האישי* של כל תלמיד. באיזו פקודה נשתמש?",
-    options: [
-      "df.mean(axis=0)",
-      "df.mean(axis=1)",
-      "df.groupby('Student').mean()",
-      "df.sum() / len(df)"
-    ],
-    correctIndex: 1,
-    rationale: "ציר האחד (axis=1) מורה לפונקציה לנוע הצידה, לאורך העמודות, משמאל לימין עבור כל שורה בנפרד (בניגוד ל-axis=0 שמחשב ממוצע לכל עמודה מלמעלה למטה)."
-  },
-  {
-    id: 35,
-    text: "מדוע מודל יער אקראי (Random Forest) נחשב עמיד יותר בפני רעש ונתונים חריגים (Outliers) בהשוואה לעץ החלטה בודד?",
-    options: [
-      "כי הוא משתמש ב-Scaling שמנטרל נתונים חריגים לפני בניית העץ.",
-      "כי הוא מאמן עצים רבים על מדגמים אקראיים שונים מהנתונים ומבצע 'הצבעת רוב', כך שטעות מקומית נבלעת ברוב.",
-      "כי הוא עובד בשיטת Boosting - כל עץ לומד לתקן את החריגים של העץ הקודם.",
-      "כי הוא משתמש ברשת נוירונים בשכבה האחרונה כדי לסנן תצפיות רועשות."
-    ],
-    correctIndex: 1,
-    rationale: "יער אקראי מבוסס על רעיון ה-Bagging (מדגמים אקראיים והצבעה). 'חכמת ההמונים' של העצים גורמת לכך שחריגים (Outliers) שמשפיעים על עץ אחד לא ישפיעו על ההחלטה הכוללת."
-  },
-  {
-    id: 36,
-    text: "מהו התפקיד המדויק של תהליך ה-Backpropagation (פעפוע לאחור) ברשתות נוירונים?",
-    options: [
-      "להעביר את החיזוי הסופי חזרה מהמשתמש למסד הנתונים.",
-      "לחשב את מדד ה-Gini של השכבה החבויה כדי ליצור פיצול אופטימלי.",
-      "לחשב עד כמה כל משקולת (Weight) תרמה לשגיאה, ולעדכן אותה באמצעות הנגזרות כדי למזער את פונקציית ההפסד (Loss).",
-      "לאפס את כל הנוירונים שהופעלו בטעות על ידי פונקציית האקטיבציה."
-    ],
-    correctIndex: 2,
-    rationale: "Backpropagation הוא ה'מוח' שמאחורי הלמידה. הוא משתמש בנגזרות (Gradient Descent) כדי למצוא אילו משקולות צריכות להשתנות ובכמה, כדי שהשגיאה באיטרציה הבאה תקטן."
-  },
-  {
-    id: 37,
-    text: "מודל סיווג לזיהוי מחלה נדירה השיג Accuracy (דיוק כללי) של 99%. עם זאת, מדד ה-Recall (רגישות) שלו על המחלה הוא 0%. מה זה אומר על המודל בפועל?",
-    options: [
-      "המודל מצוין ומוכן לשימוש קליני בזכות הדיוק הגבוה שלו.",
-      "המודל סובל מ-Underfitting חמור ולכן צריך להוסיף לו נתונים אקראיים.",
-      "המודל חסר תועלת. בגלל שהמחלה נדירה, הוא פשוט מנחש 'בריא' עבור כולם (וצודק ב-99% מהזמן), אך מפספס את כל החולים האמיתיים.",
-      "המודל טוב בזיהוי החולים, אך נותן יותר מדי 'אזעקות שווא' (False Positives)."
-    ],
-    correctIndex: 2,
-    rationale: "זו הדוגמה הקלאסית לסכנה בשימוש ב-Accuracy לנתונים לא מאוזנים. Recall של 0% אומר שכל החולים (ה-Positive האמיתיים) קיבלו סיווג שגוי כבריאים (False Negative)."
-  },
-  {
-    id: 38,
-    text: "בניגוד ליער אקראי שבונה עצים במקביל (בבלתי תלוי), XGBoost בונה אותם בזה אחר זה (בטור). מהי המטרה של בנייה סדרתית זו?",
-    options: [
-      "לחסוך בזיכרון המחשב, שכן בניית עצים במקביל צורכת יותר מדי משאבים.",
-      "לאפשר לכל עץ חדש להתמקד בטעויות (הדגימות שסווגו לא נכון) של העץ שקדם לו, ובכך להשתפר ולהיות מדויק יותר בהדרגה.",
-      "למנוע מצב שבו שני עצים בוחרים את אותו פיצול בדיוק (מדד ג'יני זהה).",
-      "כדי שנוכל לעצור את התהליך באמצע אם הגענו למספר אשכולות מספק."
-    ],
-    correctIndex: 1,
-    rationale: "זהו עיקרון ה-Boosting. כל עץ נבנה על בסיס השאריות (השגיאות) של כל העצים שקדמו לו, מה שמאפשר לאלגוריתם להתכוונן למקרים הקשים ביותר לסיווג."
-  },
-  {
-    id: 39,
-    text: "במחזור החיים של פרויקט Data Science, מדוע שלב 'הבנת הנתונים' (Data Understanding) חייב להתבצע לפני 'הכנת הנתונים' (Data Preparation)?",
-    options: [
-      "כי לא ניתן לייבא ספריות בפייתון (כמו Pandas) לפני שמבינים את הנתונים.",
-      "כדי להגדיר מהר את פונקציית ה-Loss שתשמש לאימון רשת הנוירונים.",
-      "כדי לדעת אילו ערכים הם באמת שגויים, חריגים או חסרים שדורשים ניקוי/השלמה, חייבים קודם להבין את המשמעות העסקית של כל עמודה.",
-      "זה לא משנה. ניתן לנקות ערכים חסרים ב-fillna תמיד ללא הבנה מוקדמת."
-    ],
-    correctIndex: 2,
-    rationale: "אי אפשר להחליט איך למלא ערך חסר (ב-0? בממוצע? למחוק?) או מה נחשב 'חריג' מבלי להבין קודם מה העמודה מייצגת במציאות העסקית."
-  },
-  {
-    id: 40,
-    text: "בנוסחת הנוירון (H = X₁W₁ + X₂W₂ + B), מהו תפקידו העיקרי של רכיב ה-B (ה-Bias)?",
-    options: [
-      "להכפיל את הנתונים בערך קבוע כדי למנוע חלוקה באפס.",
-      "לקבוע את העומק המקסימלי של השכבות החבויות (Hidden Layers).",
-      "לאפשר הזזה (Shifting) של פונקציית האקטיבציה ימינה או שמאלה, מה שנותן למודל גמישות להתאמה טובה יותר לנתונים מבלי להיות תלוי לחלוטין בקלט.",
-      "למדוד את השגיאה של הנוירון מול המציאות."
-    ],
-    correctIndex: 2,
-    rationale: "ה-Bias שקול לנקודת החיתוך (Intercept) במשוואת קו ישר. הוא מאפשר לפונקציית האקטיבציה להיות מופעלת (לעבור את הסף) גם כאשר כל קלטי ה-X הם אפס."
-  },
-  {
-    id: 41,
-    text: "מהו ההבדל המרכזי בין הפונקציות df.info() ל-df.describe() ב-Pandas?",
-    options: [
-      "אין הבדל, שתיהן עושות בדיוק אותו הדבר.",
-      "info() מציגה סיכום סטטיסטי, ואילו describe() מציגה רק שמות של עמודות.",
-      "info() מספקת מידע טכני (סוגי נתונים וערכים חסרים), בעוד ש-describe() מספקת סיכום סטטיסטי (ממוצע, מינימום, מקסימום) לעמודות המספריות.",
-      "info() עובדת רק על מספרים, ו-describe() עובדת רק על טקסט."
-    ],
-    correctIndex: 2,
-    rationale: "info מספקת את ה'תעודת זהות' של הטבלה (Types, Nulls), בעוד ש-describe נותנת סטטיסטיקה תיאורית."
-  },
-  {
-    id: 42,
-    text: "כיצד נמחק מהטבלה (df) אך ורק שורות שבהן חסר נתון (NaN) בעמודה 'Salary'?",
-    options: [
-      "df.dropna(subset=['Salary'])",
-      "df.drop('Salary', axis=0)",
-      "df.fillna('Salary', 0)",
-      "df.dropna()"
-    ],
-    correctIndex: 0,
-    rationale: "שימוש ב-subset בתוך פונקציית dropna מגביל את חיפוש הערכים החסרים לעמודה הספציפית שהוגדרה, ולא לכל הטבלה."
-  },
-  {
-    id: 43,
-    text: "הפעלנו את הקוד: df.fillna(df['Salary'].mean(), inplace=True). מה תהיה התוצאה?",
-    options: [
-      "כל הערכים בטבלה יוחלפו בממוצע.",
-      "כל הערכים החסרים (NaN) בטבלה יוחלפו בממוצע של עמודת ה-Salary.",
-      "עמודת Salary תימחק מהטבלה.",
-      "כל הערכים החסרים (NaN) יוחלפו באפס (0)."
-    ],
-    correctIndex: 1,
-    rationale: "אנו מעבירים ל-fillna את הממוצע של עמודת Salary, ולכן כל תא ריק בטבלה יקבל את הערך הזה. inplace=True שומר את השינוי."
-  },
-  {
-    id: 44,
-    text: "אנו מחברים שתי טבלאות באמצעות pd.merge עם how='outer'. מה יקרה לנתונים?",
-    options: [
-      "יישארו רק השורות שיש להן מפתח תואם בשתי הטבלאות (חיתוך).",
-      "יישמרו כל השורות משתי הטבלאות (איחוד מלא). במקומות שאין התאמה, יוצב NaN.",
-      "יימחקו כל השורות שמכילות NaN.",
-      "יישמרו רק השורות מהטבלה השמאלית."
-    ],
-    correctIndex: 1,
-    rationale: "Outer Join מייצג איחוד (Union). הוא לוקח הכל מכולם, ומשלים את החסר ב-NaN איפה שאין חפיפה בין הטבלאות."
-  },
-  {
-    id: 45,
-    text: "מתי נשתמש בפרמטר axis=1 בפונקציות של Pandas (כמו drop או sum)?",
-    options: [
-      "כאשר אנו רוצים לבצע פעולה על השורות (מלמעלה למטה).",
-      "כאשר אנו רוצים לבצע פעולה על העמודות (משמאל לימין).",
-      "כאשר רוצים להתעלם מערכים חסרים.",
-      "כאשר הטבלה מכילה רק עמודה אחת."
-    ],
-    correctIndex: 1,
-    rationale: "ב-Pandas, ציר 0 (axis=0) מייצג שורות, וציר 1 (axis=1) מייצג עמודות. כדי למחוק עמודה למשל, חייבים לציין axis=1."
-  },
-  {
-    id: 46,
-    text: "בשיטת המרפק (Elbow Method), מהי ההתנהגות הטבעית של הגרף ככל שמספר האשכולות (K) גדל?",
-    options: [
-      "השגיאה (WCSS) תמיד תעלה.",
-      "השגיאה (WCSS) תמיד תרד (או תישאר קבועה).",
-      "השגיאה תרד עד לנקודת המרפק ואז תתחיל לעלות בחזרה.",
-      "השגיאה תנוע בצורת גל."
-    ],
-    correctIndex: 1,
-    rationale: "מתמטית, ככל שנוסיף יותר מרכזים (K), המרחק של כל נקודה למרכז הקרוב אליה יקטן. לכן השגיאה תמיד יורדת; החוכמה היא למצוא מתי היא מפסיקה לרדת בקצב מהיר."
-  },
-  {
-    id: 47,
-    text: "איזה אלגוריתם Clustering יתמודד בצורה הטובה ביותר עם זיהוי אשכולות בצורות מורכבות ועם סינון נקודות 'רעש' (Outliers)?",
-    options: [
-      "K-Means",
-      "DBSCAN",
-      "Hierarchical Clustering (היררכי)",
-      "Random Forest"
-    ],
-    correctIndex: 1,
-    rationale: "DBSCAN הוא אלגוריתם מבוסס-צפיפות. הוא מצוין בזיהוי צורות לא-מעגליות ומגדיר נקודות בודדות באזורים דלילים כ'רעש' במקום להכריח אותן להיכנס לאשכול."
-  },
-  {
-    id: 48,
-    text: "איזה כלי ויזואלי מאפיין תוצאות של חלוקה היררכית לאשכולות (Hierarchical Clustering)?",
-    options: [
-      "מטריצת בלבול (Confusion Matrix)",
-      "גרף פיזור (Scatter Plot)",
-      "דנדרוגרמה (Dendrogram) - עץ אשכולות",
-      "היסטוגרמה (Histogram)"
-    ],
-    correctIndex: 2,
-    rationale: "אלגוריתם היררכי בונה עץ של קשרים (מנקודות בודדות ועד אשכול אחד גדול), והדרך להציג אותו נקראת דנדרוגרמה."
-  },
-  {
-    id: 49,
-    text: "איזו פונקציה ב-Pandas תאפשר לנו לדעת כמה פעמים מופיעה כל עיר בעמודת ה-'City' (ספירת שכיחויות)?",
-    options: [
-      "df['City'].value_counts()",
-      "df['City'].count()",
-      "df['City'].sum()",
-      "df['City'].describe()"
-    ],
-    correctIndex: 0,
-    rationale: "הפונקציה value_counts סופרת כמה פעמים כל ערך ייחודי מופיע בעמודה ומחזירה טבלה ממוינת מהשכיח ביותר לנדיר ביותר."
-  },
-  {
-    id: 50,
-    text: "בציור מספר גרפים יחד (למשל נתוני אימון מול נתוני בדיקה), מה עושה הפקודה plt.legend()?",
-    options: [
-      "שומרת את הגרף כקובץ תמונה.",
-      "משנה את הצבעים של הגרף לאקראיים.",
-      "מוסיפה מקרא (תיבה עם כיתוב) המסביר איזה צבע שייך לאיזו קטגוריה בגרף.",
-      "מגדילה את הגרף לכל המסך."
-    ],
-    correctIndex: 2,
-    rationale: "Legend (מקרא) הוא הכרחי כשיש מספר שכבות או קווים בגרף כדי שהצופה יבין מה כל צבע או צורה מייצגים."
-  },
-  {
-    id: 51,
-    text: "בגרף קופסה (Boxplot), מה מייצג הקו האופקי המופיע בתוך הקופסה המרכזית?",
-    options: [
-      "את הממוצע (Mean).",
-      "את החציון (Median - רבעון 50%).",
-      "את סטיית התקן.",
-      "את הערכים החריגים (Outliers)."
-    ],
-    correctIndex: 1,
-    rationale: "הקו בתוך הקופסה מסמן תמיד את החציון (Median). הקופסה עצמה מייצגת את הטווח הבין-רבעוני (מ-25% ל-75%)."
-  },
-  {
-    id: 52,
-    text: "ביצירת היסטוגרמה: df['Age'].plot.hist(bins=10). מה קובע הפרמטר bins?",
-    options: [
-      "את מספר העמודות בטבלה המקורית.",
-      "את הצבע של הגרף.",
-      "את מספר 'הסלים' (המרווחים) אליהם נחלק את הנתונים הרציפים.",
-      "את מספר הערכים החריגים שיסוננו."
-    ],
-    correctIndex: 2,
-    rationale: "Bins מגדיר לכמה קבוצות/מרווחים הנתונים יחולקו. למשל bins=10 יחלק את הגילאים ל-10 עמודות ברוחב שווה."
-  },
-  {
-    id: 53,
-    text: "מדוע קריטי לבצע חלוקה לנתוני אימון ובדיקה (Train/Test Split) לפני אימון מודל?",
-    options: [
-      "כדי לחסוך בזמן הריצה של המודל.",
-      "כדי שנוכל לבדוק את ביצועי המודל על נתונים שהוא 'מעולם לא ראה' ולוודא שהוא לא סובל מהתאמת-יתר (Overfitting).",
-      "כדי לנרמל את הנתונים לממוצע 0.",
-      "כדי לסנן ערכים חסרים בצורה יעילה יותר."
-    ],
-    correctIndex: 1,
-    rationale: "אם נבחן את המודל על הנתונים שעליהם הוא התאמן, נבדוק 'שינון' ולא 'למידה'. נתוני הבדיקה מדמים את העולם האמיתי."
-  },
-  {
-    id: 54,
-    text: "לאחר אימון מודל (למשל model.fit), איזו פונקציה תשמש אותנו כדי לבקש מהמודל לספק תחזיות עבור נתונים חדשים?",
-    options: [
-      "model.evaluate(X_new)",
-      "model.score(X_new)",
-      "model.predict(X_new)",
-      "model.transform(X_new)"
-    ],
-    correctIndex: 2,
-    rationale: "הפונקציה predict לוקחת נתונים חדשים ומעבירה אותם דרך המודל המאומן כדי להחזיר את החיזוי שלו (y_pred)."
-  },
-  {
-    id: 55,
-    text: "מודל רגרסיה לינארית (Linear Regression) מיועד לפתרון בעיות מסוג X, ואילו מודל רגרסיה לוגיסטית (Logistic Regression) מיועד לבעיות מסוג Y. מהם X ו-Y?",
-    options: [
-      "X = חיזוי משתנה רציף (רגרסיה), Y = מציאת קשרים ללא תגיות (Clustering).",
-      "X = חיזוי משתנה רציף/מספר (רגרסיה), Y = חיזוי קטגוריה/הסתברות (סיווג - Classification).",
-      "שניהם מיועדים לאותו סוג של בעיות בדיוק.",
-      "X = סיווג, Y = רגרסיה."
-    ],
-    correctIndex: 1,
-    rationale: "למרות השם המבלבל, רגרסיה לוגיסטית היא אלגוריתם של סיווג (Classification) שמוציא הסתברות בין 0 ל-1, בעוד שרגרסיה לינארית חוזה מספר רציף (כמו מחיר דירה)."
-  },
-  {
-    id: 56,
-    text: "מהו הצעד הראשון שאלגוריתם K-Means מבצע עם הפעלתו?",
-    options: [
-      "מחשב את מדד ג'יני של כל הנתונים.",
-      "מאתחל באופן אקראי את המיקום של K מרכזים (Centroids) במרחב.",
-      "מחשב את הממוצע של כל העמודות.",
-      "מחבר את הנקודות הקרובות ביותר לזוגות."
-    ],
-    correctIndex: 1,
-    rationale: "האלגוריתם מתחיל ב'זריקה' אקראית של K מרכזים במרחב, ולאחר מכן משפר את המיקום שלהם איטרציה אחר איטרציה."
-  },
-  {
-    id: 57,
-    text: "מודל 'יער אקראי' (Random Forest) מתבסס על יצירת שונות (Randomness) בין העצים. כיצד הוא עושה זאת?",
-    options: [
-      "כל עץ מאומן על אותו מאגר נתונים בדיוק, אך מקבל פונקציית Loss שונה.",
-      "כל עץ רואה רק מדגם אקראי (עם חזרות) של הנתונים, ובוחן בכל פיצול רק קבוצה אקראית של מאפיינים.",
-      "המודל מוסיף רעש סטטיסטי לעמודת המטרה.",
-      "על ידי שינוי אקראי של עומק העץ (max_depth) לכל עץ."
-    ],
-    correctIndex: 1,
-    rationale: "זוהי ליבת רעיון ה-Bagging: כדי שהעצים לא יהיו זהים, כל אחד מהם מקבל תת-קבוצה אקראית של שורות ועמודות."
-  },
-  {
-    id: 58,
-    text: "בהשוואה ל-Random Forest, כיצד XGBoost ניגש לשגיאות החיזוי של העצים שהוא בונה?",
-    options: [
-      "הוא מתעלם מהן ומקווה ש'רוב העצים' יהיו צודקים.",
-      "הוא בונה עצים בטור, כאשר כל עץ חדש מאומן במיוחד כדי לתקן את השגיאות (Residuals) של העץ שקדם לו.",
-      "הוא זורק לפח כל עץ שהשגיאה שלו עוברת סף מסוים.",
-      "הוא מחשב ממוצע של השגיאות בסוף התהליך."
-    ],
-    correctIndex: 1,
-    rationale: "XGBoost מבוסס על Gradient Boosting. הבנייה היא סדרתית, והפוקוס של כל עץ חדש הוא המקומות שבהם העצים הקודמים טעו."
-  },
-  {
-    id: 59,
-    text: "מהו תפקידה של שכבת הקלט (Input Layer) ברשת נוירונים?",
-    options: [
-      "לבצע את החישובים המתמטיים והאקטיבציה.",
-      "לקבל את הנתונים הגולמיים (המאפיינים/פיקסלים) ולהעביר אותם הלאה לרשת ללא חישובים מיוחדים.",
-      "לחשב את פונקציית ההפסד (Loss).",
-      "להחזיר את החיזוי הסופי."
-    ],
-    correctIndex: 1,
-    rationale: "שכבת הקלט היא פשוט 'שער הכניסה' של הנתונים לתוך הרשת. היא לא מבצעת למידה או חישובים משלה."
-  },
-  {
-    id: 60,
-    text: "היכן קורה עיקר 'הקסם' (החישובים, הכפלת המשקולות, פונקציות האקטיבציה) ברשת נוירונים עמוקה?",
-    options: [
-      "בשכבת הקלט (Input Layer).",
-      "בשכבת הפלט (Output Layer).",
-      "בשכבות החבויות (Hidden Layers).",
-      "בתוך פונקציית ה-Loss בלבד."
-    ],
-    correctIndex: 2,
-    rationale: "השכבות החבויות הן ליבת הרשת. שם מתבצעות הכפלות המטריצה (X*W + B) והפעלת אי-הליניאריות, כדי לזהות את הדפוסים."
-  },
-  {
-    id: 61,
-    text: "איזו פונקציית אקטיבציה נפוצה נשתמש לרוב בשכבת הפלט (Output) עבור בעיית סיווג בינארי (מחלה/אין מחלה)?",
-    options: [
-      "ReLU",
-      "Linear",
-      "Sigmoid",
-      "MSE"
-    ],
-    correctIndex: 2,
-    rationale: "פונקציית סיגמואיד (Sigmoid) מוחצת כל ערך מספרי לטווח שבין 0 ל-1, מה שהופך אותה למושלמת לייצוג של הסתברות (Probability) בסיווג בינארי."
-  },
-  {
-    id: 62,
-    text: "מה מייצגות המשקולות (Weights) ברשת נוירונים?",
-    options: [
-      "את כמות הנתונים שנכנסת לרשת.",
-      "את כמות הפעמים שהרשת עברה על הנתונים.",
-      "את חוזק וחשיבות הקשר בין שני נוירונים. במהלך האימון הרשת לומדת לשנות אותן כדי להגיע לחיזוי נכון.",
-      "את השגיאה הסופית של המודל."
-    ],
-    correctIndex: 2,
-    rationale: "המשקולות הן הפרמטרים הנלמדים של הרשת. הן קובעות כמה השפעה תהיה למידע שזורם מנוירון אחד לנוירון הבא."
-  },
-  {
-    id: 63,
-    text: "בתהליך האימון של רשת נוירונים, מהו תפקידו של ה-Batch Size?",
-    options: [
-      "הוא קובע את מספר השכבות החבויות ברשת.",
-      "הוא מחלק את כלל נתוני האימון לתת-קבוצות קטנות שעוברות ברשת בכל פעם, כדי לייעל את החישוב ועדכון המשקולות.",
-      "הוא קובע את אחוז הנתונים שילכו לקבוצת הבדיקה.",
-      "הוא מגדיר את העומק המקסימלי של הרשת."
-    ],
-    correctIndex: 1,
-    rationale: "במקום להכניס מיליון רשומות בבת אחת (מה שיקריס את הזיכרון), מחלקים אותן ל-Batches. הרשת מעבדת Batch, מעדכנת משקולות, ועוברת לבא."
-  },
-  {
-    id: 64,
-    text: "הפעלנו אימון ב-Keras עם הפרמטר verbose=1. מה תהיה התוצאה?",
-    options: [
-      "המודל יאומן על ליבה אחת בלבד של המעבד.",
-      "לא נראה שום פלט על המסך במהלך האימון.",
-      "נראה על המסך סרגל התקדמות גרפי (Progress Bar) לכל מחזור אימון (Epoch).",
-      "המודל ישמור קובץ לוג בתיקייה מקומית."
-    ],
-    correctIndex: 2,
-    rationale: "הפרמטר verbose שולט ברמת הפירוט המודפסת לקונסולה. verbose=1 מציג פס התקדמות ויזואלי נוח."
-  },
-  {
-    id: 65,
-    text: "כיצד מחושב מדד ה-Accuracy (דיוק כללי) מתוך מטריצת הבלבול?",
-    options: [
-      "סך כל התחזיות הנכונות (TP + TN) לחלק בסך כל התחזיות שבוצעו.",
-      "TP לחלק ל-(TP + FP).",
-      "TP לחלק ל-(TP + FN).",
-      "ממוצע של FP ו-FN."
-    ],
-    correctIndex: 0,
-    rationale: "Accuracy מודד פשוט 'בכמה אחוזים מהמקרים צדקתי לחלוטין'. כלומר: ההצלחות הכוללות (חיובי ושלילי) מתוך כל המקרים."
-  },
-  {
-    id: 66,
-    text: "מה מודד מדד ה-Recall (רגישות)?",
-    options: [
-      "מתוך כל מה שחזינו כחיובי, כמה באמת היה חיובי.",
-      "את כמות הפעמים שהמודל טעה בסיווג חיובי.",
-      "מתוך כל הדגימות החיוביות במציאות (חולים למשל), כמה המודל הצליח 'לתפוס' וחסף נכון (TP / (TP + FN)).",
-      "מתוך כל הדגימות, כמה תפסנו נכון."
-    ],
-    correctIndex: 2,
-    rationale: "Recall עונה על השאלה: 'מתוך כל מי שבאמת חולה במציאות, איזה אחוז הצלחתי לזהות ולא לפספס?'"
-  },
-  {
-    id: 67,
-    text: "מהו ה'טרייד-אוף' (Trade-off) הקלאסי בין Precision ל-Recall?",
-    options: [
-      "הם תמיד עולים יחד באופן פרופורציונלי.",
-      "ניסיון לשפר את האחד בדרך כלל יבוא על חשבון השני (למשל, כדי לא לפספס אף חולה, נאשר הרבה אזעקות שווא).",
-      "שניהם מושפעים רק ממספר האשכולות.",
-      "אין ביניהם קשר."
-    ],
-    correctIndex: 1,
-    rationale: "אם נרצה 100% Recall (לא לפספס אף אחד), פשוט נגיד שכולם חולים. אבל אז ה-Precision יתרסק (יהיו המון אזעקות שווא). זהו תמיד מאזן."
-  },
-  {
-    id: 68,
-    text: "מדד ה-F1 Score משמש כמדד מאוזן לביצועים. כיצד הוא מחושב?",
-    options: [
-      "סכום ה-Accuracy וה-Recall.",
-      "ממוצע אריתמטי רגיל בין Precision ל-Recall.",
-      "הממוצע ההרמוני של Precision ו-Recall, שנועד לקנוס מודלים שאחד המדדים שלהם נמוך משמעותית מהשני.",
-      "הכפלה של TP ב-TN."
-    ],
-    correctIndex: 2,
-    rationale: "F1 הוא ממוצע הרמוני. בשונה מממוצע רגיל, אם אחד מהערכים (למשל Recall) קרוב ל-0, ה-F1 Score יצנח לכיוון ה-0."
-  },
-  {
-    id: 69,
-    text: "מודל שחוזה אישור הלוואות דחה בטעות לקוח שהיה מחזיר את ההלוואה בזמן. איזה סוג טעות זה?",
-    options: [
-      "True Positive",
-      "True Negative",
-      "False Positive",
-      "False Negative"
-    ],
-    correctIndex: 3,
-    rationale: "אם הלוואה טובה מוגדרת כ-Positive: המודל אמר Negative (דחה), אך הוא טעה (False). לכן זהו False Negative."
-  },
-  {
-    id: 70,
-    text: "המודל חזה שהמייל אינו ספאם (Negative), ובמציאות המייל הוא אכן מייל עבודה רגיל. זהו מצב של:",
-    options: [
-      "False Negative",
-      "True Positive",
-      "True Negative",
-      "False Positive"
-    ],
-    correctIndex: 2,
-    rationale: "המודל אמר Negative, ובמציאות זה אכן Negative. מכיוון שהוא צדק, מדובר ב-True Negative."
-  },
-  {
-    id: 71,
-    text: "בגרף ROC Curve, מה משמעות עקומה שנדבקת לפינה השמאלית-עליונה של הגרף?",
-    options: [
-      "המודל מנחש באקראיות (ROC AUC סביב 0.5).",
-      "המודל מציג ביצועים מושלמים עם יכולת הפרדה מצוינת בין המחלקות (ROC AUC קרוב ל-1).",
-      "המודל סובל מ-Underfitting.",
-      "אין קשר לביצועי המודל."
-    ],
-    correctIndex: 1,
-    rationale: "הפינה השמאלית עליונה מייצגת 100% True Positive Rate ו-0% False Positive Rate - כלומר, מודל מושלם."
-  },
-  {
-    id: 72,
-    text: "בבלוק try-except-else, מתי יתבצע הקוד שנמצא תחת הבלוק else?",
-    options: [
-      "רק כאשר קרתה שגיאה ב-try.",
-      "תמיד, מיד אחרי בלוק ה-try.",
-      "רק כאשר הקוד ב-try רץ בהצלחה מלאה וללא אף שגיאה.",
-      "כאשר התוכנית קורסת."
-    ],
-    correctIndex: 2,
-    rationale: "בלוק else הוא ה'פרס' על הצלחה. הוא ירוץ אך ורק אם לא נזרקה שום חריגה (Exception) בבלוק ה-try."
-  },
-  {
-    id: 73,
-    text: "ניסינו להמיר את המחרוזת 'Unknown' למספר עשרוני בעזרת float(). איזו שגיאה תיזרק שנוכל לתפוס בעזרת except?",
-    options: [
-      "KeyError",
-      "IndexError",
-      "TypeError",
-      "ValueError"
-    ],
-    correctIndex: 3,
-    rationale: "ניסיון להמיר מחרוזת שאינה מכילה ספרות למספר גורר שגיאת ערך (ValueError)."
-  },
-  {
-    id: 74,
-    text: "במודל CRISP-DM, מה מתבצע בשלב האחרון שנקרא Deployment (הטמעה)?",
-    options: [
-      "ניקוי הערכים החסרים בנתונים.",
-      "הערכת ביצועי המודל במעבדה.",
-      "הפיכת המודל למערכת חיה שפועלת בסביבה העסקית (למשל, שילוב המודל באפליקציה של הבנק).",
-      "איסוף הנתונים ממקורות חיצוניים."
-    ],
-    correctIndex: 2,
-    rationale: "Deployment הוא שלב העברת המודל מ'שולחן העבודה' של מדען הנתונים אל העולם האמיתי כדי שיפיק ערך עסקי."
-  },
-  {
-    id: 75,
-    text: "במאגר הנתונים שלנו יש עמודת 'Gender' המכילה את המילים 'Male' ו-'Female'. מה חובה לעשות לפני אימון מודל מתמטי כמו רשת נוירונים?",
-    options: [
-      "להשאיר אותם כפי שהם, המודל יידע לקרוא טקסט.",
-      "למחוק את העמודה לחלוטין מכיוון שאינה מספרית.",
-      "לקודד אותם לערכים מספריים (למשל 0 ו-1) באמצעות תהליך כמו One-Hot Encoding.",
-      "להעביר אותם לפונקציית Dropout."
-    ],
-    correctIndex: 2,
-    rationale: "מודלים מתמטיים יודעים לקבל רק מספרים. חובה להמיר משתנים קטגוריאליים-טקסטואליים לייצוג מספרי לפני האימון."
-  },
-  {
-    id: 76,
-    text: "במטריצת קורלציה (Correlation Matrix), ראינו שבין עמודת 'Age' לעמודת 'Income' יש ציון של 0.85. מה זה אומר?",
-    options: [
-      "אין קשר בין הגיל להכנסה.",
-      "קיים קשר ליניארי חיובי חזק: ככל שהגיל עולה, גם ההכנסה נוטה לעלות.",
-      "קיים קשר שלילי: ככל שהגיל עולה, ההכנסה יורדת.",
-      "גיל גורם ישירות לעלייה בהכנסה (סיבתיות)."
-    ],
-    correctIndex: 1,
-    rationale: "קורלציה נעה בין 1- ל-1. ערך של 0.85 הוא חיובי וקרוב ל-1, מה שמעיד על קשר ליניארי חיובי חזק (מתאם גבוה)."
-  },
-  {
-    id: 77,
-    text: "בעמודת 'מספר טלפון גיבוי' חסרים נתונים (NaN) ב-95% מהשורות. מהי הפעולה המומלצת ביותר בשלב ניקוי הנתונים?",
-    options: [
-      "להשלים את הערכים החסרים בממוצע המספרים.",
-      "להשלים את הערכים בחציון.",
-      "למחוק את העמודה לחלוטין (drop), כיוון שהיא כמעט ואינה מכילה מידע מועיל ותכניס רעש.",
-      "למחוק את כל השורות שחסר בהן נתון (להישאר עם 5% מהנתונים)."
-    ],
-    correctIndex: 2,
-    rationale: "כאשר אחוז עצום (כמו 95%) מעמודה חסר, מילוי מלאכותי יכניס הטיה קשה, ומחיקת שורות תשמיד את המאגר. הפתרון הוא לוותר על העמודה."
-  },
-  {
-    id: 78,
-    text: "כאשר עץ החלטה מגיע לעלה סופי, מדד הג'יני שלו שואף להיות 0. מה זה מייצג?",
-    options: [
-      "אפס טעויות בנתוני הבדיקה.",
-      "שהעלה טהור לחלוטין - כל הדגימות שהגיעו אליו שייכות לאותה הקטגוריה בדיוק.",
-      "שהעץ סובל מהתאמת-חסר (Underfitting).",
-      "שהגענו לעומק העץ המקסימלי."
-    ],
-    correctIndex: 1,
-    rationale: "מדד ג'יני מתאר 'אי-טוהר'. כשאין אי-טוהר (0), המשמעות היא הרמוניה מלאה - כל הנתונים באותה נקודה זהים בסיווג שלהם."
-  },
-  {
-    id: 79,
-    text: "מדוע עץ החלטה מתואר פעמים רבות כ'קופסה לבנה' (White Box), בניגוד לרשתות נוירונים שמוגדרות כ'קופסה שחורה'?",
-    options: [
-      "כי הוא מהיר יותר מבחינת זמן חישוב.",
-      "כי הוא יכול להתמודד עם ערכים חסרים.",
-      "כי ניתן לפרש ולהבין בקלות את הלוגיקה שלו (האדם יכול לעקוב אחר תנאי הפיצול שהובילו לכל החלטה).",
-      "כי הוא לא זקוק ל-Scaling."
-    ],
-    correctIndex: 2,
-    rationale: "היתרון העצום של עצים הוא ה-Interpretability (יכולת פרשנות). אתה יכול להראות ללקוח בדיוק *למה* המודל קיבל את ההחלטה (למשל: בגלל שהגיל מעל 30 והשכר מתחת ל-10K)."
-  },
-  {
-    id: 80,
-    text: "ברצוננו לשלוף את כל המידע של העיר 'Tel Aviv' מהטבלה. איזו מתודה של Pandas תאפשר לנו לחפש לפי התנאי המילולי?",
-    options: [
-      "df.iloc[df['City'] == 'Tel Aviv']",
-      "df.loc[df['City'] == 'Tel Aviv']",
-      "df.find('Tel Aviv')",
-      "df.search(City='Tel Aviv')"
-    ],
-    correctIndex: 1,
-    rationale: "הפונקציה loc משמשת לאיתור וסינון שורות על בסיס תוויות ותנאים (תנאי לוגי מילולי). לעומתה, iloc מחפשת רק לפי מספרי אינדקס (מיקומים מספריים)."
-  }
-];
+            // --- PANDAS BASICS & VIEWING (10) ---
+            {
+                q: "יש לנו טבלה בשם df. הפעלנו את הפקודה len(df.columns) וקיבלנו 5. הפעלנו את len(df) וקיבלנו 100. מה תחזיר הפקודה df.shape?",
+                options: ["[100, 5]", "(100, 5)", "{100: 5}", "(5, 100)"],
+                answer: 1,
+                rationale: "התכונה shape מחזירה אובייקט מסוג Tuple (סוגריים עגולים) כאשר הערך הראשון הוא תמיד מספר השורות והשני הוא מספר העמודות."
+            },
+            {
+                q: "אנו רוצים להציג את 3 השורות האחרונות בטבלה. איזו מבין הפקודות הבאות תבצע זאת בצורה הנכונה ביותר?",
+                options: ["df.bottom(3)", "df.last(3)", "df.iloc[-3:]", "df.tail(3)"],
+                answer: 3,
+                rationale: "הפונקציה המובנית והפשוטה ביותר בפנדס להצגת סוף הטבלה היא tail(). שימוש ב-iloc[-3:] יעבוד גם הוא, אך tail היא התשובה המקובלת והקריאה ביותר."
+            },
+            {
+                q: "מהו ההבדל המרכזי בין הפקודה df['Salary'] לבין הפקודה df[['Salary']]?",
+                options: ["הראשונה מחזירה אובייקט מסוג Series, והשנייה מחזירה אובייקט מסוג DataFrame.", "הראשונה שולפת שורה, והשנייה שולפת עמודה.", "אין שום הבדל, שתיהן עושות בדיוק את אותו הדבר.", "הראשונה מציגה נתונים טקסטואליים, והשנייה נתונים מספריים."],
+                answer: 0,
+                rationale: "סוגריים מרובעים בודדים שולפים עמודה כסדרה חד-ממדית (Series). סוגריים כפולים שולפים את הנתונים כמבנה של טבלה דו-ממדית (DataFrame)."
+            },
+            {
+                q: "הפקודה df.describe() מציגה כברירת מחדל סטטיסטיקה רק לעמודות מספריות. כיצד נאלץ אותה להציג מידע (כמו ערך שכיח וכמות ייחודיים) גם לעמודות טקסטואליות?",
+                options: ["df.describe(all=True)", "df.describe(include='all')", "df.describe(type='object')", "df.describe(text=True)"],
+                answer: 1,
+                rationale: "הפרמטר include='all' אומר לפונקציה לא להתעלם מעמודות שאינן נומריות (Object), ומציג עבורן נתונים כמו top (הערך השכיח) ו-freq."
+            },
+            {
+                q: "קראנו קובץ CSV, ואנו רוצים לוודא שהאינדקס מתחיל מ-0 ומסודר מחדש, מבלי להוסיף את האינדקס הישן כעמודה בטבלה. מהי הפקודה?",
+                options: ["df.reset_index()", "df.set_index(drop=True)", "df.reset_index(drop=True)", "df.clear_index()"],
+                answer: 2,
+                rationale: "הפונקציה reset_index מסדרת את המספור מחדש. הפרמטר drop=True מוודא שהאינדקס הישן והמבולגן פשוט יימחק ולא יהפוך לעמודה חדשה."
+            },
+            {
+                q: "מה יקרה אם נפעיל את הפקודה: pd.to_numeric(df['Price'], errors='coerce') על עמודה שמכילה את הערך 'Unknown'?",
+                options: ["המערכת תעצור את הריצה ותזרוק שגיאת ValueError.", "המערכת תמיר את המילה 'Unknown' לערך 0 באופן אוטומטי.", "המערכת תתעלם מהשגיאה, תשאיר את המילה 'Unknown', ותמשיך הלאה.", "המערכת תמיר את המילה 'Unknown' לערך החסר התקני - NaN."],
+                answer: 3,
+                rationale: "זהו כלי חובה בניקוי נתונים. errors='coerce' מכריח את פנדס לא לקרוס, אלא להפוך כל טקסט שאינו בר המרה למספר, פשוט ל-NaN."
+            },
+            {
+                q: "אנו מעוניינים להמיר את עמודת 'City' מטיפוס Object לטיפוס 'category'. מדוע שנעשה זאת?",
+                options: ["כדי שנוכל להפעיל עליה חישובים אריתמטיים כמו ממוצע.", "כדי לחסוך בזיכרון המחשב ולייעל ביצועים, במיוחד כשיש מעט ערכים ייחודיים החוזרים על עצמם.", "כדי שפונקציית dropna לא תמחק ממנה ערכים חסרים בטעות.", "כדי להמיר אוטומטית טקסטים למספרים לקראת אימון מודל רגרסיה."],
+                answer: 1,
+                rationale: "סוג הנתונים Category שומר במערכת כל מילה רק פעם אחת (מילון פנימי), מה שחוסך המון זיכרון ומאיץ שאילתות ביחס לטיפוס Object."
+            },
+            {
+                q: "ברצוננו לדעת כמה שורות *כפולות לחלוטין* קיימות בטבלה. מהי הפקודה הקצרה והנכונה?",
+                options: ["df.duplicated().sum()", "df.count_duplicates()", "len(df.duplicates())", "df.isnull().sum()"],
+                answer: 0,
+                rationale: "הפקודה duplicated() מחזירה Series בוליאני (True לכפילויות). הפעלת sum() על סדרה בוליאנית סופרת את כמות ה-True."
+            },
+            {
+                q: "יש לנו טבלה המכילה רשומות כפולות. כיצד נמחק את הכפילויות, אך נדאג לשמור דווקא את *ההופעה האחרונה* של כל רשומה כפולה במקום את הראשונה?",
+                options: ["df.drop_duplicates(keep='last')", "df.drop_duplicates(tail=True)", "df.remove_duplicates(keep=-1)", "df.drop_duplicates(first=False)"],
+                answer: 0,
+                rationale: "לפונקציה drop_duplicates יש פרמטר בשם keep. ברירת המחדל היא 'first', אך העברת 'last' תגרום לשמירת הרשומה האחרונה בסדר."
+            },
+            {
+                q: "מהי הדרך המהירה ביותר להחליף את כל המופעים של המילה 'Yes' ב-1, ואת 'No' ב-0 בעמודה מסוימת?",
+                options: ["df['col'].apply('Yes': 1, 'No': 0)", "df['col'].map({'Yes': 1, 'No': 0})", "df['col'].change('Yes', 1).change('No', 0)", "df['col'].update('Yes', 1)"],
+                answer: 1,
+                rationale: "הפונקציה map מקבלת מילון ומחליפה כל ערך תואם בעמודה בערך החדש שהוגדר עבורו. זהו פתרון קלאסי ונקי מאוד בקידוד נתונים."
+            },
+
+            // --- FILTERING, LOC/ILOC (7) ---
+            {
+                q: "יש לנו טבלה בשם df. ברצוננו לשלוף את *השורה האחרונה בהחלט*. איזו פקודה תבצע זאת בצורה הבטוחה ביותר ללא תלות בסוג האינדקס?",
+                options: ["df.loc[-1]", "df.iloc[-1]", "df[-1:]", "df.last()"],
+                answer: 1,
+                rationale: "iloc מבוסס על מיקום פיזי. בפייתון, אינדקס מינוס 1 תמיד מסמן את האיבר האחרון, ללא קשר לשם התווית של השורה."
+            },
+            {
+                q: "ברצוננו לשלוף אך ורק את *העמודה האחרונה* בטבלה, עבור כל השורות. כיצד נעשה זאת עם iloc?",
+                options: ["df.iloc[-1, :]", "df.iloc[:, -1]", "df.iloc[-1]", "df.iloc[[-1]]"],
+                answer: 1,
+                rationale: "המבנה של iloc הוא [שורות, עמודות]. הנקודתיים (:) בחלק הראשון אומרות 'כל השורות', והמינוס 1 בחלק השני אומר 'העמודה האחרונה'."
+            },
+            {
+                q: "כיצד נסנן מתוך טבלה את כל השורות שבהן עמודת ה-'City' שווה ל-'Tel Aviv' **או** 'Haifa' בצורה האלגנטית ביותר?",
+                options: ["df[df['City'] == 'Tel Aviv' | 'Haifa']", "df[df['City'].isin(['Tel Aviv', 'Haifa'])]", "df.filter(City == ['Tel Aviv', 'Haifa'])", "df.loc['City' = 'Tel Aviv' or 'Haifa']"],
+                answer: 1,
+                rationale: "הפונקציה isin() מקבלת רשימה של ערכים ומחזירה True עבור כל שורה שהערך בעמודה שלה תואם לאחד מהערכים ברשימה."
+            },
+            {
+                q: "השתמשנו בסימן הטילדה (~) בסינון: df[~df['Age'].isna()]. מה תהיה התוצאה?",
+                options: ["נקבל שגיאת סינטקס.", "נקבל רק את השורות שבהן הגיל חסר (NaN).", "נקבל רק את השורות שבהן הגיל **אינו** חסר.", "הטילדה תמיר את כל הערכים החסרים ל-0."],
+                answer: 2,
+                rationale: "בפנדס (וב-NumPy), סימן ה-~ משמש כאופרטור לשלילה לוגית (NOT). הוא פשוט הופך כל True ל-False ולהפך."
+            },
+            {
+                q: "האינדקס בטבלה שלנו מורכב ממחרוזות (למשל 'Row_A', 'Row_B'). מה יקרה אם נפעיל את הפקודה df.loc[0]?",
+                options: ["תשלוף את השורה הראשונה.", "תשלוף את העמודה הראשונה.", "תזרוק שגיאת KeyError.", "תאפס את האינדקס."],
+                answer: 2,
+                rationale: "מכיוון ש-loc עובד לפי *תוויות* (Labels), הוא יחפש תווית ששמה הוא המספר 0. מכיוון שהתוויות הן מחרוזות, הוא לא ימצא ויקרוס. (כדי לשלוף שורה ראשונה היינו צריכים iloc)."
+            },
+            {
+                q: "ברצוננו לשנות את הסטטוס ל-'Minor' עבור כל מי שגילו מתחת ל-18. איזו מהדרכים הבאות היא **הנכונה והבטוחה** כדי למנוע את שגיאת 'SettingWithCopyWarning'?",
+                options: ["df[df['Age'] < 18]['Status'] = 'Minor'", "df.loc[df['Age'] < 18, 'Status'] = 'Minor'", "df.where(df['Age'] < 18, 'Minor')", "df.iloc[df['Age'] < 18, 'Status'] = 'Minor'"],
+                answer: 1,
+                rationale: "שימוש בשרשור סוגריים (כמו בתשובה א) עלול לשנות עותק של הנתונים ולא את המקור. loc במבנה [תנאי_שורה, עמודה] מבטיח שינוי ישיר ובטוח בטבלה המקורית."
+            },
+            {
+                q: "יש לנו תנאי מסנן מורכב: df[(df['A'] > 5) | (df['B'] < 2)]. מה משמעות האופרטור | ?",
+                options: ["וגם (AND).", "או (OR).", "שלילה (NOT).", "שווה בדיוק (XOR)."],
+                answer: 1,
+                rationale: "בסינון בוליאני ב-Pandas משתמשים ב-| כדי לייצג OR (מספיק שאחד התנאים יתקיים), וב-& כדי לייצג AND."
+            },
+
+            // --- PANDAS AGG & PIVOT (7) ---
+            {
+                q: "הפעלנו df.groupby('City')['Age'].mean(). מה יקרה לשורות שבהן עמודת 'City' מכילה ערך חסר (NaN)?",
+                options: ["הן יקובצו יחד תחת קבוצה ששמה 'NaN'.", "הקוד יזרוק שגיאה ויקרוס.", "ערכי ה-NaN יושלמו אוטומטית לממוצע.", "כברירת מחדל, groupby יתעלם לחלוטין וישמיט מהתוצאה שורות עם NaN בעמודת הקיבוץ."],
+                answer: 3,
+                rationale: "כברירת מחדל, פנדס משמיט ערכי NaN בעמודת המפתח של ה-groupby. (ניתן לשנות זאת עם dropna=False)."
+            },
+            {
+                q: "ברצוננו לחשב לעמודת ה-'Salary' גם את המינימום וגם את המקסימום במקביל. איזו פקודה תבצע זאת?",
+                options: ["df['Salary'].agg(['min', 'max'])", "df['Salary'].calculate('min', 'max')", "df.agg('Salary', methods=['min', 'max'])", "df['Salary'].min_max()"],
+                answer: 0,
+                rationale: "הפונקציה agg מאפשרת להעביר רשימה של מתודות סטטיסטיות (כמחרוזות) שיופעלו כולן על אותה עמודה בו-זמנית."
+            },
+            {
+                q: "מה מייצרת הפקודה df['Category'].value_counts(normalize=True)?",
+                options: ["ספירה רגילה של כמות הפעמים שכל קטגוריה מופיעה.", "המרה של הקטגוריות למספרים רציפים מ-0 עד 1.", "ספירה של התדירויות שמוצגת באחוזים/פרופורציות מתוך הסך הכל (למשל 0.4 במקום 40 פריטים).", "מחיקת קטגוריות שמופיעות פחות מפעם אחת."],
+                answer: 2,
+                rationale: "הפרמטר normalize=True מחלק את הספירה של כל ערך בסך כל הערכים הקיימים, מה שנותן לנו את ההתפלגות היחסית או האחוזים."
+            },
+            {
+                q: "איזו פקודה ב-Pandas מקבילה ל-GROUP BY ב-SQL אך יוצרת תצוגה דו-ממדית (מטריצה) של חיתוכים, כגון הצגת ממוצע משכורות לפי עיר (בשורות) ולפי מין (בעמודות)?",
+                options: ["pd.concat()", "pd.pivot_table()", "pd.cross_join()", "df.groupby(matrix=True)"],
+                answer: 1,
+                rationale: "טבלת ציר (Pivot Table) לוקחת משתנה אחד לאינדקס (שורות), משתנה שני לעמודות, ומשתנה שלישי כערכים לחישוב, ומייצרת דוח דו-ממדי קריא."
+            },
+            {
+                q: "ביצירת Pivot Table, אנו מוסיפים את הפרמטר margins=True. מה הפעולה שהוא מבצע?",
+                options: ["מוסיף שוליים (רווחים) בטבלה לתצוגה יפה יותר.", "מוחק ערכים חסרים מהשוליים.", "מנרמל את הנתונים לטווח של 0 עד 1.", "מוסיף שורת 'סך הכל' (All) ועמודת 'סך הכל' שמחשבות את הסטטיסטיקה הכוללת של הטבלה."],
+                answer: 3,
+                rationale: "margins (שוליים) בטבלת ציר מתייחס לסכומי הביניים והסכומים הכוללים בשולי הטבלה למטה ובצד."
+            },
+            {
+                q: "מה ההבדל בין pd.merge() לבין pd.concat() ב-Pandas?",
+                options: ["merge מוחק נתונים כפולים, concat לא.", "אין הבדל, הן מילים נרדפות.", "merge ממזג טבלאות על בסיס התאמה של עמודות/מפתחות משותפים (כמו JOIN ב-SQL), בעוד ש-concat פשוט 'מדביק' טבלאות אחת מתחת לשנייה או אחת ליד השנייה פיזית.", "concat עובד רק על מחרוזות טקסט, merge רק על מספרים."],
+                answer: 2,
+                rationale: "merge מחפש חפיפה הגיונית של מידע (למשל מציאת לקוח לפי ID). concat היא פעולה פיזית של שרשור בלוקים של נתונים זה לזה."
+            },
+            {
+                q: "אנו מבצעים מיזוג מסוג Inner Join בין טבלה A (המוכרים) לטבלה B (המכירות), על בסיס עמודת 'Agent_ID'. מה יקרה למוכר בטבלה A שמעולם לא ביצע מכירה (כלומר ה-ID שלו לא מופיע ב-B)?",
+                options: ["הוא יישאר בטבלת התוצאה, והמכירות שלו יקבלו NaN.", "הוא יקבל ערך 0 כברירת מחדל במכירות.", "הוא ייעלם לחלוטין מטבלת התוצאה הממוזגת.", "הפקודה תזרוק שגיאת Key Error בגלל אי התאמה."],
+                answer: 2,
+                rationale: "בחיבור פנימי (Inner Join), שורדות רק הרשומות שקיים להן ייצוג בשני הצדדים של המיזוג."
+            },
+
+            // --- VISUALIZATIONS (6) ---
+            {
+                q: "איזה פרמטר יש להעביר בפונקציית df.plot() כדי לשלוט בגודל הפיזי של הגרף המוצג?",
+                options: ["scale=(10, 5)", "size=(10, 5)", "figsize=(10, 5)", "dimensions=[10, 5]"],
+                answer: 2,
+                rationale: "הפרמטר figsize מצפה ל-Tuple עם שני מספרים המייצגים את רוחב וגובה הגרף באינצ'ים."
+            },
+            {
+                q: "ציירנו גרף פיזור (Scatter) של 100,000 נקודות, והגרף הפך לכתם צבע אטום שקשה לראות בו צפיפות. איזה פרמטר כדאי להוסיף?",
+                options: ["density=True", "alpha=0.1", "transparent=True", "fade=10"],
+                answer: 1,
+                rationale: "הפרמטר alpha ב-matplotlib קובע את רמת השקיפות של הנקודות מ-0 עד 1. שימוש ב-alpha נמוך מאפשר לראות צפיפות לפי חוזק הצבע המצטבר."
+            },
+            {
+                q: "איזה סוג של עמודות דורש כברירת מחדל גרף מסוג עוגה (Pie Chart) כדי לפעול כראוי?",
+                options: ["עמודה של נתונים מספריים רציפים בלבד (כמו מחירי דירות).", "לא ניתן לייצר גרף עוגה בפנדס.", "עמודה של תאריכים מול עמודה של שעות.", "נתונים שעברו אגרגציה או ספירה (כמו value_counts), המייצגים חלקים מתוך שלם."],
+                answer: 3,
+                rationale: "גרף עוגה לא יכול לקבל נתונים גולמיים. הוא דורש שתעביר לו מראש כמות או סכום של כל קטגוריה כדי להציג את החלק היחסי שלה (אחוזים)."
+            },
+            {
+                q: "כיצד נייצר ב-Pandas גרף אחד שמציג שני קווים שונים: קו לעמודת 'הכנסות' וקו לעמודת 'הוצאות', שניהם על פני ציר ה-'תאריך'?",
+                options: ["df.plot(x='תאריך', y=['הכנסות', 'הוצאות'], kind='line')", "df.line_plot(x='תאריך', y1='הכנסות', y2='הוצאות')", "df.plot(x='תאריך', y='הכנסות') + df.plot(x='תאריך', y='הוצאות')", "לא ניתן, חובה להשתמש ב-subplots."],
+                answer: 0,
+                rationale: "העברת רשימה של שמות עמודות לפרמטר y בתוך הפונקציה plot תגרום לפנדס לצייר את כל הקווים המבוקשים יחד על אותה מערכת צירים."
+            },
+            {
+                q: "בגרף קופסה (Boxplot), ה'קופסה' עצמה (המלבן המרכזי) תוחמת את הנתונים מאיזה אחוזון לאיזה אחוזון?",
+                options: ["מ-0% (מינימום) עד 100% (מקסימום).", "מ-25% (הרבעון התחתון) עד 75% (הרבעון העליון).", "היא מייצגת רק את הממוצע.", "מ-10% עד 90%."],
+                answer: 1,
+                rationale: "הקופסה מייצגת את הטווח הבין-רבעוני (IQR), כלומר את 50% של הנתונים המרכזיים והיציבים ביותר. הקו שבתוכה הוא החציון (50%)."
+            },
+            {
+                q: "אנו רוצים להוסיף כותרת לגרף שאנחנו מציירים בעזרת df.plot(). כיצד נעשה זאת?",
+                options: ["df.plot(header='My Title')", "df.plot().set_heading('My Title')", "df.plot(name='My Title')", "df.plot(title='My Title')"],
+                answer: 3,
+                rationale: "לפונקציית plot בפנדס יש פרמטר ישיר ונוח בשם title להוספת כותרת לגרף."
+            },
+
+            // --- ML BASICS & PREP (5) ---
+            {
+                q: "שלב ה-Scaling (נרמול הנתונים) משנה את הערכים המספריים לטווח אחיד. מדוע קריטי לבצע את פיצול הנתונים (Train/Test Split) *לפני* שמבצעים את ה-Scaling?",
+                options: ["כי פונקציית הפיצול לא מקבלת מספרים עשרוניים.", "כי ה-Scaling מוחק אוטומטית שורות ולא נדע כמה נשארו למבחן.", "כדי למנוע 'זליגת מידע' (Data Leakage) – הסטטיסטיקה (ממוצע, סטיית תקן) שעל פיה הנתונים מנורמלים צריכה להתבסס אך ורק על נתוני האימון, בלי לדעת כלום על נתוני הבדיקה.", "זה לא משנה מתי עושים, התוצאה זהה לחלוטין."],
+                answer: 2,
+                rationale: "אם ננרמל את הכל יחד, נתוני הבדיקה (העתיד) 'יזהמו' את הממוצע של נתוני האימון (העבר). נתוני הבדיקה צריכים להישאר מבודדים ובלתי נראים לחלוטין."
+            },
+            {
+                q: "מה יקרה לעמודה אם נפעיל עליה את הפונקציה StandardScaler() מספרית Sklearn?",
+                options: ["הערכים בה יומרו למחרוזות.", "כל הערכים יוקטנו כך שינועו בדיוק בין 0 ל-1.", "העמודה תתוקנן כך שהממוצע שלה יהיה קרוב ל-0, וסטיית התקן שלה תהיה 1.", "כל הערכים השליליים יימחקו."],
+                answer: 2,
+                rationale: "StandardScaler משתמש בציון התקן (Z-score) הסטטיסטי. (לעומת MinMaxScaler שמביא את הנתונים לטווח 0-1)."
+            },
+            {
+                q: "מהו ההבדל המרכזי בין שימוש בפונקציה fit_transform() לבין שימוש בפונקציה transform() על נתונים?",
+                options: ["אין הבדל.", "fit_transform 'לומדת' את הפרמטרים (כמו הממוצע) ואז מיישמת אותם, בעוד transform רק מיישמת פרמטרים שכבר נלמדו בעבר.", "transform לומדת נתונים מחדש, בעוד fit_transform מיועדת רק למחיקה.", "fit_transform מיועדת לעצי החלטה בלבד."],
+                answer: 1,
+                rationale: "זה כלל ברזל בהכנת נתונים: עושים fit_transform רק על נתוני האימון (כדי ללמוד את הממוצע ולנרמל), ואז רק transform על נתוני הבדיקה (נרמול לפי הממוצע שנלמד מנתוני האימון)."
+            },
+            {
+                q: "השתמשנו בפונקציה pd.get_dummies() להמרת העמודה הקטגוריאלית 'צבע' (אדום/ירוק/כחול) לעמודות בינאריות. כמה עמודות חדשות נקבל כברירת מחדל?",
+                options: ["עמודה אחת בלבד שתכיל מספרים 0,1,2.", "שתי עמודות.", "שלוש עמודות חדשות (אחת לכל צבע, המכילות 0 או 1).", "אף אחת, הפונקציה מחזירה רשימה של פייתון."],
+                answer: 2,
+                rationale: "זהו תהליך One-Hot Encoding. עבור כל ערך ייחודי בעמודת המקור תיווצר עמודה חדשה שמכילה 1 אם הערך קיים ו-0 אם לא."
+            },
+            {
+                q: "אנו בונים מודל לחיזוי מחירי דירות. לאחר אימון המודל, גילינו ששגיאת ה-MSE על קבוצת ה*אימון* היא כמעט 0, אך שגיאת ה-MSE על קבוצת ה*בדיקה* עצומה. מהי האבחנה הסבירה?",
+                options: ["המודל סובל מ-Underfitting (תת-התאמה).", "המודל סובל מ-Overfitting (התאמת יתר - 'שינון' של הנתונים).", "המודל מושלם ומוכן לייצור.", "קבוצת הבדיקה גדולה מדי."],
+                answer: 1,
+                rationale: "כשהמודל מדויק מדי על נתוני העבר שעליהם הוא התאמן (שינן את הרעשים) ונכשל טוטאלית על נתונים חדשים, זו הגדרת הספר להתאמת-יתר (Overfitting)."
+            },
+
+            // --- CRISP-DM & EXCEPTION HANDLING (4) ---
+            {
+                q: "בפרויקט מדע הנתונים, באיזה שלב (לפי CRISP-DM) נבצע הסרת ערכים חריגים (Outliers), מילוי ערכים חסרים ב-NaN, ו-Scaling?",
+                options: ["Business Understanding", "Data Understanding", "Data Preparation (הכנת נתונים)", "Evaluation"],
+                answer: 2,
+                rationale: "שלב הכנת הנתונים (Data Prep) הוא השלב ה'שחור' שבו לוקחים את הנתונים הגולמיים, מנקים, מסננים, ומעבדים אותם לקראת הכנסתם למודל."
+            },
+            {
+                q: "בשלב ה-Evaluation במודל CRISP-DM, אנו בוחנים את המודל. מהי מטרת הבחינה המרכזית בשלב זה (לפני ההטמעה)?",
+                options: ["לבדוק שאין שגיאות Syntax בקוד.", "לוודא שהמודל ממזער את מדד ג'יני לאפס.", "להכין גיבוי של מסד הנתונים.", "לוודא שמעבר לדיוק המתמטי, המודל אכן עונה ופותר את הבעיה *העסקית* שהוגדרה בתחילת הפרויקט."],
+                answer: 3,
+                rationale: "שלב ההערכה אינו רק טכני. הוא מוודא שהמודל לא רק צודק מספרית, אלא גם בעל ערך עסקי אמיתי לחברה, לפני שמתקינים אותו במערכות הייצור (Deployment)."
+            },
+            {
+                q: "במנגנון Exception Handling, מה יקרה אם עטפנו קוד בבלוק `try`, הגדרנו `except ValueError`, אבל בפועל התרחשה שגיאה מסוג `KeyError`?",
+                options: ["השגיאה תיתפס על ידי ה-except ונוכל להדפיס הודעה.", "הבלוק finally יימחק.", "התוכנית תתעלם מהשגיאה לחלוטין.", "השגיאה לא תיתפס (כי היא מסוג שונה ממה שהגדרנו), והתוכנית תקרוס לחלוטין."],
+                answer: 3,
+                rationale: "בלוק except ספציפי (כמו ValueError) מטפל אך ורק בסוג השגיאה הזה. כל שגיאה אחרת תחמוק מבעד לרשת ותקריס את המערכת (אלא אם כן נוסיף בלוק except כללי)."
+            },
+            {
+                q: "אנו כותבים לולאה שמנקה מאה אלף שורות בטבלה. מדי פעם יש שורה פגומה שאנו רוצים למחוק מבלי שהלולאה תיעצר. היכן המיקום הנכון לבלוק ה-try-except?",
+                options: ["לפני פתיחת הלולאה (לעטוף את כל הלולאה ב-try אחד גדול).", "בתוך הלולאה, על הפעולה הספציפית של השורה הנוכחית.", "אחרי הלולאה.", "בתוך בלוק finally."],
+                answer: 1,
+                rationale: "אם נעטוף את כל הלולאה מבחוץ, השגיאה הראשונה תעצור את הלולאה כולה ותזרוק אותנו ל-except בחוץ. עטיפה *פנימית* מאפשרת לטפל נקודתית בשגיאה ולהמשיך לאיטרציה הבאה."
+            },
+
+            // --- EVALUATION METRICS (7) ---
+            {
+                q: "מודל חיזוי להונאות כרטיסי אשראי סרק 10,000 עסקאות (מתוכן 100 הונאות אמיתיות). המודל תפס 80 הונאות מתוך ה-100. הוא גם סימן בטעות 50 עסקאות רגילות כהונאה. מהו ה-Recall (רגישות) של המודל?",
+                options: ["80 / 130", "50 / 100", "80 / 100 (שזה 80%)", "80 / 10000"],
+                answer: 2,
+                rationale: "Recall עונה על השאלה: 'מתוך כל מקרי האמת שהיו במציאות (100 הונאות), כמה המודל הצליח לתפוס?'. לכן, 80 תפיסות לחלק ל-100 הונאות בפועל = 80%."
+            },
+            {
+                q: "באותה דוגמה (100 הונאות במציאות, המודל התריע על 130 עסקאות כהונאה, מתוכן 80 באמת היו הונאה ו-50 היו אזעקות שווא). מהו ה-Precision (דיוק חיובי)?",
+                options: ["80 / 10000", "80 / 130 (כ-61%)", "50 / 130", "80 / 100"],
+                answer: 1,
+                rationale: "Precision עונה על השאלה: 'מתוך כל מה שהמודל *הכריז* עליו כחיובי/הונאה (80+50 = 130 התראות), כמה באמת היו נכונות?'. לכן 80 חלקי 130."
+            },
+            {
+                q: "אם ציון ה-Precision של מודל הוא 1.0 (100%), מה ניתן להסיק בוודאות לגבי מטריצת הבלבול שלו?",
+                options: ["שה-True Positives (TP) שווה ל-0.", "שאין לו בכלל False Negatives (FN).", "שאין לו בכלל False Positives (FP - אפס אזעקות שווא).", "שהוא פתר את בעיית חוסר האיזון."],
+                answer: 2,
+                rationale: "הנוסחה של דיוק היא TP / (TP+FP). אם התוצאה היא 1 שלם (100%), זה מחייב שהמחנה שווה למונה, כלומר FP=0. כל פעם שהמודל 'פתח את הפה', הוא צדק."
+            },
+            {
+                q: "יש לנו מערכת שמזהה טרוריסטים בשדה התעופה. מהו המחיר של False Negative (FN) במערכת כזו?",
+                options: ["נוסע תמים שיעוכב לחקירה (אי נעימות).", "המערכת תקרוס.", "מחבל אמיתי שיעבור במערכת ללא שום התרעה (סכנת חיים).", "נוסע תמים שזוהה כנוסע תמים."],
+                answer: 2,
+                rationale: "False Negative פירושו שהמודל אמר 'שלילי/תקין', אך טעה (False), כלומר האדם הוא מחבל. במקרים כאלו שואפים למקסם את ה-Recall על חשבון ה-Precision."
+            },
+            {
+                q: "מודל רגרסיה לחיזוי מחירי בתים הניב ציון MSE (שגיאה ריבועית ממוצעת) של 0. מה זה אומר?",
+                options: ["שהמודל תמיד מנחש את המחיר הממוצע.", "שהמודל מצא את האשכולות (Clusters) המושלמים.", "המודל פשוט ניחש אקראית.", "שהמודל עבר בדיוק, אבל בדיוק, דרך כל הנקודות הצהובות שבגרף הפיזור (התחזיות שלו תואמות למציאות ב-100%)."],
+                answer: 3,
+                rationale: "ה-MSE מודד את המרחק בין התחזית (הקו) למציאות (הנקודה) בריבוע. אם הסכום הוא 0, סימן שאין שום מרחק. (יכול להעיד על Overfitting במקרים מסוימים)."
+            },
+            {
+                q: "מה מייצגים ציר ה-X וציר ה-Y בעקומת ROC קלאסית?",
+                options: ["ציר X: שטח, ציר Y: מחיר.", "ציר X: שיעור זיהויים נכונים (Recall), ציר Y: דיוק (Precision).", "ציר X: שיעור אזעקות השווא (FPR), ציר Y: שיעור הזיהויים הנכונים (TPR / Recall).", "ציר X: מספר האשכולות, ציר Y: אינרציה."],
+                answer: 2,
+                rationale: "הגרף משרטט את ה-Trade-off בין השאיפה לתפוס כמה שיותר חיוביים (עלייה בציר Y) לבין המחיר שאנחנו משלמים ביצירת אזעקות שווא (תזוזה ימינה בציר X)."
+            },
+            {
+                q: "ציון F1 Score של מודל יורד משמעותית כאשר:",
+                options: ["גם ה-Precision וגם ה-Recall הם 100%.", "רק כאשר ה-Accuracy נמוך.", "אחד מהמדדים (Precision או Recall) נמוך משמעותית מהשני, עקב השימוש בממוצע הרמוני ש'מעניש' פערים.", "הנתונים מנורמלים בצורה חזקה מדי."],
+                answer: 2,
+                rationale: "ממוצע הרמוני מושך חזק לכיוון המספר הנמוך. לכן, מודל שמצטיין ב-Recall אבל גרוע ב-Precision, ייחשף כבעייתי דרך ציון F1 נמוך."
+            },
+
+            // --- CLUSTERING (4) ---
+            {
+                q: "באלגוריתם K-Means, מה יקרה מתמטית אם נגדיר את הפרמטר K (מספר האשכולות) להיות שווה בדיוק למספר השורות/דגימות שיש לנו במאגר הנתונים?",
+                options: ["המודל יקרוס ויזרוק שגיאה.", "ציון ה-Inertia (WCSS) יהיה שווה ל-0, כיוון שכל נקודה תהפוך למרכז אשכול של עצמה.", "ציון ה-Inertia יגיע למקסימום האפשרי שלו.", "זהו המצב האופטימלי ללמידה לא מונחית."],
+                answer: 1,
+                rationale: "האינרציה מודדת את המרחק של נקודה למרכז האשכול שלה. אם כל נקודה היא אשכול משל עצמה, המרחק הוא 0. (כמובן שזה חסר תועלת מעשית)."
+            },
+            {
+                q: "מה מייצג הציר האנכי (ציר ה-Y) בגרף דנדרוגרמה (Dendrogram) של אשכול היררכי (Hierarchical Clustering)?",
+                options: ["את מספר האשכולות (K).", "את צפיפות הנתונים באותו אזור.", "את המרחק (השוני) בין האשכולות שאוחדו. ככל שהחיבור גבוה יותר בציר, כך האשכולות שונים יותר זה מזה.", "את הממוצע של משתני המקור."],
+                answer: 2,
+                rationale: "בדנדרוגרמה, הקווים האנכיים מחברים בין קבוצות. גובהו של הקו האופקי המחבר ביניהם מעיד על ה'מרחק' שהיה צריך לחצות כדי לאחד אותם."
+            },
+            {
+                q: "איזה מהמשפטים הבאים מתאר את אחד היתרונות של DBSCAN בהשוואה ל-K-Means?",
+                options: ["DBSCAN הוא אלגוריתם של למידה מונחית המייצר עצי החלטה.", "DBSCAN לא מסוגל לסנן Outliers.", "DBSCAN מסוגל למצוא אשכולות בצורות גיאומטריות מורכבות (כמו טבעות מקוננות) ש-K-Means ייכשל בהן בגלל הנחת ה'כדוריות' שלו.", "DBSCAN דורש לדעת מראש מהם מרכזי הכובד."],
+                answer: 2,
+                rationale: "כיוון ש-DBSCAN מבוסס על רצף של צפיפות, הוא פשוט 'עוקב' אחרי הצפיפות ולא כופה על הנתונים צורה של כדור מסביב לנקודת מרכז כפי שעושה K-Means."
+            },
+            {
+                q: "אנו מאתחלים אלגוריתם K-Means עם random_state=42. מדוע זה חשוב פה במיוחד (מעבר לעקביות התוצאות)?",
+                options: ["מכיוון ש-K-Means בוחר את מיקום מרכזי האשכולות ההתחלתיים באופן אקראי, ובחירה שונה יכולה לעיתים להוביל לתוצאה (חלוקה) שונה לחלוטין בסוף התהליך.", "זה לא חשוב ב-K-Means, אלא רק ב-Train_Test_Split.", "כדי לוודא שהאלגוריתם יסיים ב-42 איטרציות.", "כדי שהאינרציה תמיד תהיה זהה ל-42."],
+                answer: 0,
+                rationale: "K-Means רגיש מאוד למיקומים הראשוניים של ה'צנטרואידים' (מרכזים). התחלה גרועה יכולה לתקוע אותו במינימום מקומי (פתרון לא אידיאלי)."
+            },
+
+            // --- TREE MODELS & ENSEMBLES (4) ---
+            {
+                q: "בהקשר של עצי החלטה, מה משמעות הנתון 'Gini = 0.5' עבור צומת בסיווג בינארי (מחלה / לא מחלה)?",
+                options: ["הצומת טהור לחלוטין (הומוגני).", "מדובר במקסימום חוסר הטוהר (ערבוב מוחלט של 50-50 בין המחלקות).", "הצומת מוכן להפוך לעלה סופי.", "המודל סיים את החיפוש החמדן שלו."],
+                answer: 1,
+                rationale: "ג'יני של 0 אומר שיש רק מחלקה אחת (טוהר). בבעיה בינארית, ג'יני של 0.5 (חצי) הוא הערך הגרוע ביותר האפשרי, המייצג תערובת מושלמת ואי ודאות מוחלטת."
+            },
+            {
+                q: "מודל יער אקראי (Random Forest) מוסיף 'אקראיות' בעת בניית העצים. איזה מהבאים הוא מנגנון אקראיות מרכזי של האלגוריתם?",
+                options: ["הוספת רעש למשתנה המטרה (Y).", "שינוי פונקציית האקטיבציה בין עץ לעץ.", "בכל שלב פיצול בעץ, המודל שוקל רק תת-קבוצה אקראית של מאפיינים (עמודות) מתוך כלל המאפיינים האפשריים, ולא את כולם יחד.", "הוא מגריל עומק מקסימלי שונה לכל עץ."],
+                answer: 2,
+                rationale: "בנוסף למדגם האקראי של השורות (Bootstrapping), האלגוריתם לא נותן לעץ לראות את כל העמודות בכל רגע, כדי להכריח עצים שונים להשתמש במאפיינים שונים ולגוון את ההחלטות."
+            },
+            {
+                q: "בעצי החלטה (ובמודלי Ensemble מבוססי עצים), לרוב ניתן לקבל דיווח על 'Feature Importance' (חשיבות מאפיינים). כיצד האלגוריתם מעריך זאת עקרונית?",
+                options: ["לפי אורך שם העמודה.", "לפי מידת הקורלציה של העמודה עם עמודות אחרות ב-Pandas.", "הוא בודק עד כמה השימוש במאפיין הזה תרם בממוצע להפחתת ה'אי-טוהר' (הקטנת מדד הג'יני) לאורך הפיצולים בעץ.", "לפי מקדם ה-coef_ (השיפוע) שלו."],
+                answer: 2,
+                rationale: "מאפיין שנבחר הרבה פעמים לפצל צמתים חשובים (והוריד את הג'יני בצורה משמעותית) יקבל ציון 'חשיבות' גבוה יותר במודל."
+            },
+            {
+                q: "מהי המשמעות המדויקת של פרמטר ה-learning_rate במודלים ממשפחת ה-Boosting (כמו XGBoost)?",
+                options: ["הוא קובע כמה אחוז מהנתונים יוקצה לאימון.", "הוא מגביל את מספר העצים שייבנו.", "הוא שולט על 'גודל הצעד' או התרומה של כל עץ חדש לתיקון השגיאה הכוללת. קצב קטן ידרוש יותר עצים אך ימנע 'קפיצות' מעל הפתרון האופטימלי.", "הוא משנה את ערך ההטיה (Bias) של רשת הנוירונים."],
+                answer: 2,
+                rationale: "ב-Boosting, אנחנו מתקנים שגיאות. אם נתקן באגרסיביות (קצב גבוה), אנו עלולים לפספס את היעד. קצב למידה (Shrinkage) קטן מרסן את העצים ומאפשר למידה מדויקת יותר."
+            },
+
+            // --- NEURAL NETWORKS (4) ---
+            {
+                q: "מהו מושג ה-Epoch (תקופה) באימון של רשת נוירונים?",
+                options: ["מספר השכבות החבויות ברשת.", "מעבר של קבוצה אחת קטנה של נתונים (Batch) דרך הרשת.", "מחזור אחד שלם שבו **כלל נתוני האימון** עברו פעם אחת (קדימה ואחורה) דרך הרשת העצבית ללמידה ועדכון משקולות.", "פונקציית האקטיבציה שמסיימת את הרשת."],
+                answer: 2,
+                rationale: "Epoch הוא 'סיבוב' מלא של הרשת על כל חומר הלימוד. בדרך כלל מאמנים רשת במשך עשרות או מאות Epochs כדי שהיא תתכוונן לביצועים מיטביים."
+            },
+            {
+                q: "אנו בונים רשת נוירונים לפתרון בעיית סיווג המכילה 5 קטגוריות אפשריות (למשל סיווג תמונה ל: כלב, חתול, סוס, ציפור, דג). מה יהיה המבנה ההגיוני של **שכבת הפלט (Output Layer)**?",
+                options: ["נוירון בודד המשתמש בפונקציית Sigmoid.", "5 נוירונים בשכבת הפלט, המשתמשים לרוב בפונקציית Softmax כדי לייצר הסתברויות המסתכמות ל-1 (100%).", "ללא שכבת פלט, הרשת פשוט מדפיסה טקסט.", "נוירון אחד לכל שורת קלט."],
+                answer: 1,
+                rationale: "בבעיות רב-מחלקתיות (Multiclass), אנו זקוקים לנוירון עבור כל מחלקה אפשרית. פונקציית Softmax משמשת כדי להפוך את הפלטים שלהם לסט של הסתברויות יחסיות שקל לפרש."
+            },
+            {
+                q: "מהי פונקציית האובדן (Loss Function) או מייעל (Optimizer) - איזה תפקיד יש לאלגוריתמים כמו Adam או SGD ברשת נוירונים?",
+                options: ["הם מנרמלים את הקלט (Scaling) לפני השכבה הראשונה.", "הם מחליטים כמה שכבות חבויות צריך.", "לאחר שה-Backpropagation חישב את הנגזרות (עד כמה כל משקולת אחראית לטעות), ה-Optimizer הוא זה שלוקח את הנגזרות הללו ו**מעדכן בפועל** את המשקולות כדי להקטין את השגיאה.", "הם ממירים טקסט למספרים לקריאה ברשת."],
+                answer: 2,
+                rationale: "ה-Optimizer (כמו Gradient Descent) הוא המנוע שמבצע את העדכון בפועל של הפרמטרים במורד השיפוע המתמטי בניסיון להגיע למינימום של השגיאה."
+            },
+            {
+                q: "מה קורה כאשר אנו מוסיפים 'שכבת Dropout' (נשירה) בתוך רשת נוירונים?",
+                options: ["הרשת זורקת חלק מהנתונים מקבוצת המבחן.", "במהלך האימון, חלק אקראי מהנוירונים (למשל 20%) 'כבים' או מתאפסים זמנית בכל שלב, מה שמכריח את הרשת לא להסתמך על תכונות ספציפיות ומונע Overfitting.", "פונקציית ה-Loss יורדת מיד לאפס.", "המשקולות מומרות לערכים בינאריים של 0 ו-1."],
+                answer: 1,
+                rationale: "Dropout היא טכניקת 'הסדרה' (Regularization) קלאסית. היא מונעת מהרשת לשנן בעל פה וליצור תלות יתר במספר נוירונים ספציפיים, ומפזרת את יכולת הלמידה."
+            }
+        ];
+
+        // Shuffle questions
+        const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
 
         let currentQuestionIndex = 0;
-        let selectedOption = null;
-        let isAnswerChecked = false;
         let score = 0;
-        let streak = 0;
-        let bestStreak = 0;
-        const letters = ['א', 'ב', 'ג', 'ד'];
+        let hasAnswered = false;
+
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const feedbackContainer = document.getElementById('feedback-area');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackRationale = document.getElementById('feedback-rationale');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const progressBar = document.getElementById('progress-bar');
+        const questionCounter = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
 
         function startQuiz() {
-            document.getElementById('startScreen').style.display = 'none';
-            document.getElementById('quizScreen').style.display = 'block';
-            document.getElementById('totalNum').textContent = questions.length;
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
             loadQuestion();
         }
 
         function loadQuestion() {
-            const question = questions[currentQuestionIndex];
+            hasAnswered = false;
+            const q = shuffledQuestions[currentQuestionIndex];
             
-            document.getElementById('questionText').textContent = question.text;
-            document.getElementById('currentNum').textContent = currentQuestionIndex + 1;
-            document.getElementById('scoreDisplay').textContent = score;
-            document.getElementById('questionBadge').textContent = `שאלה ${currentQuestionIndex + 1}`;
-            document.getElementById('progressFill').style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+            // Animation reset
+            questionText.style.animation = 'none';
+            questionText.offsetHeight; 
+            questionText.style.animation = 'fadeIn 0.4s ease-out forwards';
             
-            const optionsContainer = document.getElementById('optionsContainer');
+            questionText.textContent = `${q.q}`;
+            questionCounter.textContent = currentQuestionIndex + 1;
+            progressBar.style.width = `${((currentQuestionIndex) / shuffledQuestions.length) * 100}%`;
+            
             optionsContainer.innerHTML = '';
-            
-            question.options.forEach((option, index) => {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'option';
-                optionDiv.innerHTML = `
-                    <div class="option-letter">${letters[index]}</div>
-                    <div class="option-text">${option}</div>
-                    <div class="option-icon"></div>
+            feedbackContainer.classList.add('hidden');
+            feedbackContainer.classList.remove('bg-emerald-500/10', 'border-emerald-500/30', 'bg-red-500/10', 'border-red-500/30');
+            nextBtn.classList.add('hidden');
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn w-full p-4 sm:p-5 rounded-2xl text-lg text-slate-200 focus:outline-none flex justify-between items-center group font-medium text-right mb-3';
+                btn.innerHTML = `
+                    <span class="ml-4 flex-grow leading-snug" style="direction: rtl;">${opt}</span>
+                    <div class="w-7 h-7 rounded-full border border-white/20 flex-shrink-0 flex items-center justify-center transition-all option-circle bg-white/5 group-hover:bg-white/10"></div>
                 `;
-                optionDiv.onclick = () => selectOption(index);
-                optionsContainer.appendChild(optionDiv);
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
             });
-            
-            document.getElementById('checkBtn').disabled = true;
-            document.getElementById('rationaleSection').style.display = 'none';
-            document.getElementById('checkBtn').style.display = 'flex';
-            
-            // Re-trigger card animation
-            const card = document.getElementById('questionCard');
-            card.style.animation = 'none';
-            card.offsetHeight;
-            card.style.animation = 'cardIn 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
-            
-            selectedOption = null;
-            isAnswerChecked = false;
+        }
 
-            // Update next button text
-            if (currentQuestionIndex === questions.length - 1) {
-                document.getElementById('nextBtnText').textContent = 'לתוצאות הסופיות';
-            } else {
-                document.getElementById('nextBtnText').textContent = 'לשאלה הבאה';
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            const q = shuffledQuestions[currentQuestionIndex];
+            const isCorrect = selectedIndex === q.answer;
+            const allBtns = optionsContainer.children;
+
+            for(let i=0; i < allBtns.length; i++) {
+                allBtns[i].disabled = true;
+                const circle = allBtns[i].querySelector('.option-circle');
+                
+                if(i === q.answer) {
+                    allBtns[i].classList.add('correct');
+                    circle.innerHTML = '<i class="fa-solid fa-check text-sm text-emerald-400"></i>';
+                    circle.className = "w-7 h-7 rounded-full bg-emerald-500/20 border-emerald-500 flex-shrink-0 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+                } else if(i === selectedIndex && !isCorrect) {
+                    allBtns[i].classList.add('incorrect');
+                    circle.innerHTML = '<i class="fa-solid fa-xmark text-sm text-red-400"></i>';
+                    circle.className = "w-7 h-7 rounded-full bg-red-500/20 border-red-500 flex-shrink-0 flex items-center justify-center";
+                } else {
+                    allBtns[i].classList.add('opacity-40');
+                }
             }
-        }
 
-        function selectOption(index) {
-            if (isAnswerChecked) return;
+            feedbackContainer.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
             
-            selectedOption = index;
-            const options = document.querySelectorAll('.option');
-            options.forEach((opt, i) => {
-                opt.classList.remove('selected');
-                if (i === index) {
-                    opt.classList.add('selected');
-                }
-            });
-            
-            document.getElementById('checkBtn').disabled = false;
-        }
-
-        function checkAnswer() {
-            if (selectedOption === null) return;
-            
-            isAnswerChecked = true;
-            const question = questions[currentQuestionIndex];
-            const options = document.querySelectorAll('.option');
-            
-            options.forEach((opt, i) => {
-                opt.classList.add('disabled');
-                if (i === question.correctIndex) {
-                    opt.classList.add('correct');
-                    opt.querySelector('.option-icon').innerHTML = '✓';
-                } else if (i === selectedOption && i !== question.correctIndex) {
-                    opt.classList.add('incorrect');
-                    opt.querySelector('.option-icon').innerHTML = '✗';
-                }
-            });
-            
-            if (selectedOption === question.correctIndex) {
+            if(isCorrect) {
                 score++;
-                streak++;
-                if (streak > bestStreak) bestStreak = streak;
-                updateStreak();
+                scoreDisplay.textContent = score;
+                feedbackContainer.classList.add('bg-emerald-500/10', 'border-emerald-500/30');
+                feedbackTitle.textContent = "בול!";
+                feedbackTitle.className = "text-xl font-bold text-emerald-400";
+                feedbackIcon.className = "fa-solid fa-circle-check text-emerald-400 text-2xl";
             } else {
-                streak = 0;
-                updateStreak();
+                feedbackContainer.classList.add('bg-red-500/10', 'border-red-500/30');
+                feedbackTitle.textContent = "לא מדויק...";
+                feedbackTitle.className = "text-xl font-bold text-red-400";
+                feedbackIcon.className = "fa-solid fa-circle-xmark text-red-400 text-2xl";
             }
-            
-            document.getElementById('scoreDisplay').textContent = score;
-            document.getElementById('rationaleText').textContent = question.rationale;
-            document.getElementById('rationaleSection').style.display = 'block';
-            document.getElementById('checkBtn').style.display = 'none';
-        }
 
-        function updateStreak() {
-            const streakCounter = document.getElementById('streakCounter');
-            const streakCount = document.getElementById('streakCount');
+            feedbackRationale.innerHTML = `<span class="font-bold text-white drop-shadow-md">הסבר: </span>${q.rationale}`;
             
-            if (streak >= 3) {
-                streakCounter.classList.add('active');
-                streakCount.textContent = streak;
-            } else {
-                streakCounter.classList.remove('active');
+            if(currentQuestionIndex === shuffledQuestions.length - 1) {
+                nextBtn.innerHTML = 'סיום וצפייה בתוצאות <i class="fa-solid fa-flag-checkered mr-2 text-xl"></i>';
+                nextBtn.className = "mt-6 w-full py-5 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-xl font-bold transition-all text-white flex items-center justify-center gap-2 shadow-lg hover:shadow-sky-500/50 hover:scale-[1.02] text-xl tracking-wide";
             }
         }
 
         function nextQuestion() {
             currentQuestionIndex++;
-            
-            if (currentQuestionIndex >= questions.length) {
-                showResults();
-            } else {
+            if(currentQuestionIndex < shuffledQuestions.length) {
                 loadQuestion();
+            } else {
+                showResults();
             }
         }
 
         function showResults() {
-            document.getElementById('quizScreen').style.display = 'none';
-            document.getElementById('resultsScreen').style.display = 'block';
-            document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
-            document.getElementById('percentScore').textContent = `${Math.round((score / questions.length) * 100)}%`;
-            document.getElementById('correctCount').textContent = score;
-            document.getElementById('bestStreak').textContent = bestStreak;
-            document.getElementById('scoreMessage').textContent = getScoreMessage();
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            progressBar.style.width = '100%';
             
-            if (score >= questions.length * 0.7) {
-                createConfetti();
+            const percentage = Math.round((score / shuffledQuestions.length) * 100);
+            
+            // Animate percentage circle
+            setTimeout(() => {
+                const circle = document.getElementById('score-circle');
+                const offset = 440 - (440 * percentage) / 100;
+                circle.style.strokeDashoffset = offset;
+            }, 100);
+
+            // Animate numbers
+            let currentNum = 0;
+            const targetNum = percentage;
+            const numElement = document.getElementById('final-percentage');
+            const interval = setInterval(() => {
+                if (currentNum >= targetNum) {
+                    clearInterval(interval);
+                    numElement.textContent = targetNum;
+                } else {
+                    currentNum++;
+                    numElement.textContent = currentNum;
+                }
+            }, 20);
+
+            
+            const title = document.getElementById('result-title');
+            const subtitle = document.getElementById('result-subtitle');
+            const icon = document.getElementById('result-icon');
+            const iconCont = document.getElementById('result-icon-container');
+
+            if(percentage >= 90) {
+                title.innerHTML = 'Data Scientist <span class="text-sky-400">Pro</span>';
+                subtitle.textContent = `ציון של ${score} מתוך ${shuffledQuestions.length}. אתה מכונה! המבחן הזה קטן עליך.`;
+                icon.className = "fa-solid fa-user-astronaut text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]";
+                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-sky-400/30 bg-sky-400/10";
+            } else if(percentage >= 75) {
+                title.textContent = "עבודה חזקה מאוד!";
+                subtitle.textContent = `השגת ${score} מתוך ${shuffledQuestions.length}. השליטה שלך בחומר מרשימה. מעבר זריז על הטעויות ואתה מסודר.`;
+                icon.className = "fa-solid fa-rocket text-indigo-400 drop-shadow-[0_0_15px_rgba(129,140,248,0.8)]";
+                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-indigo-400/30 bg-indigo-400/10";
+            } else if(percentage >= 60) {
+                title.textContent = "כמעט שם...";
+                subtitle.textContent = `ציון ${score}/${shuffledQuestions.length}. מעבר, אבל השאלות המכשילות הפילו אותך. עיין שוב בסיכומים לפני המבחן.`;
+                icon.className = "fa-solid fa-chart-line text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.8)]";
+                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-emerald-400/30 bg-emerald-400/10";
+            } else {
+                title.textContent = "שווה לעשות חזרה";
+                subtitle.textContent = `הוצאת ${score}/${shuffledQuestions.length}. המבחן הזה בכוונה קשה, אבל זה בדיוק הזמן לתרגל שוב את החומר מההתחלה.`;
+                icon.className = "fa-solid fa-triangle-exclamation text-red-400 drop-shadow-[0_0_15px_rgba(248,113,113,0.8)]";
+                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-red-400/30 bg-red-400/10";
             }
         }
 
-        function getScoreMessage() {
-            const percentage = (score / questions.length) * 100;
-            if (percentage === 100) return "מושלם! אתה שולט בחומר ברמה הגבוהה ביותר. 🏆";
-            if (percentage >= 85) return "מצוין! אתה בהחלט מוכן למבחן. 💪";
-            if (percentage >= 70) return "טוב מאוד. חזרה קטנה על ההסברים ותהיה מוכן לגמרי. ✨";
-            if (percentage >= 55) return "ציון עובר, אבל כדאי לעבור שוב על סיכום המושגים. 📚";
-            return "לא נורא, תרגול נוסף יעשה את ההבדל! מומלץ לקרוא שוב את הסיכום. 🌱";
-        }
-
-        function createConfetti() {
-            const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
-                confetti.style.animationDelay = Math.random() * 1.5 + 's';
-                confetti.style.width = (Math.random() * 8 + 6) + 'px';
-                confetti.style.height = confetti.style.width;
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                document.body.appendChild(confetti);
-                
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        }
-
-        function restartQuiz() {
-            currentQuestionIndex = 0;
-            selectedOption = null;
-            isAnswerChecked = false;
-            score = 0;
-            streak = 0;
-            bestStreak = 0;
+        function shareResults() {
+            const percentage = Math.round((score / shuffledQuestions.length) * 100);
+            const text = `שרדתי את מבחן האתגר של מדע הנתונים! 🚀\nסיימתי עם ${score}/${shuffledQuestions.length} שאלות (${percentage}%).\nמי אמר פנדס ולא קיבל?`;
             
-            document.getElementById('resultsScreen').style.display = 'none';
-            document.getElementById('startScreen').style.display = 'block';
-            document.getElementById('streakCounter').classList.remove('active');
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('share-toast');
+                toast.classList.remove('opacity-0');
+                setTimeout(() => toast.classList.add('opacity-0'), 3000);
+            }).catch(err => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    const toast = document.getElementById('share-toast');
+                    toast.classList.remove('opacity-0');
+                    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+                } catch (err) {
+                    console.error('Fallback: Oops, unable to copy', err);
+                }
+                document.body.removeChild(textArea);
+            });
         }
     </script>
 </body>
 </html>
-
