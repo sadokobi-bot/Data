@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן סימולציה מתקדם: מדע הנתונים</title>
+    <title>מבחן סימולציה מקיף: מדע הנתונים</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
             --primary: #0ea5e9;
             --secondary: #6366f1;
-            --dark-bg: #0b0f19;
-            --glass-bg: rgba(17, 24, 39, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --dark-bg: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
         
         body {
@@ -29,146 +29,89 @@
             justify-content: center;
         }
 
-        /* Animated Background Particles */
-        .particles {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-        }
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(14, 165, 233, 0.15);
-            animation: float 15s infinite linear;
-        }
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-        }
-
-        /* Deep Glassmorphism Card */
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             border-radius: 1.5rem;
             z-index: 10;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        /* Smooth Animations */
-        .fade-enter { animation: fadeIn 0.4s ease-out forwards; }
+        .fade-enter { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Interactive Options */
         .option-btn {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s ease;
         }
         .option-btn:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(14, 165, 233, 0.4);
-            transform: translateX(-5px);
-            box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-2px);
         }
         
         .option-btn.correct {
-            background: rgba(16, 185, 129, 0.15) !important;
+            background: rgba(16, 185, 129, 0.2) !important;
             border-color: #10b981 !important;
             color: #34d399;
         }
         .option-btn.incorrect {
-            background: rgba(239, 68, 68, 0.15) !important;
+            background: rgba(239, 68, 68, 0.2) !important;
             border-color: #ef4444 !important;
             color: #f87171;
         }
         
         .option-btn:disabled { cursor: default; }
-
-        .progress-glow {
-            box-shadow: 0 0 15px var(--primary);
-        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
-
-    <!-- CSS Particles -->
-    <div class="particles" id="particles-js"></div>
 
     <div id="app" class="max-w-4xl w-full glass-card overflow-hidden">
         
         <!-- START SCREEN -->
         <div id="start-screen" class="p-10 sm:p-20 text-center fade-enter">
-            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-sky-500/20 to-indigo-500/20 border border-sky-500/30 mb-8 shadow-[0_0_30px_rgba(14,165,233,0.3)]">
-                <i class="fa-solid fa-brain text-5xl text-sky-400"></i>
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-sky-500/20 border border-sky-500/30 mb-8">
+                <i class="fa-solid fa-laptop-code text-5xl text-sky-400"></i>
             </div>
-            <h1 class="text-4xl sm:text-5xl font-black mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-l from-sky-300 via-indigo-300 to-sky-300">
-                מבחן האתגר: מדע הנתונים
-            </h1>
-            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto leading-relaxed font-light">
-                65 שאלות פרקטיות ומתחכמות. ללא "התשובה הארוכה היא הנכונה". 
-                מוכנים לבדוק את השליטה שלכם ב-Pandas, מודלים, מטריקות וניקוי נתונים באמת?
+            <h1 class="text-4xl sm:text-5xl font-black mb-6 text-white">מבחן מסכם: מדע הנתונים</h1>
+            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">
+                65 שאלות מדויקות התואמות לחומר הלימוד ולמיקוד המרצה. המבחן בודק קוד, הבנת מודלים, מטריקות הערכה וניקוי נתונים.
             </p>
-            <button onclick="startQuiz()" class="relative inline-flex items-center px-10 py-4 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-full font-bold text-lg text-white hover:from-sky-400 hover:to-indigo-500 transition-all shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_40px_rgba(99,102,241,0.6)] hover:scale-105">
-                <i class="fa-solid fa-rocket mr-3 ml-2"></i> בואו נתחיל
+            <button onclick="startQuiz()" class="px-10 py-4 bg-sky-500 hover:bg-sky-400 rounded-full font-bold text-lg text-white transition-all shadow-lg hover:scale-105">
+                התחל מבחן עכשיו <i class="fa-solid fa-arrow-left mr-2"></i>
             </button>
         </div>
 
         <!-- QUIZ SCREEN -->
         <div id="quiz-screen" class="hidden flex flex-col min-h-[600px]">
-            
-            <!-- Header -->
-            <div class="px-6 py-5 border-b border-white/5 bg-white/5 flex justify-between items-center backdrop-blur-md">
-                <div class="flex items-center gap-3 text-sky-400 font-medium">
-                    <div class="bg-sky-500/20 p-2 rounded-lg">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-                    <span>שאלה <span id="current-q-num" class="text-white font-bold">1</span> / 65</span>
-                </div>
-                <div class="flex items-center gap-2 bg-indigo-500/20 px-4 py-2 rounded-full text-indigo-300 border border-indigo-500/30">
-                    <i class="fa-solid fa-star"></i>
-                    <span id="score-display" class="font-bold text-white">0</span> נק'
-                </div>
+            <div class="px-6 py-5 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <div class="text-sky-400 font-medium">שאלה <span id="current-q-num" class="text-white font-bold">1</span> / 65</div>
+                <div class="text-slate-300"><span id="score-display" class="font-bold text-white">0</span> נקודות</div>
             </div>
             
-            <!-- Progress -->
-            <div class="h-1.5 w-full bg-slate-800">
-                <div id="progress-bar" class="h-full bg-gradient-to-r from-sky-400 to-indigo-500 progress-glow transition-all duration-300" style="width: 0%"></div>
+            <div class="h-1 w-full bg-slate-800">
+                <div id="progress-bar" class="h-full bg-sky-400 transition-all duration-300" style="width: 0%"></div>
             </div>
 
-            <!-- Question -->
             <div class="p-6 sm:p-10 flex-grow flex flex-col">
-                <h2 id="question-text" class="text-2xl sm:text-3xl font-bold leading-snug mb-8 text-slate-100"></h2>
-                
-                <div id="options-container" class="space-y-3 w-full">
-                    <!-- Options injected here -->
-                </div>
+                <h2 id="question-text" class="text-2xl sm:text-3xl font-bold leading-snug mb-8 text-slate-100" dir="rtl"></h2>
+                <div id="options-container" class="space-y-4 w-full"></div>
 
-                <!-- Feedback Area -->
-                <div id="feedback-area" class="hidden mt-8 p-5 sm:p-6 rounded-2xl border border-white/10 bg-white/5 fade-enter">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i id="feedback-icon" class="text-2xl"></i>
-                        <h3 id="feedback-title" class="text-xl font-bold"></h3>
-                    </div>
+                <div id="feedback-area" class="hidden mt-8 p-5 rounded-xl border border-white/10 bg-white/5 fade-enter">
+                    <h3 id="feedback-title" class="text-xl font-bold mb-2"></h3>
                     <p id="feedback-rationale" class="text-slate-300 text-sm sm:text-base leading-relaxed"></p>
-                    
-                    <button id="next-btn" onclick="nextQuestion()" class="mt-6 w-full py-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl font-medium transition-all text-white flex items-center justify-center gap-2">
-                        המשך לשאלה הבאה <i class="fa-solid fa-arrow-left"></i>
+                    <button id="next-btn" onclick="nextQuestion()" class="mt-6 w-full py-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl font-medium transition-all text-white">
+                        לשאלה הבאה <i class="fa-solid fa-arrow-left mr-2"></i>
                     </button>
                 </div>
             </div>
@@ -176,469 +119,368 @@
 
         <!-- RESULTS SCREEN -->
         <div id="result-screen" class="hidden p-10 sm:p-20 text-center fade-enter">
-            <div id="result-icon-container" class="inline-flex p-6 rounded-full mb-6 border-4 shadow-2xl">
-                <i id="result-icon" class="text-6xl"></i>
+            <h2 class="text-4xl font-black mb-4 text-white">תוצאות המבחן</h2>
+            <div class="text-6xl font-black text-sky-400 mb-8 border-4 border-sky-400/30 inline-block p-10 rounded-full bg-sky-400/10">
+                <span id="final-percentage">0</span>%
             </div>
-            <h2 id="result-title" class="text-3xl sm:text-4xl font-black mb-4 text-white"></h2>
-            <p id="result-subtitle" class="text-lg text-slate-400 mb-8"></p>
+            <p id="result-subtitle" class="text-xl text-slate-300 mb-10"></p>
             
-            <div class="relative inline-block mb-12">
-                <svg class="w-40 h-40 transform -rotate-90">
-                    <circle cx="80" cy="80" r="70" stroke="rgba(255,255,255,0.1)" stroke-width="12" fill="none" />
-                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="url(#gradient)" stroke-width="12" fill="none" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000 ease-out" />
-                    <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#38bdf8" />
-                            <stop offset="100%" stop-color="#818cf8" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl font-black text-white">
-                    <span id="final-percentage">0</span>%
-                </div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="shareResults()" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg flex justify-center items-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-2xl"></i> שתף תוצאה
-                </button>
-                <button onclick="location.reload()" class="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-xl font-medium transition-all flex justify-center items-center gap-2">
-                    <i class="fa-solid fa-rotate-right"></i> מבחן חוזר
-                </button>
-            </div>
-            <p id="share-toast" class="text-emerald-400 mt-4 text-sm font-medium h-5 opacity-0 transition-opacity">הטקסט הועתק ללוח!</p>
+            <button onclick="location.reload()" class="px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-all">
+                <i class="fa-solid fa-rotate-right mr-2"></i> תרגל שוב
+            </button>
         </div>
     </div>
 
     <script>
-        // Generate simple particles for background
-        const particlesContainer = document.getElementById('particles-js');
-        for(let i=0; i<30; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            let size = Math.random() * 15 + 5;
-            p.style.width = `${size}px`;
-            p.style.height = `${size}px`;
-            p.style.left = `${Math.random() * 100}vw`;
-            p.style.animationDelay = `${Math.random() * 15}s`;
-            p.style.animationDuration = `${Math.random() * 10 + 10}s`;
-            particlesContainer.appendChild(p);
-        }
-
-        // 65 HIGH-QUALITY EXAM QUESTIONS
         const questions = [
-            // --- PANDAS BASICS & VIEWING (10) ---
+            // CRISP-DM
             {
-                q: "יש לנו טבלה בשם df. הפעלנו את הפקודה len(df.columns) וקיבלנו 5. הפעלנו את len(df) וקיבלנו 100. מה תחזיר הפקודה df.shape?",
-                options: ["[100, 5]", "(100, 5)", "{100: 5}", "(5, 100)"],
-                answer: 1,
-                rationale: "התכונה shape מחזירה אובייקט מסוג Tuple (סוגריים עגולים) כאשר הערך הראשון הוא תמיד מספר השורות והשני הוא מספר העמודות."
+                q: "במודל CRISP-DM, איזה שלב מגיע מיד לאחר 'הבנת הבעיה העסקית' (Business Understanding)?",
+                options: ["הערכת המודל (Evaluation).", "הטמעת המודל (Deployment).", "איסוף והבנת הנתונים (Data Understanding).", "הכנת הנתונים וניקויים (Data Preparation)."],
+                answer: 2,
+                rationale: "לאחר שמבינים מה הבעיה העסקית, השלב הבא הוא לאסוף את הנתונים הרלוונטיים ולהבין אותם, ורק לאחר מכן מכינים ומנקים אותם."
             },
             {
-                q: "אנו רוצים להציג את 3 השורות האחרונות בטבלה. איזו מבין הפקודות הבאות תבצע זאת בצורה הנכונה ביותר?",
-                options: ["df.bottom(3)", "df.last(3)", "df.iloc[-3:]", "df.tail(3)"],
-                answer: 3,
-                rationale: "הפונקציה המובנית והפשוטה ביותר בפנדס להצגת סוף הטבלה היא tail(). שימוש ב-iloc[-3:] יעבוד גם הוא, אך tail היא התשובה המקובלת והקריאה ביותר."
+                q: "מהי מטרת השלב 'Deployment' במחזור החיים של פרויקט במדע הנתונים?",
+                options: ["לנקות את הערכים החסרים בטבלאות המסד.", "לאמן את המודל על נתוני האימון.", "להטמיע את המודל המאומן במערכות הארגון לשימוש מבצעי.", "לפצל את הנתונים לקבוצת אימון וקבוצת בדיקה."],
+                answer: 2,
+                rationale: "Deployment (הטמעה) הוא השלב האחרון בו המודל יוצא ממעבדת הפיתוח ומשולב במוצר האמיתי של החברה."
             },
+            
+            // Pandas Creation & Basic
             {
-                q: "מהו ההבדל המרכזי בין הפקודה df['Salary'] לבין הפקודה df[['Salary']]?",
-                options: ["הראשונה מחזירה אובייקט מסוג Series, והשנייה מחזירה אובייקט מסוג DataFrame.", "הראשונה שולפת שורה, והשנייה שולפת עמודה.", "אין שום הבדל, שתיהן עושות בדיוק את אותו הדבר.", "הראשונה מציגה נתונים טקסטואליים, והשנייה נתונים מספריים."],
+                q: "הגדרנו מילון בשם data בפייתון. כיצד נייצר ממנו DataFrame חדש?",
+                options: ["df = pd.DataFrame(data)", "df = pd.create_table(data)", "df = pd.NewDataFrame(data)", "df = pd.read_dict(data)"],
                 answer: 0,
-                rationale: "סוגריים מרובעים בודדים שולפים עמודה כסדרה חד-ממדית (Series). סוגריים כפולים שולפים את הנתונים כמבנה של טבלה דו-ממדית (DataFrame)."
+                rationale: "הפקודה DataFrame (עם אותיות גדולות D ו-F) של ספריית pandas מייצרת טבלה ממבני נתונים כמו מילון או רשימה."
             },
             {
-                q: "הפקודה df.describe() מציגה כברירת מחדל סטטיסטיקה רק לעמודות מספריות. כיצד נאלץ אותה להציג מידע (כמו ערך שכיח וכמות ייחודיים) גם לעמודות טקסטואליות?",
-                options: ["df.describe(all=True)", "df.describe(include='all')", "df.describe(type='object')", "df.describe(text=True)"],
+                q: "מה ההבדל בין Series ל-DataFrame ב-Pandas?",
+                options: ["Series מכיל רק טקסט, ו-DataFrame רק מספרים.", "Series הוא מבנה חד-ממדי (עמודה אחת), ו-DataFrame הוא מבנה דו-ממדי (טבלה).", "אין הבדל, אלו מילים נרדפות לאותו אובייקט.", "DataFrame יכול להכיל רק עמודה אחת מקסימום."],
                 answer: 1,
-                rationale: "הפרמטר include='all' אומר לפונקציה לא להתעלם מעמודות שאינן נומריות (Object), ומציג עבורן נתונים כמו top (הערך השכיח) ו-freq."
+                rationale: "Series הוא למעשה עמודה בודדת. DataFrame הוא אוסף של אובייקטי Series המרכיבים יחד טבלה שלמה."
             },
             {
-                q: "קראנו קובץ CSV, ואנו רוצים לוודא שהאינדקס מתחיל מ-0 ומסודר מחדש, מבלי להוסיף את האינדקס הישן כעמודה בטבלה. מהי הפקודה?",
-                options: ["df.reset_index()", "df.set_index(drop=True)", "df.reset_index(drop=True)", "df.clear_index()"],
+                q: "ברצוננו לקבל מידע טכני על ה-DataFrame שלנו, כגון סוגי הנתונים (Dtypes) בכל עמודה וכמות הערכים שאינם חסרים. באיזו פקודה נשתמש?",
+                options: ["df.describe()", "df.stats()", "df.info()", "df.dtypes()"],
                 answer: 2,
-                rationale: "הפונקציה reset_index מסדרת את המספור מחדש. הפרמטר drop=True מוודא שהאינדקס הישן והמבולגן פשוט יימחק ולא יהפוך לעמודה חדשה."
+                rationale: "הפונקציה info מציגה את 'תעודת הזהות' הטכנית של הטבלה. describe מציגה מידע סטטיסטי מתמטי."
             },
             {
-                q: "מה יקרה אם נפעיל את הפקודה: pd.to_numeric(df['Price'], errors='coerce') על עמודה שמכילה את הערך 'Unknown'?",
-                options: ["המערכת תעצור את הריצה ותזרוק שגיאת ValueError.", "המערכת תמיר את המילה 'Unknown' לערך 0 באופן אוטומטי.", "המערכת תתעלם מהשגיאה, תשאיר את המילה 'Unknown', ותמשיך הלאה.", "המערכת תמיר את המילה 'Unknown' לערך החסר התקני - NaN."],
-                answer: 3,
-                rationale: "זהו כלי חובה בניקוי נתונים. errors='coerce' מכריח את פנדס לא לקרוס, אלא להפוך כל טקסט שאינו בר המרה למספר, פשוט ל-NaN."
-            },
-            {
-                q: "אנו מעוניינים להמיר את עמודת 'City' מטיפוס Object לטיפוס 'category'. מדוע שנעשה זאת?",
-                options: ["כדי שנוכל להפעיל עליה חישובים אריתמטיים כמו ממוצע.", "כדי לחסוך בזיכרון המחשב ולייעל ביצועים, במיוחד כשיש מעט ערכים ייחודיים החוזרים על עצמם.", "כדי שפונקציית dropna לא תמחק ממנה ערכים חסרים בטעות.", "כדי להמיר אוטומטית טקסטים למספרים לקראת אימון מודל רגרסיה."],
-                answer: 1,
-                rationale: "סוג הנתונים Category שומר במערכת כל מילה רק פעם אחת (מילון פנימי), מה שחוסך המון זיכרון ומאיץ שאילתות ביחס לטיפוס Object."
-            },
-            {
-                q: "ברצוננו לדעת כמה שורות *כפולות לחלוטין* קיימות בטבלה. מהי הפקודה הקצרה והנכונה?",
-                options: ["df.duplicated().sum()", "df.count_duplicates()", "len(df.duplicates())", "df.isnull().sum()"],
+                q: "הפעלנו את הפקודה df.describe(). אילו נתונים הפקודה מציגה כברירת מחדל?",
+                options: ["סיכום סטטיסטי (ממוצע, סטיית תקן, מינימום) לעמודות המספריות בלבד.", "את רשימת כל הערכים החסרים בטבלה.", "את שמות העמודות ואת סוג הנתונים של כל עמודה.", "סיכום סטטיסטי לכל העמודות, כולל עמודות טקסט."],
                 answer: 0,
-                rationale: "הפקודה duplicated() מחזירה Series בוליאני (True לכפילויות). הפעלת sum() על סדרה בוליאנית סופרת את כמות ה-True."
+                rationale: "כברירת מחדל, describe מתעלמת מעמודות טקסט ופועלת רק על עמודות נומריות. כדי לכלול טקסט יש להשתמש ב-include='all'."
+            },
+            
+            // DataFrame manipulation (Rows/Cols)
+            {
+                q: "כיצד מוסיפים עמודה חדשה בשם 'Status' ומאתחלים אותה בערך 'Active' עבור כל השורות?",
+                options: ["df.insert_column('Status', 'Active')", "df.add('Status', 'Active')", "df['Status'] = 'Active'", "df.append_col('Status' = 'Active')"],
+                answer: 2,
+                rationale: "בפנדס, הדרך ליצור עמודה חדשה היא פשוט לפנות לשם שאינו קיים בתוך סוגריים מרובעים ולהציב לתוכו ערך."
             },
             {
-                q: "יש לנו טבלה המכילה רשומות כפולות. כיצד נמחק את הכפילויות, אך נדאג לשמור דווקא את *ההופעה האחרונה* של כל רשומה כפולה במקום את הראשונה?",
-                options: ["df.drop_duplicates(keep='last')", "df.drop_duplicates(tail=True)", "df.remove_duplicates(keep=-1)", "df.drop_duplicates(first=False)"],
+                q: "מה מבצעת הפקודה df = df.drop('Age', axis=1)?",
+                options: ["מוחקת את השורה שהאינדקס שלה הוא 'Age'.", "מוחקת את העמודה 'Age' מהטבלה ושומרת את השינוי.", "ממירה את סוג הנתונים בעמודה 'Age' ל-0 או 1.", "ממיינת את הטבלה לפי עמודת 'Age' בסדר יורד."],
+                answer: 1,
+                rationale: "הפונקציה drop מוחקת, ו-axis=1 מורה לה שהמחיקה היא לאורך ציר העמודות. ההשמה (df=) שומרת את הטבלה החדשה."
+            },
+            {
+                q: "ברצוננו לשנות את שמה של העמודה 'old_name' ל-'new_name'. מהו התחביר הנכון?",
+                options: ["df.rename('old_name', 'new_name', inplace=True)", "df.columns['old_name'] = 'new_name'", "df.change_name('old_name', 'new_name')", "df.rename(columns={'old_name': 'new_name'}, inplace=True)"],
+                answer: 3,
+                rationale: "הפקודה rename דורשת לקבל מילון (Dictionary) הממפה בין השם הישן לשם החדש בתוך הפרמטר columns."
+            },
+
+            // Filtering and loc/iloc
+            {
+                q: "מהי הדרך הנכונה לסנן את ה-DataFrame כך שיישארו רק שורות בהן הגיל (Age) גדול מ-30?",
+                options: ["df.filter('Age' > 30)", "df.where(Age > 30)", "df[df['Age'] > 30]", "df.select(df['Age'] > 30)"],
+                answer: 2,
+                rationale: "זהו סינון בוליאני קלאסי. אנו מעבירים את התנאי הלוגי לתוך סוגריים מרובעים של הטבלה עצמה."
+            },
+            {
+                q: "מה ההבדל העקרוני בין השימוש ב-loc לבין iloc?",
+                options: ["אין שום הבדל, שתי הפקודות עושות בדיוק אותו הדבר.", "loc עובד לפי מיקומים מספריים בלבד, ו-iloc עובד לפי שמות עמודות ותנאים לוגיים.", "loc עובד לפי שמות (תוויות) ותנאים לוגיים, ו-iloc עובד לפי מיקומים מספריים מוחלטים (אינדקסים).", "loc מיועד לשליפת שורות, ו-iloc מיועד לשליפת עמודות."],
+                answer: 2,
+                rationale: "iloc (Index Location) פועל כמו מערך פייתון רגיל עם מספרים 0,1,2. לעומתו loc מאפשר שליפה לפי שמות מחרוזות ותנאים של גדול/קטן."
+            },
+            {
+                q: "כיצד נשלוף את הערך המדויק שנמצא בשורה השלישית ובעמודה הראשונה בטבלה, תוך התעלמות משמות העמודות?",
+                options: ["df.loc[2, 0]", "df.iloc[3, 1]", "df.iloc[2, 0]", "df.get_value(3, 1)"],
+                answer: 2,
+                rationale: "מכיוון שביקשנו להתעלם משמות, נשתמש ב-iloc. הספירה בפייתון מתחילה מ-0, לכן שורה שלישית היא אינדקס 2, ועמודה ראשונה היא אינדקס 0."
+            },
+            {
+                q: "אנו רוצים לעדכן את השכר (Salary) לערך 0 עבור כל מי שגילו (Age) קטן מ-18. איזו פקודה תבצע זאת ישירות ובטוח?",
+                options: ["df[df['Age'] < 18]['Salary'] = 0", "df.loc[df['Age'] < 18, 'Salary'] = 0", "df.update('Salary' = 0, where='Age'<18)", "df.iloc[df['Age'] < 18, 'Salary'] = 0"],
+                answer: 1,
+                rationale: "פקודת loc במבנה של [תנאי, שם_עמודה] היא הדרך התקנית והבטוחה לבצע עדכון מותנה ללא אזהרות פייתון."
+            },
+
+            // Missing Values & Cleaning
+            {
+                q: "איזה מהפקודות הבאות תחזיר טבלה בוליאנית של True ו-False, המציינת באילו תאים חסר מידע בטבלה?",
+                options: ["df.missing_values()", "df.findna()", "df.isnull()", "df.empty()"],
+                answer: 2,
+                rationale: "הפונקציות isnull() או isna() מחזירות True עבור כל תא שמכיל את הערך החסר NaN."
+            },
+            {
+                q: "מה יקרה אם נפעיל את הפקודה df.dropna(subset=['Price']) על הטבלה שלנו?",
+                options: ["כל השורות בטבלה שבהן עמודת ה-'Price' מכילה ערך חסר (NaN) יימחקו.", "עמודת ה-'Price' תימחק לחלוטין מהטבלה.", "הפקודה תשנה את כל הערכים החסרים ב-'Price' לממוצע.", "הפקודה תמחק את כל הטבלה אם יש ערך חסר כלשהו."],
                 answer: 0,
-                rationale: "לפונקציה drop_duplicates יש פרמטר בשם keep. ברירת המחדל היא 'first', אך העברת 'last' תגרום לשמירת הרשומה האחרונה בסדר."
+                rationale: "הפרמטר subset מגביל את החיפוש של dropna כך שהוא יבדוק רק את העמודות שציינו ברשימה."
             },
             {
-                q: "מהי הדרך המהירה ביותר להחליף את כל המופעים של המילה 'Yes' ב-1, ואת 'No' ב-0 בעמודה מסוימת?",
-                options: ["df['col'].apply('Yes': 1, 'No': 0)", "df['col'].map({'Yes': 1, 'No': 0})", "df['col'].change('Yes', 1).change('No', 0)", "df['col'].update('Yes', 1)"],
+                q: "אנו מעוניינים להחליף את כל הערכים החסרים בטבלה במספר 0. מהי הדרך הנכונה לעשות זאת כך שהטבלה המקורית תשתנה?",
+                options: ["df = df.replace(NaN, 0)", "df.fill_null(0, inplace=True)", "df.fillna(0, inplace=True)", "df.dropna(0, replace=True)"],
+                answer: 2,
+                rationale: "הפונקציה fillna נועדה למילוי ערכי NaN. הפרמטר inplace=True חוסך את הצורך בהשמה (df = df...)."
+            },
+            {
+                q: "אנו מנסים להמיר עמודת 'שכר' מטיפוס Object ל-float64 בעזרת pd.to_numeric. העמודה מכילה בטעות את המילה 'Unknown' בשורה אחת. מה כדאי להוסיף לפקודה כדי שהתוכנית לא תקרוס?",
+                options: ["errors='ignore'", "errors='coerce'", "errors='raise'", "skip_text=True"],
                 answer: 1,
-                rationale: "הפונקציה map מקבלת מילון ומחליפה כל ערך תואם בעמודה בערך החדש שהוגדר עבורו. זהו פתרון קלאסי ונקי מאוד בקידוד נתונים."
+                rationale: "הפרמטר errors='coerce' אומר לפונקציה: 'אם אתה נתקל בטקסט שאי אפשר להמיר למספר, אל תקרוס, אלא פשוט תציב במקומו את הערך החסר NaN'."
+            },
+            {
+                q: "מה מבצעת הפקודה df['Age'].astype('float64')?",
+                options: ["מחזירה שגיאה מכיוון שלא ניתן להמיר עמודה שלמה בפעם אחת.", "מחשבת את המספר העשרוני הממוצע של העמודה.", "ממירה (Casting) את כל הערכים בעמודת 'Age' לטיפוס מספר עשרוני.", "ממירה מספרים עשרוניים למחרוזות טקסט."],
+                answer: 2,
+                rationale: "astype היא הפונקציה המובנית של פנדס לביצוע Casting (המרת טיפוסי נתונים)."
             },
 
-            // --- FILTERING, LOC/ILOC (7) ---
+            // Basic Stats & Groupby & Agg
             {
-                q: "יש לנו טבלה בשם df. ברצוננו לשלוף את *השורה האחרונה בהחלט*. איזו פקודה תבצע זאת בצורה הבטוחה ביותר ללא תלות בסוג האינדקס?",
-                options: ["df.loc[-1]", "df.iloc[-1]", "df[-1:]", "df.last()"],
-                answer: 1,
-                rationale: "iloc מבוסס על מיקום פיזי. בפייתון, אינדקס מינוס 1 תמיד מסמן את האיבר האחרון, ללא קשר לשם התווית של השורה."
-            },
-            {
-                q: "ברצוננו לשלוף אך ורק את *העמודה האחרונה* בטבלה, עבור כל השורות. כיצד נעשה זאת עם iloc?",
-                options: ["df.iloc[-1, :]", "df.iloc[:, -1]", "df.iloc[-1]", "df.iloc[[-1]]"],
-                answer: 1,
-                rationale: "המבנה של iloc הוא [שורות, עמודות]. הנקודתיים (:) בחלק הראשון אומרות 'כל השורות', והמינוס 1 בחלק השני אומר 'העמודה האחרונה'."
-            },
-            {
-                q: "כיצד נסנן מתוך טבלה את כל השורות שבהן עמודת ה-'City' שווה ל-'Tel Aviv' **או** 'Haifa' בצורה האלגנטית ביותר?",
-                options: ["df[df['City'] == 'Tel Aviv' | 'Haifa']", "df[df['City'].isin(['Tel Aviv', 'Haifa'])]", "df.filter(City == ['Tel Aviv', 'Haifa'])", "df.loc['City' = 'Tel Aviv' or 'Haifa']"],
-                answer: 1,
-                rationale: "הפונקציה isin() מקבלת רשימה של ערכים ומחזירה True עבור כל שורה שהערך בעמודה שלה תואם לאחד מהערכים ברשימה."
-            },
-            {
-                q: "השתמשנו בסימן הטילדה (~) בסינון: df[~df['Age'].isna()]. מה תהיה התוצאה?",
-                options: ["נקבל שגיאת סינטקס.", "נקבל רק את השורות שבהן הגיל חסר (NaN).", "נקבל רק את השורות שבהן הגיל **אינו** חסר.", "הטילדה תמיר את כל הערכים החסרים ל-0."],
-                answer: 2,
-                rationale: "בפנדס (וב-NumPy), סימן ה-~ משמש כאופרטור לשלילה לוגית (NOT). הוא פשוט הופך כל True ל-False ולהפך."
-            },
-            {
-                q: "האינדקס בטבלה שלנו מורכב ממחרוזות (למשל 'Row_A', 'Row_B'). מה יקרה אם נפעיל את הפקודה df.loc[0]?",
-                options: ["תשלוף את השורה הראשונה.", "תשלוף את העמודה הראשונה.", "תזרוק שגיאת KeyError.", "תאפס את האינדקס."],
-                answer: 2,
-                rationale: "מכיוון ש-loc עובד לפי *תוויות* (Labels), הוא יחפש תווית ששמה הוא המספר 0. מכיוון שהתוויות הן מחרוזות, הוא לא ימצא ויקרוס. (כדי לשלוף שורה ראשונה היינו צריכים iloc)."
-            },
-            {
-                q: "ברצוננו לשנות את הסטטוס ל-'Minor' עבור כל מי שגילו מתחת ל-18. איזו מהדרכים הבאות היא **הנכונה והבטוחה** כדי למנוע את שגיאת 'SettingWithCopyWarning'?",
-                options: ["df[df['Age'] < 18]['Status'] = 'Minor'", "df.loc[df['Age'] < 18, 'Status'] = 'Minor'", "df.where(df['Age'] < 18, 'Minor')", "df.iloc[df['Age'] < 18, 'Status'] = 'Minor'"],
-                answer: 1,
-                rationale: "שימוש בשרשור סוגריים (כמו בתשובה א) עלול לשנות עותק של הנתונים ולא את המקור. loc במבנה [תנאי_שורה, עמודה] מבטיח שינוי ישיר ובטוח בטבלה המקורית."
-            },
-            {
-                q: "יש לנו תנאי מסנן מורכב: df[(df['A'] > 5) | (df['B'] < 2)]. מה משמעות האופרטור | ?",
-                options: ["וגם (AND).", "או (OR).", "שלילה (NOT).", "שווה בדיוק (XOR)."],
-                answer: 1,
-                rationale: "בסינון בוליאני ב-Pandas משתמשים ב-| כדי לייצג OR (מספיק שאחד התנאים יתקיים), וב-& כדי לייצג AND."
-            },
-
-            // --- PANDAS AGG & PIVOT (7) ---
-            {
-                q: "הפעלנו df.groupby('City')['Age'].mean(). מה יקרה לשורות שבהן עמודת 'City' מכילה ערך חסר (NaN)?",
-                options: ["הן יקובצו יחד תחת קבוצה ששמה 'NaN'.", "הקוד יזרוק שגיאה ויקרוס.", "ערכי ה-NaN יושלמו אוטומטית לממוצע.", "כברירת מחדל, groupby יתעלם לחלוטין וישמיט מהתוצאה שורות עם NaN בעמודת הקיבוץ."],
+                q: "מה מייצג הציר axis=0 בפעולות סטטיסטיות ב-Pandas (כמו חישוב ממוצע)?",
+                options: ["תנועה הצידה משמאל לימין לאורך העמודות.", "התעלמות משורות המכילות ערך 0.", "חישוב הפעולה רק על העמודה הראשונה.", "תנועה אנכית מלמעלה למטה לאורך השורות (חישוב נתון לכל עמודה בנפרד)."],
                 answer: 3,
-                rationale: "כברירת מחדל, פנדס משמיט ערכי NaN בעמודת המפתח של ה-groupby. (ניתן לשנות זאת עם dropna=False)."
+                rationale: "ציר 0 (ברירת המחדל) "רוכב" על האינדקסים מלמעלה למטה, ולכן כשאנחנו עושים sum(axis=0) אנחנו סוכמים כל עמודה."
             },
             {
-                q: "ברצוננו לחשב לעמודת ה-'Salary' גם את המינימום וגם את המקסימום במקביל. איזו פקודה תבצע זאת?",
-                options: ["df['Salary'].agg(['min', 'max'])", "df['Salary'].calculate('min', 'max')", "df.agg('Salary', methods=['min', 'max'])", "df['Salary'].min_max()"],
+                q: "אנו מעוניינים לדעת כמה לקוחות שונים מגיעים מכל עיר. באיזו פונקציה נשתמש על עמודת ה-'City'?",
+                options: ["df['City'].sum()", "df['City'].value_counts()", "df['City'].describe()", "df['City'].count_unique()"],
+                answer: 1,
+                rationale: "הפונקציה value_counts סופרת את התדירות (כמות ההופעות) של כל ערך ייחודי בעמודה נתונה."
+            },
+            {
+                q: "מה יקרה אם נפעיל את הפקודה df.groupby('City').mean()['Salary']?",
+                options: ["תתקבל שגיאת סינטקס.", "נמצא מהי העיר הממוצעת.", "הנתונים יקובצו לפי עיר, המערכת תחשב ממוצע לכל עמודה אפשרית, ולבסוף תוצג רק התוצאה של עמודת ה-'Salary'.", "כל הערים יקבלו את ממוצע השכר הכללי של החברה."],
+                answer: 2,
+                rationale: "זהו שרשור תקין: הקיבוץ מתבצע קודם, לאחר מכן פונקציית הממוצע מופעלת על כל הקבוצות, ולבסוף אנו מפלטרים רק את העמודה שמעניינת אותנו."
+            },
+            {
+                q: "כיצד נוכל, עבור כל קטגוריה בנפרד, לחשב גם את סכום ה-'Salary' וגם את המקסימום של ה-'Age' באותה פקודה?",
+                options: ["df.groupby('Category').agg({'Salary': 'sum', 'Age': 'max'})", "df.groupby('Category')['Salary', 'Age'].sum_max()", "df.groupby('Category').calculate('Salary'='sum', 'Age'='max')", "df.agg(group='Category', Salary='sum', Age='max')"],
                 answer: 0,
-                rationale: "הפונקציה agg מאפשרת להעביר רשימה של מתודות סטטיסטיות (כמחרוזות) שיופעלו כולן על אותה עמודה בו-זמנית."
-            },
-            {
-                q: "מה מייצרת הפקודה df['Category'].value_counts(normalize=True)?",
-                options: ["ספירה רגילה של כמות הפעמים שכל קטגוריה מופיעה.", "המרה של הקטגוריות למספרים רציפים מ-0 עד 1.", "ספירה של התדירויות שמוצגת באחוזים/פרופורציות מתוך הסך הכל (למשל 0.4 במקום 40 פריטים).", "מחיקת קטגוריות שמופיעות פחות מפעם אחת."],
-                answer: 2,
-                rationale: "הפרמטר normalize=True מחלק את הספירה של כל ערך בסך כל הערכים הקיימים, מה שנותן לנו את ההתפלגות היחסית או האחוזים."
-            },
-            {
-                q: "איזו פקודה ב-Pandas מקבילה ל-GROUP BY ב-SQL אך יוצרת תצוגה דו-ממדית (מטריצה) של חיתוכים, כגון הצגת ממוצע משכורות לפי עיר (בשורות) ולפי מין (בעמודות)?",
-                options: ["pd.concat()", "pd.pivot_table()", "pd.cross_join()", "df.groupby(matrix=True)"],
-                answer: 1,
-                rationale: "טבלת ציר (Pivot Table) לוקחת משתנה אחד לאינדקס (שורות), משתנה שני לעמודות, ומשתנה שלישי כערכים לחישוב, ומייצרת דוח דו-ממדי קריא."
-            },
-            {
-                q: "ביצירת Pivot Table, אנו מוסיפים את הפרמטר margins=True. מה הפעולה שהוא מבצע?",
-                options: ["מוסיף שוליים (רווחים) בטבלה לתצוגה יפה יותר.", "מוחק ערכים חסרים מהשוליים.", "מנרמל את הנתונים לטווח של 0 עד 1.", "מוסיף שורת 'סך הכל' (All) ועמודת 'סך הכל' שמחשבות את הסטטיסטיקה הכוללת של הטבלה."],
-                answer: 3,
-                rationale: "margins (שוליים) בטבלת ציר מתייחס לסכומי הביניים והסכומים הכוללים בשולי הטבלה למטה ובצד."
-            },
-            {
-                q: "מה ההבדל בין pd.merge() לבין pd.concat() ב-Pandas?",
-                options: ["merge מוחק נתונים כפולים, concat לא.", "אין הבדל, הן מילים נרדפות.", "merge ממזג טבלאות על בסיס התאמה של עמודות/מפתחות משותפים (כמו JOIN ב-SQL), בעוד ש-concat פשוט 'מדביק' טבלאות אחת מתחת לשנייה או אחת ליד השנייה פיזית.", "concat עובד רק על מחרוזות טקסט, merge רק על מספרים."],
-                answer: 2,
-                rationale: "merge מחפש חפיפה הגיונית של מידע (למשל מציאת לקוח לפי ID). concat היא פעולה פיזית של שרשור בלוקים של נתונים זה לזה."
-            },
-            {
-                q: "אנו מבצעים מיזוג מסוג Inner Join בין טבלה A (המוכרים) לטבלה B (המכירות), על בסיס עמודת 'Agent_ID'. מה יקרה למוכר בטבלה A שמעולם לא ביצע מכירה (כלומר ה-ID שלו לא מופיע ב-B)?",
-                options: ["הוא יישאר בטבלת התוצאה, והמכירות שלו יקבלו NaN.", "הוא יקבל ערך 0 כברירת מחדל במכירות.", "הוא ייעלם לחלוטין מטבלת התוצאה הממוזגת.", "הפקודה תזרוק שגיאת Key Error בגלל אי התאמה."],
-                answer: 2,
-                rationale: "בחיבור פנימי (Inner Join), שורדות רק הרשומות שקיים להן ייצוג בשני הצדדים של המיזוג."
+                rationale: "הפונקציה agg מאפשרת לנו להעביר מילון (Dict) הממפה באופן מדויק איזו פונקציה תופעל על איזו עמודה."
             },
 
-            // --- VISUALIZATIONS (6) ---
+            // Merges
             {
-                q: "איזה פרמטר יש להעביר בפונקציית df.plot() כדי לשלוט בגודל הפיזי של הגרף המוצג?",
-                options: ["scale=(10, 5)", "size=(10, 5)", "figsize=(10, 5)", "dimensions=[10, 5]"],
-                answer: 2,
-                rationale: "הפרמטר figsize מצפה ל-Tuple עם שני מספרים המייצגים את רוחב וגובה הגרף באינצ'ים."
-            },
-            {
-                q: "ציירנו גרף פיזור (Scatter) של 100,000 נקודות, והגרף הפך לכתם צבע אטום שקשה לראות בו צפיפות. איזה פרמטר כדאי להוסיף?",
-                options: ["density=True", "alpha=0.1", "transparent=True", "fade=10"],
-                answer: 1,
-                rationale: "הפרמטר alpha ב-matplotlib קובע את רמת השקיפות של הנקודות מ-0 עד 1. שימוש ב-alpha נמוך מאפשר לראות צפיפות לפי חוזק הצבע המצטבר."
-            },
-            {
-                q: "איזה סוג של עמודות דורש כברירת מחדל גרף מסוג עוגה (Pie Chart) כדי לפעול כראוי?",
-                options: ["עמודה של נתונים מספריים רציפים בלבד (כמו מחירי דירות).", "לא ניתן לייצר גרף עוגה בפנדס.", "עמודה של תאריכים מול עמודה של שעות.", "נתונים שעברו אגרגציה או ספירה (כמו value_counts), המייצגים חלקים מתוך שלם."],
-                answer: 3,
-                rationale: "גרף עוגה לא יכול לקבל נתונים גולמיים. הוא דורש שתעביר לו מראש כמות או סכום של כל קטגוריה כדי להציג את החלק היחסי שלה (אחוזים)."
-            },
-            {
-                q: "כיצד נייצר ב-Pandas גרף אחד שמציג שני קווים שונים: קו לעמודת 'הכנסות' וקו לעמודת 'הוצאות', שניהם על פני ציר ה-'תאריך'?",
-                options: ["df.plot(x='תאריך', y=['הכנסות', 'הוצאות'], kind='line')", "df.line_plot(x='תאריך', y1='הכנסות', y2='הוצאות')", "df.plot(x='תאריך', y='הכנסות') + df.plot(x='תאריך', y='הוצאות')", "לא ניתן, חובה להשתמש ב-subplots."],
+                q: "ביצענו מיזוג בין טבלה א' לטבלה ב' באמצעות pd.merge עם how='inner'. מה תהיה התוצאה?",
+                options: ["המיזוג ישמור רק את השורות שבהן עמודת המפתח קיימת גם בטבלה א' וגם בטבלה ב'.", "המיזוג ישמור את כל השורות מטבלה א', ויציב NaN במקרה של חוסר התאמה מול ב'.", "המיזוג יחבר את כל השורות משתי הטבלאות ללא יוצא מן הכלל.", "המיזוג ימחק את כל העמודות הזהות בשתי הטבלאות."],
                 answer: 0,
-                rationale: "העברת רשימה של שמות עמודות לפרמטר y בתוך הפונקציה plot תגרום לפנדס לצייר את כל הקווים המבוקשים יחד על אותה מערכת צירים."
+                rationale: "חיבור פנימי (Inner Join) מהווה מעין חיתוך - רק מה שמשותף לשני הצדדים שורד את תהליך המיזוג."
             },
             {
-                q: "בגרף קופסה (Boxplot), ה'קופסה' עצמה (המלבן המרכזי) תוחמת את הנתונים מאיזה אחוזון לאיזה אחוזון?",
-                options: ["מ-0% (מינימום) עד 100% (מקסימום).", "מ-25% (הרבעון התחתון) עד 75% (הרבעון העליון).", "היא מייצגת רק את הממוצע.", "מ-10% עד 90%."],
-                answer: 1,
-                rationale: "הקופסה מייצגת את הטווח הבין-רבעוני (IQR), כלומר את 50% של הנתונים המרכזיים והיציבים ביותר. הקו שבתוכה הוא החציון (50%)."
-            },
-            {
-                q: "אנו רוצים להוסיף כותרת לגרף שאנחנו מציירים בעזרת df.plot(). כיצד נעשה זאת?",
-                options: ["df.plot(header='My Title')", "df.plot().set_heading('My Title')", "df.plot(name='My Title')", "df.plot(title='My Title')"],
-                answer: 3,
-                rationale: "לפונקציית plot בפנדס יש פרמטר ישיר ונוח בשם title להוספת כותרת לגרף."
+                q: "מה מבצע חיבור מסוג Left Join בין טבלה df1 לטבלה df2?",
+                options: ["שומר רק שורות משותפות.", "שומר את כל השורות מטבלה df2 (הימנית) ומתעלם מנתונים חסרים ב-df1.", "שומר את כל השורות מטבלה df1 (השמאלית) בשלמותן. עבור שורות שאין להן התאמה ב-df2, יוצבו ערכי NaN.", "מדביק את טבלה df2 בדיוק מתחת לטבלה df1."],
+                answer: 2,
+                rationale: "בחיבור שמאלי, הטבלה השמאלית היא ה'עוגן' ושום רשומה ממנה לא נמחקת, גם אם לא מצאנו לה נתונים תואמים בטבלה השנייה."
             },
 
-            // --- ML BASICS & PREP (5) ---
+            // Exception Handling
             {
-                q: "שלב ה-Scaling (נרמול הנתונים) משנה את הערכים המספריים לטווח אחיד. מדוע קריטי לבצע את פיצול הנתונים (Train/Test Split) *לפני* שמבצעים את ה-Scaling?",
-                options: ["כי פונקציית הפיצול לא מקבלת מספרים עשרוניים.", "כי ה-Scaling מוחק אוטומטית שורות ולא נדע כמה נשארו למבחן.", "כדי למנוע 'זליגת מידע' (Data Leakage) – הסטטיסטיקה (ממוצע, סטיית תקן) שעל פיה הנתונים מנורמלים צריכה להתבסס אך ורק על נתוני האימון, בלי לדעת כלום על נתוני הבדיקה.", "זה לא משנה מתי עושים, התוצאה זהה לחלוטין."],
-                answer: 2,
-                rationale: "אם ננרמל את הכל יחד, נתוני הבדיקה (העתיד) 'יזהמו' את הממוצע של נתוני האימון (העבר). נתוני הבדיקה צריכים להישאר מבודדים ובלתי נראים לחלוטין."
-            },
-            {
-                q: "מה יקרה לעמודה אם נפעיל עליה את הפונקציה StandardScaler() מספרית Sklearn?",
-                options: ["הערכים בה יומרו למחרוזות.", "כל הערכים יוקטנו כך שינועו בדיוק בין 0 ל-1.", "העמודה תתוקנן כך שהממוצע שלה יהיה קרוב ל-0, וסטיית התקן שלה תהיה 1.", "כל הערכים השליליים יימחקו."],
-                answer: 2,
-                rationale: "StandardScaler משתמש בציון התקן (Z-score) הסטטיסטי. (לעומת MinMaxScaler שמביא את הנתונים לטווח 0-1)."
-            },
-            {
-                q: "מהו ההבדל המרכזי בין שימוש בפונקציה fit_transform() לבין שימוש בפונקציה transform() על נתונים?",
-                options: ["אין הבדל.", "fit_transform 'לומדת' את הפרמטרים (כמו הממוצע) ואז מיישמת אותם, בעוד transform רק מיישמת פרמטרים שכבר נלמדו בעבר.", "transform לומדת נתונים מחדש, בעוד fit_transform מיועדת רק למחיקה.", "fit_transform מיועדת לעצי החלטה בלבד."],
+                q: "בפייתון, למה משמש מנגנון ה-try ו-except?",
+                options: ["לשלוט במספר הפעמים שלולאת for תרוץ.", "למנוע קריסה מלאה של התוכנית כאשר מתרחשת שגיאת זמן ריצה (כמו ניסיון המרת טקסט למספר).", "כדי לאפס אוטומטית משתנים למצבם הראשוני בסוף כל פונקציה.", "לייבא ספריות חיצוניות בצורה בטוחה."],
                 answer: 1,
-                rationale: "זה כלל ברזל בהכנת נתונים: עושים fit_transform רק על נתוני האימון (כדי ללמוד את הממוצע ולנרמל), ואז רק transform על נתוני הבדיקה (נרמול לפי הממוצע שנלמד מנתוני האימון)."
+                rationale: "מנגנון זה מאפשר לתוכנית 'לנסות' להריץ קוד בעייתי, ולקפוץ לבלוק מיוחד של טיפול בשגיאות במקרה של תקלה במקום לקרוס."
             },
             {
-                q: "השתמשנו בפונקציה pd.get_dummies() להמרת העמודה הקטגוריאלית 'צבע' (אדום/ירוק/כחול) לעמודות בינאריות. כמה עמודות חדשות נקבל כברירת מחדל?",
-                options: ["עמודה אחת בלבד שתכיל מספרים 0,1,2.", "שתי עמודות.", "שלוש עמודות חדשות (אחת לכל צבע, המכילות 0 או 1).", "אף אחת, הפונקציה מחזירה רשימה של פייתון."],
+                q: "מה קורה לקוד שנמצא תחת הבלוק finally במבנה try-except?",
+                options: ["הוא ירוץ רק אם התרחשה שגיאה בבלוק ה-try.", "הוא ירוץ רק אם הקוד בבלוק ה-try עבר בהצלחה מלאה.", "הוא ירוץ תמיד, בין אם התרחשה שגיאה ובין אם לא (משמש בדרך כלל לפעולות ניקיון וסגירה).", "הוא מורה למערכת להתעלם מכל השגיאות העתידיות."],
                 answer: 2,
-                rationale: "זהו תהליך One-Hot Encoding. עבור כל ערך ייחודי בעמודת המקור תיווצר עמודה חדשה שמכילה 1 אם הערך קיים ו-0 אם לא."
+                rationale: "בלוק finally מבטיח שהקוד שבתוכו יבוצע בסוף התהליך ללא קשר למה שקרה לפניו."
+            },
+            
+            // Visualizations
+            {
+                q: "המרצה ביקשה לבדוק אם קיים קשר או מתאם בין עמודת 'גיל' לעמודת 'משכורת' הרציפות. איזה גרף מתאים ביותר למשימה?",
+                options: ["גרף עמודות (Bar Plot)", "גרף עוגה (Pie Chart)", "גרף פיזור (Scatter Plot)", "היסטוגרמה (Histogram)"],
+                answer: 2,
+                rationale: "גרף פיזור משרטט כל דגימה כנקודה על פני שני צירים (X ו-Y), מה שמאפשר לזהות באופן ויזואלי מגמות, קבוצות וקורלציה."
             },
             {
-                q: "אנו בונים מודל לחיזוי מחירי דירות. לאחר אימון המודל, גילינו ששגיאת ה-MSE על קבוצת ה*אימון* היא כמעט 0, אך שגיאת ה-MSE על קבוצת ה*בדיקה* עצומה. מהי האבחנה הסבירה?",
-                options: ["המודל סובל מ-Underfitting (תת-התאמה).", "המודל סובל מ-Overfitting (התאמת יתר - 'שינון' של הנתונים).", "המודל מושלם ומוכן לייצור.", "קבוצת הבדיקה גדולה מדי."],
-                answer: 1,
-                rationale: "כשהמודל מדויק מדי על נתוני העבר שעליהם הוא התאמן (שינן את הרעשים) ונכשל טוטאלית על נתונים חדשים, זו הגדרת הספר להתאמת-יתר (Overfitting)."
+                q: "מה מייצג הציר האופקי (X) בגרף היסטוגרמה (Histogram)?",
+                options: ["את הקטגוריות השונות (למשל, שמות של ערים).", "את ציר הזמן הרציף.", "את אחוזי ההתפלגות מהשלם.", "את הטווחים (Bins) המספריים שאליהם חילקנו את הנתונים הרציפים."],
+                answer: 3,
+                rationale: "היסטוגרמה לוקחת משתנה רציף ומחלקת אותו למרווחים. ציר ה-X מייצג את המרווחים הללו, וציר ה-Y מראה כמה תצפיות נפלו בכל מרווח."
+            },
+            {
+                q: "ציירנו גרף קופסה (Boxplot). מה מייצגות הנקודות הבודדות שמופיעות מחוץ לקצוות הקווים ('השפמים') של הגרף?",
+                options: ["את הממוצע האריתמטי של הנתונים.", "ערכים חסרים (NaN) שפנדס לא ידע להתמודד איתם.", "ערכים חריגים וקיצוניים (Outliers) שחורגים מהפיזור הנורמלי של רוב הנתונים.", "את החציון של הקבוצה."],
+                answer: 2,
+                rationale: "גרף קופסה מצוין לזיהוי חריגים. הקופסה מכילה את רוב הנתונים (50%), והנקודות המרוחקות מסומנות אוטומטית כחריגות סטטיסטית."
             },
 
-            // --- CRISP-DM & EXCEPTION HANDLING (4) ---
+            // Train/Test Split & Scaling
             {
-                q: "בפרויקט מדע הנתונים, באיזה שלב (לפי CRISP-DM) נבצע הסרת ערכים חריגים (Outliers), מילוי ערכים חסרים ב-NaN, ו-Scaling?",
-                options: ["Business Understanding", "Data Understanding", "Data Preparation (הכנת נתונים)", "Evaluation"],
-                answer: 2,
-                rationale: "שלב הכנת הנתונים (Data Prep) הוא השלב ה'שחור' שבו לוקחים את הנתונים הגולמיים, מנקים, מסננים, ומעבדים אותם לקראת הכנסתם למודל."
-            },
-            {
-                q: "בשלב ה-Evaluation במודל CRISP-DM, אנו בוחנים את המודל. מהי מטרת הבחינה המרכזית בשלב זה (לפני ההטמעה)?",
-                options: ["לבדוק שאין שגיאות Syntax בקוד.", "לוודא שהמודל ממזער את מדד ג'יני לאפס.", "להכין גיבוי של מסד הנתונים.", "לוודא שמעבר לדיוק המתמטי, המודל אכן עונה ופותר את הבעיה *העסקית* שהוגדרה בתחילת הפרויקט."],
-                answer: 3,
-                rationale: "שלב ההערכה אינו רק טכני. הוא מוודא שהמודל לא רק צודק מספרית, אלא גם בעל ערך עסקי אמיתי לחברה, לפני שמתקינים אותו במערכות הייצור (Deployment)."
-            },
-            {
-                q: "במנגנון Exception Handling, מה יקרה אם עטפנו קוד בבלוק `try`, הגדרנו `except ValueError`, אבל בפועל התרחשה שגיאה מסוג `KeyError`?",
-                options: ["השגיאה תיתפס על ידי ה-except ונוכל להדפיס הודעה.", "הבלוק finally יימחק.", "התוכנית תתעלם מהשגיאה לחלוטין.", "השגיאה לא תיתפס (כי היא מסוג שונה ממה שהגדרנו), והתוכנית תקרוס לחלוטין."],
-                answer: 3,
-                rationale: "בלוק except ספציפי (כמו ValueError) מטפל אך ורק בסוג השגיאה הזה. כל שגיאה אחרת תחמוק מבעד לרשת ותקריס את המערכת (אלא אם כן נוסיף בלוק except כללי)."
-            },
-            {
-                q: "אנו כותבים לולאה שמנקה מאה אלף שורות בטבלה. מדי פעם יש שורה פגומה שאנו רוצים למחוק מבלי שהלולאה תיעצר. היכן המיקום הנכון לבלוק ה-try-except?",
-                options: ["לפני פתיחת הלולאה (לעטוף את כל הלולאה ב-try אחד גדול).", "בתוך הלולאה, על הפעולה הספציפית של השורה הנוכחית.", "אחרי הלולאה.", "בתוך בלוק finally."],
-                answer: 1,
-                rationale: "אם נעטוף את כל הלולאה מבחוץ, השגיאה הראשונה תעצור את הלולאה כולה ותזרוק אותנו ל-except בחוץ. עטיפה *פנימית* מאפשרת לטפל נקודתית בשגיאה ולהמשיך לאיטרציה הבאה."
-            },
-
-            // --- EVALUATION METRICS (7) ---
-            {
-                q: "מודל חיזוי להונאות כרטיסי אשראי סרק 10,000 עסקאות (מתוכן 100 הונאות אמיתיות). המודל תפס 80 הונאות מתוך ה-100. הוא גם סימן בטעות 50 עסקאות רגילות כהונאה. מהו ה-Recall (רגישות) של המודל?",
-                options: ["80 / 130", "50 / 100", "80 / 100 (שזה 80%)", "80 / 10000"],
-                answer: 2,
-                rationale: "Recall עונה על השאלה: 'מתוך כל מקרי האמת שהיו במציאות (100 הונאות), כמה המודל הצליח לתפוס?'. לכן, 80 תפיסות לחלק ל-100 הונאות בפועל = 80%."
-            },
-            {
-                q: "באותה דוגמה (100 הונאות במציאות, המודל התריע על 130 עסקאות כהונאה, מתוכן 80 באמת היו הונאה ו-50 היו אזעקות שווא). מהו ה-Precision (דיוק חיובי)?",
-                options: ["80 / 10000", "80 / 130 (כ-61%)", "50 / 130", "80 / 100"],
-                answer: 1,
-                rationale: "Precision עונה על השאלה: 'מתוך כל מה שהמודל *הכריז* עליו כחיובי/הונאה (80+50 = 130 התראות), כמה באמת היו נכונות?'. לכן 80 חלקי 130."
-            },
-            {
-                q: "אם ציון ה-Precision של מודל הוא 1.0 (100%), מה ניתן להסיק בוודאות לגבי מטריצת הבלבול שלו?",
-                options: ["שה-True Positives (TP) שווה ל-0.", "שאין לו בכלל False Negatives (FN).", "שאין לו בכלל False Positives (FP - אפס אזעקות שווא).", "שהוא פתר את בעיית חוסר האיזון."],
-                answer: 2,
-                rationale: "הנוסחה של דיוק היא TP / (TP+FP). אם התוצאה היא 1 שלם (100%), זה מחייב שהמחנה שווה למונה, כלומר FP=0. כל פעם שהמודל 'פתח את הפה', הוא צדק."
-            },
-            {
-                q: "יש לנו מערכת שמזהה טרוריסטים בשדה התעופה. מהו המחיר של False Negative (FN) במערכת כזו?",
-                options: ["נוסע תמים שיעוכב לחקירה (אי נעימות).", "המערכת תקרוס.", "מחבל אמיתי שיעבור במערכת ללא שום התרעה (סכנת חיים).", "נוסע תמים שזוהה כנוסע תמים."],
-                answer: 2,
-                rationale: "False Negative פירושו שהמודל אמר 'שלילי/תקין', אך טעה (False), כלומר האדם הוא מחבל. במקרים כאלו שואפים למקסם את ה-Recall על חשבון ה-Precision."
-            },
-            {
-                q: "מודל רגרסיה לחיזוי מחירי בתים הניב ציון MSE (שגיאה ריבועית ממוצעת) של 0. מה זה אומר?",
-                options: ["שהמודל תמיד מנחש את המחיר הממוצע.", "שהמודל מצא את האשכולות (Clusters) המושלמים.", "המודל פשוט ניחש אקראית.", "שהמודל עבר בדיוק, אבל בדיוק, דרך כל הנקודות הצהובות שבגרף הפיזור (התחזיות שלו תואמות למציאות ב-100%)."],
-                answer: 3,
-                rationale: "ה-MSE מודד את המרחק בין התחזית (הקו) למציאות (הנקודה) בריבוע. אם הסכום הוא 0, סימן שאין שום מרחק. (יכול להעיד על Overfitting במקרים מסוימים)."
-            },
-            {
-                q: "מה מייצגים ציר ה-X וציר ה-Y בעקומת ROC קלאסית?",
-                options: ["ציר X: שטח, ציר Y: מחיר.", "ציר X: שיעור זיהויים נכונים (Recall), ציר Y: דיוק (Precision).", "ציר X: שיעור אזעקות השווא (FPR), ציר Y: שיעור הזיהויים הנכונים (TPR / Recall).", "ציר X: מספר האשכולות, ציר Y: אינרציה."],
-                answer: 2,
-                rationale: "הגרף משרטט את ה-Trade-off בין השאיפה לתפוס כמה שיותר חיוביים (עלייה בציר Y) לבין המחיר שאנחנו משלמים ביצירת אזעקות שווא (תזוזה ימינה בציר X)."
-            },
-            {
-                q: "ציון F1 Score של מודל יורד משמעותית כאשר:",
-                options: ["גם ה-Precision וגם ה-Recall הם 100%.", "רק כאשר ה-Accuracy נמוך.", "אחד מהמדדים (Precision או Recall) נמוך משמעותית מהשני, עקב השימוש בממוצע הרמוני ש'מעניש' פערים.", "הנתונים מנורמלים בצורה חזקה מדי."],
-                answer: 2,
-                rationale: "ממוצע הרמוני מושך חזק לכיוון המספר הנמוך. לכן, מודל שמצטיין ב-Recall אבל גרוע ב-Precision, ייחשף כבעייתי דרך ציון F1 נמוך."
-            },
-
-            // --- CLUSTERING (4) ---
-            {
-                q: "באלגוריתם K-Means, מה יקרה מתמטית אם נגדיר את הפרמטר K (מספר האשכולות) להיות שווה בדיוק למספר השורות/דגימות שיש לנו במאגר הנתונים?",
-                options: ["המודל יקרוס ויזרוק שגיאה.", "ציון ה-Inertia (WCSS) יהיה שווה ל-0, כיוון שכל נקודה תהפוך למרכז אשכול של עצמה.", "ציון ה-Inertia יגיע למקסימום האפשרי שלו.", "זהו המצב האופטימלי ללמידה לא מונחית."],
-                answer: 1,
-                rationale: "האינרציה מודדת את המרחק של נקודה למרכז האשכול שלה. אם כל נקודה היא אשכול משל עצמה, המרחק הוא 0. (כמובן שזה חסר תועלת מעשית)."
-            },
-            {
-                q: "מה מייצג הציר האנכי (ציר ה-Y) בגרף דנדרוגרמה (Dendrogram) של אשכול היררכי (Hierarchical Clustering)?",
-                options: ["את מספר האשכולות (K).", "את צפיפות הנתונים באותו אזור.", "את המרחק (השוני) בין האשכולות שאוחדו. ככל שהחיבור גבוה יותר בציר, כך האשכולות שונים יותר זה מזה.", "את הממוצע של משתני המקור."],
-                answer: 2,
-                rationale: "בדנדרוגרמה, הקווים האנכיים מחברים בין קבוצות. גובהו של הקו האופקי המחבר ביניהם מעיד על ה'מרחק' שהיה צריך לחצות כדי לאחד אותם."
-            },
-            {
-                q: "איזה מהמשפטים הבאים מתאר את אחד היתרונות של DBSCAN בהשוואה ל-K-Means?",
-                options: ["DBSCAN הוא אלגוריתם של למידה מונחית המייצר עצי החלטה.", "DBSCAN לא מסוגל לסנן Outliers.", "DBSCAN מסוגל למצוא אשכולות בצורות גיאומטריות מורכבות (כמו טבעות מקוננות) ש-K-Means ייכשל בהן בגלל הנחת ה'כדוריות' שלו.", "DBSCAN דורש לדעת מראש מהם מרכזי הכובד."],
-                answer: 2,
-                rationale: "כיוון ש-DBSCAN מבוסס על רצף של צפיפות, הוא פשוט 'עוקב' אחרי הצפיפות ולא כופה על הנתונים צורה של כדור מסביב לנקודת מרכז כפי שעושה K-Means."
-            },
-            {
-                q: "אנו מאתחלים אלגוריתם K-Means עם random_state=42. מדוע זה חשוב פה במיוחד (מעבר לעקביות התוצאות)?",
-                options: ["מכיוון ש-K-Means בוחר את מיקום מרכזי האשכולות ההתחלתיים באופן אקראי, ובחירה שונה יכולה לעיתים להוביל לתוצאה (חלוקה) שונה לחלוטין בסוף התהליך.", "זה לא חשוב ב-K-Means, אלא רק ב-Train_Test_Split.", "כדי לוודא שהאלגוריתם יסיים ב-42 איטרציות.", "כדי שהאינרציה תמיד תהיה זהה ל-42."],
+                q: "מהי המטרה המרכזית בפיצול מאגר הנתונים שלנו לקבוצת אימון (Train) וקבוצת בדיקה (Test) לפני בניית מודל?",
+                options: ["כדי לבחון את המודל על נתונים חדשים שהוא מעולם לא ראה בשלב הלמידה, ובכך לבדוק את יכולת ההכללה שלו למציאות.", "לזרז את תהליך הלמידה של המודל על ידי הקטנת כמות הנתונים.", "לאפשר למודל ללמוד את השגיאות של עצמו.", "כדי להמיר נתונים טקסטואליים למספרים בשני שלבים שונים."],
                 answer: 0,
-                rationale: "K-Means רגיש מאוד למיקומים הראשוניים של ה'צנטרואידים' (מרכזים). התחלה גרועה יכולה לתקוע אותו במינימום מקומי (פתרון לא אידיאלי)."
+                rationale: "אם נבחן מודל על אותם הנתונים שעליהם הוא התאמן, נבדוק רק את היכולת שלו 'לשנן' בעל פה, ולא את היכולת שלו להבין חוקיות."
+            },
+            {
+                q: "תהליך ה-Scaling (נרמול/סילום נתונים) נועד להביא את כל העמודות לאותו קנה מידה. אילו מהמודלים הבאים *פטורים* לחלוטין מהצורך בתהליך זה?",
+                options: ["K-Means ו-KNN.", "רגרסיה לינארית ורגרסיה לוגיסטית.", "מודלים מבוססי עצים, כמו עץ החלטה (Decision Tree) ויער אקראי (Random Forest).", "רשתות נוירונים עמוקות."],
+                answer: 2,
+                rationale: "מכיוון שעצי החלטה בונים את המודל על ידי תנאי פיצול (גדול/קטן מ-) ולא על ידי חישוב מרחקים או משוואות מתמטיות, גודל המספר המוחלט אינו משפיע עליהם."
             },
 
-            // --- TREE MODELS & ENSEMBLES (4) ---
+            // Clustering (K-Means & Elbow)
             {
-                q: "בהקשר של עצי החלטה, מה משמעות הנתון 'Gini = 0.5' עבור צומת בסיווג בינארי (מחלה / לא מחלה)?",
-                options: ["הצומת טהור לחלוטין (הומוגני).", "מדובר במקסימום חוסר הטוהר (ערבוב מוחלט של 50-50 בין המחלקות).", "הצומת מוכן להפוך לעלה סופי.", "המודל סיים את החיפוש החמדן שלו."],
+                q: "באלגוריתם K-Means, מה מייצגים ה'צנטרואידים' (Centroids)?",
+                options: ["את מדדי ה-Gini של כל אשכול.", "את מרכזי הכובד של האשכולות, שאליהם אנו משייכים את הנקודות הקרובות ביותר.", "את התצפיות שסווגו כערכים חריגים (Outliers).", "את השגיאה הריבועית הממוצעת של המודל."],
                 answer: 1,
-                rationale: "ג'יני של 0 אומר שיש רק מחלקה אחת (טוהר). בבעיה בינארית, ג'יני של 0.5 (חצי) הוא הערך הגרוע ביותר האפשרי, המייצג תערובת מושלמת ואי ודאות מוחלטת."
+                rationale: "האלגוריתם מתחיל במיקום אקראי של K מרכזים, ומזיז אותם בהדרגה עד שהם מתייצבים במרכז הגיאומטרי של האשכול שלהם."
             },
             {
-                q: "מודל יער אקראי (Random Forest) מוסיף 'אקראיות' בעת בניית העצים. איזה מהבאים הוא מנגנון אקראיות מרכזי של האלגוריתם?",
-                options: ["הוספת רעש למשתנה המטרה (Y).", "שינוי פונקציית האקטיבציה בין עץ לעץ.", "בכל שלב פיצול בעץ, המודל שוקל רק תת-קבוצה אקראית של מאפיינים (עמודות) מתוך כלל המאפיינים האפשריים, ולא את כולם יחד.", "הוא מגריל עומק מקסימלי שונה לכל עץ."],
-                answer: 2,
-                rationale: "בנוסף למדגם האקראי של השורות (Bootstrapping), האלגוריתם לא נותן לעץ לראות את כל העמודות בכל רגע, כדי להכריח עצים שונים להשתמש במאפיינים שונים ולגוון את ההחלטות."
-            },
-            {
-                q: "בעצי החלטה (ובמודלי Ensemble מבוססי עצים), לרוב ניתן לקבל דיווח על 'Feature Importance' (חשיבות מאפיינים). כיצד האלגוריתם מעריך זאת עקרונית?",
-                options: ["לפי אורך שם העמודה.", "לפי מידת הקורלציה של העמודה עם עמודות אחרות ב-Pandas.", "הוא בודק עד כמה השימוש במאפיין הזה תרם בממוצע להפחתת ה'אי-טוהר' (הקטנת מדד הג'יני) לאורך הפיצולים בעץ.", "לפי מקדם ה-coef_ (השיפוע) שלו."],
-                answer: 2,
-                rationale: "מאפיין שנבחר הרבה פעמים לפצל צמתים חשובים (והוריד את הג'יני בצורה משמעותית) יקבל ציון 'חשיבות' גבוה יותר במודל."
-            },
-            {
-                q: "מהי המשמעות המדויקת של פרמטר ה-learning_rate במודלים ממשפחת ה-Boosting (כמו XGBoost)?",
-                options: ["הוא קובע כמה אחוז מהנתונים יוקצה לאימון.", "הוא מגביל את מספר העצים שייבנו.", "הוא שולט על 'גודל הצעד' או התרומה של כל עץ חדש לתיקון השגיאה הכוללת. קצב קטן ידרוש יותר עצים אך ימנע 'קפיצות' מעל הפתרון האופטימלי.", "הוא משנה את ערך ההטיה (Bias) של רשת הנוירונים."],
-                answer: 2,
-                rationale: "ב-Boosting, אנחנו מתקנים שגיאות. אם נתקן באגרסיביות (קצב גבוה), אנו עלולים לפספס את היעד. קצב למידה (Shrinkage) קטן מרסן את העצים ומאפשר למידה מדויקת יותר."
+                q: "בשיטת המרפק (Elbow Method), מה אנחנו משרטטים על גבי ציר ה-Y ומה אנו מחפשים בו?",
+                options: ["על ציר ה-Y מופיע מדד הדיוק (Accuracy). אנו מחפשים את הנקודה הגבוהה ביותר.", "על ציר ה-Y מופיע מדד האינרציה (WCSS / שגיאת המרחקים). אנו מחפשים את הנקודה בה קצב ירידת השגיאה הופך למתון מאוד.", "על ציר ה-Y מופיע מספר האשכולות (K). אנו מחפשים את ערך המינימום.", "על ציר ה-Y מופיעים המשקלים של הרשת העצבית."],
+                answer: 1,
+                rationale: "מטרתנו למצוא את האיזון: הוספת אשכול תמיד תקטין את השגיאה, אך מנקודת ה'מרפק' התרומה של אשכול נוסף הופכת לזניחה."
             },
 
-            // --- NEURAL NETWORKS (4) ---
+            // Linear Regression & Pivot Tables
             {
-                q: "מהו מושג ה-Epoch (תקופה) באימון של רשת נוירונים?",
-                options: ["מספר השכבות החבויות ברשת.", "מעבר של קבוצה אחת קטנה של נתונים (Batch) דרך הרשת.", "מחזור אחד שלם שבו **כלל נתוני האימון** עברו פעם אחת (קדימה ואחורה) דרך הרשת העצבית ללמידה ועדכון משקולות.", "פונקציית האקטיבציה שמסיימת את הרשת."],
+                q: "לאחר אימון של מודל רגרסיה לינארית, הודפס הערך של model.coef_. מה הערך הזה מייצג פיזיקלית?",
+                options: ["את נקודת החיתוך עם ציר ה-Y (ה-Intercept).", "את מספר העצים שנבנו במודל.", "את שיפוע הישר (כמה יחידות צפוי המשתנה המנובא לעלות/לרדת על כל יחידה של המשתנה המסביר).", "את מדד ג'יני לאותו פיצול."],
                 answer: 2,
-                rationale: "Epoch הוא 'סיבוב' מלא של הרשת על כל חומר הלימוד. בדרך כלל מאמנים רשת במשך עשרות או מאות Epochs כדי שהיא תתכוונן לביצועים מיטביים."
+                rationale: "במשוואת ישר קלאסית (y=mx+b), המקדם coef_ מייצג את ה-m (השיפוע של הקו)."
             },
             {
-                q: "אנו בונים רשת נוירונים לפתרון בעיית סיווג המכילה 5 קטגוריות אפשריות (למשל סיווג תמונה ל: כלב, חתול, סוס, ציפור, דג). מה יהיה המבנה ההגיוני של **שכבת הפלט (Output Layer)**?",
-                options: ["נוירון בודד המשתמש בפונקציית Sigmoid.", "5 נוירונים בשכבת הפלט, המשתמשים לרוב בפונקציית Softmax כדי לייצר הסתברויות המסתכמות ל-1 (100%).", "ללא שכבת פלט, הרשת פשוט מדפיסה טקסט.", "נוירון אחד לכל שורת קלט."],
-                answer: 1,
-                rationale: "בבעיות רב-מחלקתיות (Multiclass), אנו זקוקים לנוירון עבור כל מחלקה אפשרית. פונקציית Softmax משמשת כדי להפוך את הפלטים שלהם לסט של הסתברויות יחסיות שקל לפרש."
-            },
-            {
-                q: "מהי פונקציית האובדן (Loss Function) או מייעל (Optimizer) - איזה תפקיד יש לאלגוריתמים כמו Adam או SGD ברשת נוירונים?",
-                options: ["הם מנרמלים את הקלט (Scaling) לפני השכבה הראשונה.", "הם מחליטים כמה שכבות חבויות צריך.", "לאחר שה-Backpropagation חישב את הנגזרות (עד כמה כל משקולת אחראית לטעות), ה-Optimizer הוא זה שלוקח את הנגזרות הללו ו**מעדכן בפועל** את המשקולות כדי להקטין את השגיאה.", "הם ממירים טקסט למספרים לקריאה ברשת."],
+                q: "איזו פונקציה משמשת אותנו במודלי Machine Learning של Scikit-Learn כדי להזין למודל נתונים חדשים ולבקש ממנו לחשב עבורם את התשובה?",
+                options: ["model.fit()", "model.transform()", "model.predict()", "model.evaluate()"],
                 answer: 2,
-                rationale: "ה-Optimizer (כמו Gradient Descent) הוא המנוע שמבצע את העדכון בפועל של הפרמטרים במורד השיפוע המתמטי בניסיון להגיע למינימום של השגיאה."
+                rationale: "פונקציית fit מאמנת את המודל, בעוד פונקציית predict מבצעת את החיזוי בפועל על נתונים חדשים."
             },
             {
-                q: "מה קורה כאשר אנו מוסיפים 'שכבת Dropout' (נשירה) בתוך רשת נוירונים?",
-                options: ["הרשת זורקת חלק מהנתונים מקבוצת המבחן.", "במהלך האימון, חלק אקראי מהנוירונים (למשל 20%) 'כבים' או מתאפסים זמנית בכל שלב, מה שמכריח את הרשת לא להסתמך על תכונות ספציפיות ומונע Overfitting.", "פונקציית ה-Loss יורדת מיד לאפס.", "המשקולות מומרות לערכים בינאריים של 0 ו-1."],
+                q: "ביצירת טבלת ציר (Pivot Table) באמצעות Pandas, מהו תפקידו של הפרמטר fill_value?",
+                options: ["למלא עמודות טקסט בערכים אקראיים.", "להחליף תאים שנותרו ריקים (NaN) כתוצאה מחוסר בנתונים לשילוב הספציפי של שורה ועמודה, בערך מוגדר (כמו 0).", "לחשב את הממוצע במקום את הסכום.", "לקבוע את מספר העמודות שיוצגו בדוח."],
                 answer: 1,
-                rationale: "Dropout היא טכניקת 'הסדרה' (Regularization) קלאסית. היא מונעת מהרשת לשנן בעל פה וליצור תלות יתר במספר נוירונים ספציפיים, ומפזרת את יכולת הלמידה."
+                rationale: "כאשר חותכים נתונים למספר מימדים (למשל סוכן מול עיר), יכולים להיווצר תאים ללא מידע מקורי. fill_value מונע הופעת NaN בדוח."
+            },
+
+            // Decision Trees, Random Forest, XGBoost
+            {
+                q: "כיצד אלגוריתם עץ החלטה בוחר היכן לפצל את הנתונים בכל צומת?",
+                options: ["הוא מנחש באופן אקראי ומתקן את עצמו באמצעות Backpropagation.", "הוא מחפש באמצעות 'חיפוש חמדן' את התנאי שיביא להפחתה המקסימלית ביותר במדד אי-הטוהר (למשל, מדד ג'יני).", "הוא מעביר את הנתונים דרך פונקציית אקטיבציה מסוג Sigmoid.", "הוא תמיד מפצל את הנתונים שווה בשווה לשתי קבוצות זהות בגודלן."],
+                answer: 1,
+                rationale: "מטרת העץ היא ליצור עלים 'טהורים' ככל האפשר. הוא עושה זאת על ידי מזעור מדד ג'יני (אי-טוהר) בכל שלב מחדש."
+            },
+            {
+                q: "מהי אסטרטגיית הפעולה המרכזית שהופכת את מודל 'יער אקראי' (Random Forest) למוצלח ועמיד בפני Overfitting?",
+                options: ["הוא בונה עשרות או מאות עצי החלטה במקביל, כאשר כל עץ מתאמן על מדגם אקראי של נתונים ומאפיינים, וההחלטה הסופית מתקבלת בהצבעת רוב.", "הוא מאמן רשת נוירונים עמוקה עם שכבות נשירה (Dropout).", "הוא בונה עצים בזה אחר זה, כך שכל עץ מתקן את השגיאות של העץ הקודם.", "הוא מתעלם לחלוטין ממשתנים קטגוריאליים."],
+                answer: 0,
+                rationale: "יער אקראי מבוסס על עקרון ה-Bagging (מדגמים אקראיים והצבעת המונים), מה שמקטין מאוד את הרגישות לרעש נקודתי בנתונים."
+            },
+            {
+                q: "מה מייחד את מודל XGBoost (ביחס ליער אקראי) בהקשר לאופן בניית העצים?",
+                options: ["ב-XGBoost בונים רק עץ אחד ענק ומורכב.", "ב-XGBoost העצים נבנים בצורה סדרתית (Boosting), כאשר כל עץ חדש ממוקד בתיקון הטעויות (השגיאות) של העצים שקדמו לו.", "XGBoost מחשב מרחקים באמצעות נוסחת המרחק האוקלידי במקום לפצל תנאים.", "ב-XGBoost העצים נבנים במקביל ללא תלות אחד בשני."],
+                answer: 1,
+                rationale: "זו המהות של Gradient Boosting. האלגוריתם לומד מהטעויות של עצמו באופן הדרגתי, מה שהופך אותו לאחד המודלים החזקים ביותר הקיימים היום."
+            },
+
+            // Neural Networks
+            {
+                q: "ברשתות נוירונים, מהו תפקידה של פונקציית האקטיבציה (Activation Function)?",
+                options: ["לאתחל את המשקולות בערכים אקראיים לפני תחילת האימון.", "להכניס גורם של 'אי-ליניאריות' לרשת, שמאפשר לה ללמוד ולייצג קשרים מורכבים ולא רק משוואות ישר פשוטות.", "לפצל את נתוני האימון ל-Batches.", "לסנן ערכים חריגים שמגיעים משכבת הקלט."],
+                answer: 1,
+                rationale: "ללא פונקציית אקטיבציה (כמו ReLU או Sigmoid), רשת עמוקה של 100 שכבות תהיה שקולה מתמטית למודל רגרסיה לינארית אחד פשוט."
+            },
+            {
+                q: "בתוך נוירון בודד ברשת עצבית, הנתונים מוכפלים ב'משקולות' (Weights). מה מייצגות משקולות אלו?",
+                options: ["את כמות הפעמים שהרשת רצה על כל נתוני האימון.", "את מדד ה-Gini של הנוירון.", "את הפרמטרים הנלמדים של הרשת, שמציינים את חוזק וחשיבות הקשר בין נוירון אחד לשני.", "את פונקציית ההפסד (Loss) הסופית של המודל."],
+                answer: 2,
+                rationale: "המשקולות הן ה'ידע' שהרשת צוברת. על ידי עדכון המשקולות, הרשת לומדת לייחס חשיבות שונה לקלטים שונים."
+            },
+            {
+                q: "מהו התהליך שנקרא Backpropagation (פעפוע לאחור) ברשתות נוירונים?",
+                options: ["הזרמת הנתונים מהקלט לפלט כדי לקבל את החיזוי הראשוני.", "תהליך שבו המודל מעריך את גודל השגיאה שלו, וחוזר אחורה לאורך הרשת כדי לעדכן ולתקן את המשקולות במטרה למזער את השגיאה לאיטרציה הבאה.", "תהליך נרמול הנתונים (Scaling) לשכבות הפנימיות.", "יצירת עצים סדרתיים במודל."],
+                answer: 1,
+                rationale: "זהו 'מנוע הלמידה' של הרשת. על ידי חישוב נגזרות (Gradient Descent) לאחור, המודל מתכוונן מחדש כדי לדייק יותר בפעם הבאה."
+            },
+
+            // Evaluation Metrics
+            {
+                q: "במטריצת הבלבול (Confusion Matrix), מה משמעות התא False Negative (FN)?",
+                options: ["המודל חזה חיובי, והמציאות חיובית.", "המודל חזה חיובי, אך המציאות שלילית (אזעקת שווא).", "המודל חזה שלילי, אך המציאות חיובית (פספוס קריטי של התופעה שאנו מחפשים).", "המודל חזה שלילי, והמציאות שלילית."],
+                answer: 2,
+                rationale: "המילה False מעידה שהמודל טעה בחיזוי. המילה Negative אומרת שהמודל חזה שלילי. מסקנה: המציאות הייתה חיובית אך פספסנו אותה."
+            },
+            {
+                q: "אנו בונים מודל לסינון מיילים של ספאם. אם המודל יתריע על ספאם כשהמייל הוא למעשה הזמנה חשובה לראיון עבודה, איזה סוג טעות זו?",
+                options: ["True Negative (TN)", "False Negative (FN)", "False Positive (FP)", "True Positive (TP)"],
+                answer: 2,
+                rationale: "המודל חזה שמדובר בספאם (חיובי - זיהה את התופעה), אך הוא טעה (המייל רגיל). זוהי אזעקת שווא, המכונה False Positive."
+            },
+            {
+                q: "מדד הדיוק הכללי (Accuracy) אינו מומלץ לשימוש במקרים של 'חוסר איזון בנתונים' (למשל, 99% מיילים רגילים ורק 1% ספאם). מדוע?",
+                options: ["מפני שאלגוריתם פשוט שמנחש תמיד 'מייל רגיל' יקבל ציון Accuracy של 99%, למרות שהוא לא מזהה ספאם בכלל ומעוות את תמונת ההצלחה.", "מפני ש-Accuracy לא מסוגל להתמודד עם מספרים מעל 100.", "מפני שהוא מחשב רק את הטעויות מסוג False Negative.", "אין סיבה, Accuracy הוא תמיד המדד הטוב ביותר."],
+                answer: 0,
+                rationale: "בנתונים לא מאוזנים אנו צריכים מדד שיוכיח שהמודל באמת למד לזהות את תופעת המיעוט (כמו F1 Score), ולא סתם מהמר על תופעת הרוב."
+            },
+            {
+                q: "מה מייצג מדד ה-Recall (רגישות)?",
+                options: ["מתוך כל הפעמים שהמודל הכריז 'חיובי', כמה מהם באמת היו חיוביים (בדיקת אזעקות שווא).", "מתוך כל המקרים האמיתיים של התופעה (למשל, כל החולים במציאות), כמה המודל הצליח 'לתפוס' ולזהות נכון.", "את ממוצע המהירות של אימון המודל.", "את היחס בין השגיאה החיובית לשלילית."],
+                answer: 1,
+                rationale: "ה-Recall מודד כמה מהתופעה האמיתית 'החזרנו' אלינו (Recall). רגישות גבוהה שואפת לאפס פספוסים (False Negatives)."
+            },
+            {
+                q: "בגרף הערכת ביצועים מסוג ROC, מה משמעות השטח תחת העקומה (ROC AUC) כאשר ערכו עומד על 0.5?",
+                options: ["המודל מסוגל להפריד בין המחלקות ב-100% מהמקרים (מושלם).", "המודל חוזה רק תוצאות חיוביות.", "למודל אין שום כוח ניבוי, והביצועים שלו שקולים לניחוש אקראי לחלוטין (כמו הטלת מטבע).", "המודל סובל מבעיה של התאמת יתר."],
+                answer: 2,
+                rationale: "שטח של 0.5 בגרף ROC מצויר כקו אלכסוני ישיר. הוא מעיד שעל כל זיהוי נכון, המודל גם מייצר אזעקת שווא, ואין לו באמת יכולת אבחנה."
             }
         ];
-
-        // Shuffle questions
-        const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
 
         let currentQuestionIndex = 0;
         let score = 0;
         let hasAnswered = false;
 
-        const startScreen = document.getElementById('start-screen');
-        const quizScreen = document.getElementById('quiz-screen');
-        const resultScreen = document.getElementById('result-screen');
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const nextBtn = document.getElementById('next-btn');
         const feedbackContainer = document.getElementById('feedback-area');
         const feedbackTitle = document.getElementById('feedback-title');
         const feedbackRationale = document.getElementById('feedback-rationale');
-        const feedbackIcon = document.getElementById('feedback-icon');
         const progressBar = document.getElementById('progress-bar');
         const questionCounter = document.getElementById('current-q-num');
         const scoreDisplay = document.getElementById('score-display');
 
         function startQuiz() {
-            startScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
             loadQuestion();
         }
 
         function loadQuestion() {
             hasAnswered = false;
-            const q = shuffledQuestions[currentQuestionIndex];
+            const q = questions[currentQuestionIndex];
             
-            // Animation reset
             questionText.style.animation = 'none';
             questionText.offsetHeight; 
-            questionText.style.animation = 'fadeIn 0.4s ease-out forwards';
+            questionText.style.animation = 'fadeIn 0.3s ease-out forwards';
             
-            questionText.textContent = `${q.q}`;
+            questionText.textContent = `${currentQuestionIndex + 1}. ${q.q}`;
             questionCounter.textContent = currentQuestionIndex + 1;
-            progressBar.style.width = `${((currentQuestionIndex) / shuffledQuestions.length) * 100}%`;
+            progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
             
             optionsContainer.innerHTML = '';
             feedbackContainer.classList.add('hidden');
-            feedbackContainer.classList.remove('bg-emerald-500/10', 'border-emerald-500/30', 'bg-red-500/10', 'border-red-500/30');
+            feedbackContainer.classList.remove('bg-emerald-500/20', 'border-emerald-500/30', 'bg-red-500/20', 'border-red-500/30');
             nextBtn.classList.add('hidden');
 
             q.options.forEach((opt, index) => {
@@ -646,7 +488,7 @@
                 btn.className = 'option-btn w-full p-4 sm:p-5 rounded-2xl text-lg text-slate-200 focus:outline-none flex justify-between items-center group font-medium text-right mb-3';
                 btn.innerHTML = `
                     <span class="ml-4 flex-grow leading-snug" style="direction: rtl;">${opt}</span>
-                    <div class="w-7 h-7 rounded-full border border-white/20 flex-shrink-0 flex items-center justify-center transition-all option-circle bg-white/5 group-hover:bg-white/10"></div>
+                    <div class="w-6 h-6 rounded-full border border-white/20 flex-shrink-0 flex items-center justify-center transition-all option-circle bg-white/5 group-hover:bg-white/10"></div>
                 `;
                 btn.onclick = () => checkAnswer(index, btn);
                 optionsContainer.appendChild(btn);
@@ -657,7 +499,7 @@
             if (hasAnswered) return;
             hasAnswered = true;
 
-            const q = shuffledQuestions[currentQuestionIndex];
+            const q = questions[currentQuestionIndex];
             const isCorrect = selectedIndex === q.answer;
             const allBtns = optionsContainer.children;
 
@@ -667,12 +509,12 @@
                 
                 if(i === q.answer) {
                     allBtns[i].classList.add('correct');
-                    circle.innerHTML = '<i class="fa-solid fa-check text-sm text-emerald-400"></i>';
-                    circle.className = "w-7 h-7 rounded-full bg-emerald-500/20 border-emerald-500 flex-shrink-0 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+                    circle.innerHTML = '<i class="fa-solid fa-check text-sm"></i>';
+                    circle.className = "w-6 h-6 rounded-full bg-emerald-500 text-white flex-shrink-0 flex items-center justify-center shadow-[0_0_10px_rgba(16,185,129,0.5)]";
                 } else if(i === selectedIndex && !isCorrect) {
                     allBtns[i].classList.add('incorrect');
-                    circle.innerHTML = '<i class="fa-solid fa-xmark text-sm text-red-400"></i>';
-                    circle.className = "w-7 h-7 rounded-full bg-red-500/20 border-red-500 flex-shrink-0 flex items-center justify-center";
+                    circle.innerHTML = '<i class="fa-solid fa-xmark text-sm"></i>';
+                    circle.className = "w-6 h-6 rounded-full bg-red-500 text-white flex-shrink-0 flex items-center justify-center";
                 } else {
                     allBtns[i].classList.add('opacity-40');
                 }
@@ -684,28 +526,25 @@
             if(isCorrect) {
                 score++;
                 scoreDisplay.textContent = score;
-                feedbackContainer.classList.add('bg-emerald-500/10', 'border-emerald-500/30');
-                feedbackTitle.textContent = "בול!";
-                feedbackTitle.className = "text-xl font-bold text-emerald-400";
-                feedbackIcon.className = "fa-solid fa-circle-check text-emerald-400 text-2xl";
+                feedbackContainer.classList.add('bg-emerald-500/20', 'border-emerald-500/30');
+                feedbackTitle.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 ml-2"></i> תשובה נכונה!';
+                feedbackTitle.className = "text-xl font-bold text-emerald-400 mb-2";
             } else {
-                feedbackContainer.classList.add('bg-red-500/10', 'border-red-500/30');
-                feedbackTitle.textContent = "לא מדויק...";
-                feedbackTitle.className = "text-xl font-bold text-red-400";
-                feedbackIcon.className = "fa-solid fa-circle-xmark text-red-400 text-2xl";
+                feedbackContainer.classList.add('bg-red-500/20', 'border-red-500/30');
+                feedbackTitle.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-400 ml-2"></i> טעות!';
+                feedbackTitle.className = "text-xl font-bold text-red-400 mb-2";
             }
 
-            feedbackRationale.innerHTML = `<span class="font-bold text-white drop-shadow-md">הסבר: </span>${q.rationale}`;
+            feedbackRationale.innerHTML = `<span class="font-bold text-white">הסבר: </span>${q.rationale}`;
             
-            if(currentQuestionIndex === shuffledQuestions.length - 1) {
-                nextBtn.innerHTML = 'סיום וצפייה בתוצאות <i class="fa-solid fa-flag-checkered mr-2 text-xl"></i>';
-                nextBtn.className = "mt-6 w-full py-5 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-xl font-bold transition-all text-white flex items-center justify-center gap-2 shadow-lg hover:shadow-sky-500/50 hover:scale-[1.02] text-xl tracking-wide";
+            if(currentQuestionIndex === questions.length - 1) {
+                nextBtn.innerHTML = 'סיים מבחן וצפה בתוצאות <i class="fa-solid fa-flag-checkered mr-2"></i>';
             }
         }
 
         function nextQuestion() {
             currentQuestionIndex++;
-            if(currentQuestionIndex < shuffledQuestions.length) {
+            if(currentQuestionIndex < questions.length) {
                 loadQuestion();
             } else {
                 showResults();
@@ -713,20 +552,12 @@
         }
 
         function showResults() {
-            quizScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
             progressBar.style.width = '100%';
             
-            const percentage = Math.round((score / shuffledQuestions.length) * 100);
+            const percentage = Math.round((score / questions.length) * 100);
             
-            // Animate percentage circle
-            setTimeout(() => {
-                const circle = document.getElementById('score-circle');
-                const offset = 440 - (440 * percentage) / 100;
-                circle.style.strokeDashoffset = offset;
-            }, 100);
-
-            // Animate numbers
             let currentNum = 0;
             const targetNum = percentage;
             const numElement = document.getElementById('final-percentage');
@@ -740,58 +571,11 @@
                 }
             }, 20);
 
-            
-            const title = document.getElementById('result-title');
             const subtitle = document.getElementById('result-subtitle');
-            const icon = document.getElementById('result-icon');
-            const iconCont = document.getElementById('result-icon-container');
-
-            if(percentage >= 90) {
-                title.innerHTML = 'Data Scientist <span class="text-sky-400">Pro</span>';
-                subtitle.textContent = `ציון של ${score} מתוך ${shuffledQuestions.length}. אתה מכונה! המבחן הזה קטן עליך.`;
-                icon.className = "fa-solid fa-user-astronaut text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]";
-                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-sky-400/30 bg-sky-400/10";
-            } else if(percentage >= 75) {
-                title.textContent = "עבודה חזקה מאוד!";
-                subtitle.textContent = `השגת ${score} מתוך ${shuffledQuestions.length}. השליטה שלך בחומר מרשימה. מעבר זריז על הטעויות ואתה מסודר.`;
-                icon.className = "fa-solid fa-rocket text-indigo-400 drop-shadow-[0_0_15px_rgba(129,140,248,0.8)]";
-                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-indigo-400/30 bg-indigo-400/10";
-            } else if(percentage >= 60) {
-                title.textContent = "כמעט שם...";
-                subtitle.textContent = `ציון ${score}/${shuffledQuestions.length}. מעבר, אבל השאלות המכשילות הפילו אותך. עיין שוב בסיכומים לפני המבחן.`;
-                icon.className = "fa-solid fa-chart-line text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.8)]";
-                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-emerald-400/30 bg-emerald-400/10";
-            } else {
-                title.textContent = "שווה לעשות חזרה";
-                subtitle.textContent = `הוצאת ${score}/${shuffledQuestions.length}. המבחן הזה בכוונה קשה, אבל זה בדיוק הזמן לתרגל שוב את החומר מההתחלה.`;
-                icon.className = "fa-solid fa-triangle-exclamation text-red-400 drop-shadow-[0_0_15px_rgba(248,113,113,0.8)]";
-                iconCont.className = "inline-flex p-6 rounded-full mb-6 border-4 border-red-400/30 bg-red-400/10";
-            }
-        }
-
-        function shareResults() {
-            const percentage = Math.round((score / shuffledQuestions.length) * 100);
-            const text = `שרדתי את מבחן האתגר של מדע הנתונים! 🚀\nסיימתי עם ${score}/${shuffledQuestions.length} שאלות (${percentage}%).\nמי אמר פנדס ולא קיבל?`;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('share-toast');
-                toast.classList.remove('opacity-0');
-                setTimeout(() => toast.classList.add('opacity-0'), 3000);
-            }).catch(err => {
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    const toast = document.getElementById('share-toast');
-                    toast.classList.remove('opacity-0');
-                    setTimeout(() => toast.classList.add('opacity-0'), 3000);
-                } catch (err) {
-                    console.error('Fallback: Oops, unable to copy', err);
-                }
-                document.body.removeChild(textArea);
-            });
+            if(percentage >= 90) subtitle.innerHTML = `ציון של ${score} מתוך ${questions.length}.<br>מושלם! אתה שולט בחומר ברמה של 100.`;
+            else if(percentage >= 75) subtitle.innerHTML = `השגת ${score} מתוך ${questions.length}.<br>כל הכבוד, אתה מוכן למבחן!`;
+            else if(percentage >= 60) subtitle.innerHTML = `ציון ${score}/${questions.length}.<br>כמעט שם. מומלץ לעבור על השאלות שטעית בהן.`;
+            else subtitle.innerHTML = `הוצאת ${score}/${questions.length}.<br>שווה לחזור על הסיכום שלמדנו. לא לוותר!`;
         }
     </script>
 </body>
