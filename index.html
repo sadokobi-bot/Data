@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן פלטים: סטטיסטיקה יישומית (SPSS)</title>
+    <title>מאסטר SPSS: הכנה למבחן בסטטיסטיקה יישומית</title>
+    <!-- טעינת גופן מודרני מגוגל -->
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -27,7 +28,9 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: var(--bg-color);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
             color: var(--text-dark);
             margin: 0;
             padding: 0;
@@ -39,41 +42,41 @@
 
         .app-header {
             width: 100%;
-            background: var(--primary);
-            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             color: white;
-            padding: 30px 20px;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
             margin-bottom: 40px;
         }
 
         .app-header h1 {
             margin: 0 0 10px 0;
-            font-size: 2.2rem;
+            font-size: 2.8rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: -0.5px;
         }
 
         .app-header p {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             opacity: 0.9;
+            font-weight: 400;
         }
 
         .container {
             width: 100%;
-            max-width: 850px;
-            padding: 0 20px 50px;
+            max-width: 900px;
+            padding: 0 20px 60px;
         }
 
         .progress-bar-container {
             background: var(--card-bg);
-            padding: 20px;
+            padding: 25px;
             border-radius: var(--border-radius);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
             margin-bottom: 30px;
         }
 
@@ -81,91 +84,148 @@
             display: flex;
             justify-content: space-between;
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 12px;
-            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
         }
 
         .progress-track {
-            height: 12px;
+            height: 14px;
             background: #e2e8f0;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%);
             width: 0%;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 35px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
             animation: slideUp 0.5s ease-out;
             margin-bottom: 30px;
+            position: relative;
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .question-text {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             color: var(--text-dark);
-            line-height: 1.4;
+            line-height: 1.5;
+        }
+
+        .spss-container {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            /* SPSS Output is usually LTR */
+            direction: ltr; 
+            text-align: left;
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        .spss-title {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .spss-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #000;
+            min-width: 600px;
+        }
+
+        .spss-table th, .spss-table td {
+            padding: 6px 10px;
+            text-align: right;
+        }
+
+        .spss-table th {
+            border-top: 2px solid #000;
+            border-bottom: 1px solid #000;
+            font-weight: bold;
+            vertical-align: bottom;
+        }
+
+        .spss-table .row-header {
+            text-align: left;
+            font-weight: normal;
+        }
+
+        .spss-table tbody tr:last-child td {
+            border-bottom: 2px solid #000;
+        }
+
+        .spss-footer {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #333;
+            margin-top: 10px;
         }
 
         .options-grid {
             display: grid;
-            gap: 15px;
+            gap: 16px;
         }
 
         .option-btn {
             display: flex;
             align-items: center;
             width: 100%;
-            padding: 18px 20px;
-            font-size: 1.15rem;
+            padding: 20px;
+            font-size: 1.2rem;
             font-weight: 600;
             text-align: right;
-            background: #f8fafc;
+            background: white;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text-dark);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.01);
         }
 
         .option-btn:hover:not(:disabled) {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
+            border-color: #94a3b8;
             transform: translateY(-2px);
-        }
-
-        .option-btn.selected {
-            background: #eff6ff;
-            border-color: var(--primary);
-            color: var(--primary-dark);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
         }
 
         .option-btn.correct {
             background: var(--success-light);
             border-color: var(--success);
-            color: #065f46;
+            color: #064e3b;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
 
         .option-btn.wrong {
             background: var(--danger-light);
             border-color: var(--danger);
-            color: #991b1b;
+            color: #7f1d1d;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+            opacity: 0.7;
         }
 
         .option-btn:disabled {
@@ -175,103 +235,72 @@
 
         .feedback-box {
             display: none;
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 12px;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
             animation: slideUp 0.4s ease-out;
+            font-size: 1.15rem;
+            line-height: 1.6;
         }
 
         .feedback-box h4 {
-            margin: 0 0 10px 0;
-            font-size: 1.3rem;
+            margin: 0 0 15px 0;
+            font-size: 1.4rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .feedback-box p {
-            margin: 0 0 10px 0;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-        
-        .feedback-box p:last-child {
-            margin-bottom: 0;
+            gap: 12px;
         }
 
         .feedback-box.correct-feedback {
             display: block;
-            background: var(--success-light);
-            border-right: 5px solid var(--success);
-            color: #065f46;
+            background: #ecfdf5;
+            border-right: 6px solid var(--success);
+            color: #064e3b;
         }
 
         .feedback-box.wrong-feedback {
             display: block;
-            background: var(--danger-light);
-            border-right: 5px solid var(--danger);
-            color: #991b1b;
+            background: #fef2f2;
+            border-right: 6px solid var(--danger);
+            color: #7f1d1d;
         }
 
-        .spss-table-wrapper {
-            background: #fff;
-            border: 1px solid #cbd5e1;
+        .correct-answer-highlight {
+            display: inline-block;
+            background: white;
+            padding: 8px 15px;
             border-radius: 8px;
-            padding: 10px;
-            margin: 20px 0;
-            overflow-x: auto;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--danger);
+            margin: 10px 0;
+            font-weight: 700;
         }
 
-        .spss-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            color: #000;
-        }
-
-        .spss-table th, .spss-table td {
-            padding: 8px 12px;
-            text-align: right;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .spss-table th {
-            border-top: 2px solid #000;
-            border-bottom: 2px solid #000;
-            background: #f8fafc;
-            font-weight: bold;
-        }
-
-        .spss-table tbody tr:last-child td {
-            border-bottom: 2px solid #000;
-        }
-
+        /* Navigation */
         .action-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 30px;
         }
 
         .btn-next {
             display: none;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            padding: 15px 35px;
-            font-size: 1.2rem;
+            padding: 16px 40px;
+            font-size: 1.3rem;
             font-weight: 700;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
         }
 
         .btn-next:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(79, 70, 229, 0.35);
         }
 
         #resultsScreen {
@@ -280,35 +309,36 @@
         }
 
         .score-circle {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background: white;
-            border: 8px solid var(--primary);
+            border: 10px solid var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            color: var(--primary);
-            margin: 0 auto 20px;
-            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+            color: var(--primary-dark);
+            margin: 0 auto 30px;
+            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.2);
+            position: relative;
         }
 
-        @media (max-width: 600px) {
-            .card { padding: 20px; }
-            .question-text { font-size: 1.2rem; }
-            .option-btn { font-size: 1rem; padding: 15px; }
-            .spss-table { font-size: 12px; }
+        @media (max-width: 768px) {
+            .card { padding: 25px; }
+            .question-text { font-size: 1.3rem; }
+            .option-btn { font-size: 1.1rem; padding: 15px; }
+            .app-header h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="app-header">
-        <h1>הכנה למבחן: ניתוח פלטים ב-SPSS</h1>
-        <p>תרגול ממוקד - קבלת החלטות וזיהוי מבחנים</p>
-    </div>
+    <header class="app-header">
+        <h1>מאסטר SPSS</h1>
+        <p>תרגול סימולציות וקריאת פלטים - סטטיסטיקה יישומית</p>
+    </header>
 
     <div class="container">
         
@@ -316,8 +346,8 @@
         <div id="quizScreen">
             <div class="progress-bar-container">
                 <div class="progress-info">
-                    <span>שאלה <span id="currentQNum">1</span> מתוך <span id="totalQNum">30</span></span>
-                    <span id="scoreTracker">ציון: 0</span>
+                    <span id="progressText">שאלה 1 מתוך X</span>
+                    <span id="scoreTracker">הצלחות: 0</span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="progressFill"></div>
@@ -337,17 +367,17 @@
                 </div>
 
                 <div class="action-container">
-                    <button class="btn-next" id="btnNext" onclick="nextQuestion()">השאלה הבאה ❯</button>
+                    <button class="btn-next" id="btnNext" onclick="nextQuestion()">לשאלה הבאה ❯</button>
                 </div>
             </div>
         </div>
 
-        <!-- Results Section -->
         <div id="resultsScreen" class="card">
             <h2>סיום המבחן!</h2>
+            <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px;">הנה התוצאה הסופית שלך:</p>
             <div class="score-circle" id="finalScore">0%</div>
-            <h3 id="finalMessage" style="font-size: 1.5rem; margin-bottom: 30px;"></h3>
-            <button class="btn-next" style="display: inline-block;" onclick="location.reload()">תרגל שוב מהתחלה</button>
+            <h3 id="finalMessage" style="font-size: 1.8rem; margin-bottom: 40px; color: var(--text-dark);"></h3>
+            <button class="btn-next" style="display: inline-block;" onclick="location.reload()">↻ התחל תרגול מחדש</button>
         </div>
 
     </div>
@@ -365,465 +395,433 @@
                     "כאשר ערך ה- Beta קרוב ל- 1"
                 ],
                 ans: 1,
-                exp: "חוק הברזל: תמיד דוחים את H0 (ומסיקים שהמודל/הקשר/ההבדל מובהק) כאשר ה-Sig (רמת המובהקות) קטן מ-0.05."
+                exp: "<strong>חוק הברזל:</strong> תמיד דוחים את H0 (ומסיקים שהמודל/הקשר/ההבדל מובהק) כאשר ה-Sig (רמת המובהקות) <strong>קטן מ-0.05</strong>."
             },
             
-            // --- TOPIC: RELIABILITY ---
+            // --- TOPIC: CHI-SQUARE (FULL TABLES) ---
             {
-                q: "חוקר בנה שאלון עם 6 שאלות שנועדו לבדוק 'רמת מוטיבציה'. באיזה מבחן ישתמש כדי לבדוק האם כל השאלות מודדות את אותו עולם תוכן בהצלחה?",
-                table: "",
-                options: [
-                    "מבחן חי בריבוע",
-                    "מבחן T למדגמים בלתי תלויים",
-                    "מהימנות - אלפא של קרונבך (Cronbach's Alpha)",
-                    "ניתוח שונות (ANOVA)"
-                ],
-                ans: 2,
-                exp: "אלפא של קרונבך משמש לבדיקת עקיבות פנימית (מהימנות) של שאלון או מדד המורכב ממספר פריטים."
-            },
-            {
-                q: "התבונן בפלט בדיקת המהימנות הבא. מה המסקנה הסטטיסטית לגבי השאלון?",
+                q: "חוקר בדק את הקשר בין 'מגדר' (גברים/נשים) לבין 'הרגלי עישון' (מעשן/לא מעשן). לפניך פלט ה-SPSS. מה המסקנה הסטטיסטית?",
                 table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th>Cronbach's Alpha</th><th>N of Items</th></tr></thead>
-                    <tbody><tr><td>.885</td><td>6</td></tr></tbody>
-                </table>
-                </div>
-                `,
-                options: [
-                    "השאלון בעייתי, יש למחוק לפחות שאלה אחת.",
-                    "השאלון מורכב מ-6 שאלות (פריטים) ורמת המהימנות שלו טובה מאוד.",
-                    "המודל מסביר 88.5% מהשונות של המוטיבציה.",
-                    "דוחים את השערת האפס כי הערך גדול מ-0.05."
-                ],
-                ans: 1,
-                exp: "N of items = מספר השאלות הוא 6. ערך אלפא של 0.885 הוא גדול מ-0.7, ולכן המהימנות של השאלון טובה מאוד."
-            },
-            {
-                q: "בטבלת Item-Total Statistics המציגה את פירוט השאלות, מה המשמעות אם בעמודת 'Cronbach's Alpha if item deleted' בשורה של שאלה מס' 2 מופיע הערך 0.910 (כאשר האלפא הכללית היא 0.820)?",
-                table: "",
-                options: [
-                    "שאלה מס' 2 היא השאלה החשובה ביותר בשאלון, אסור למחוק אותה.",
-                    "מחיקת שאלה מס' 2 תפגע במהימנות השאלון.",
-                    "השאלה מנוסחת בצורה טובה ותורמת למדד.",
-                    "מחיקת השאלה תעלה את מהימנות השאלון ل-0.910, ולכן היא 'פוגעת' בשאלון וכדאי לשקול להסירה."
-                ],
-                ans: 3,
-                exp: "העמודה מראה מה תהיה רמת האמינות אם נזרוק את השאלה. אם המחיקה מעלה את האמינות (מ-0.820 ל-0.910), השאלה הזו בעייתית."
-            },
-
-            // --- TOPIC: CHI-SQUARE ---
-            {
-                q: "חוקר מעוניין לבדוק האם קיים קשר בין המשתנה 'מגדר' (גבר/אישה) לבין 'מעורבות בתאונת דרכים' (כן/לא). באיזה מבחן עליו להשתמש?",
-                table: "",
-                options: [
-                    "מבחן T למדגמים בלתי תלויים",
-                    "רגרסיה ליניארית",
-                    "מבחן חי בריבוע (Chi-Square)",
-                    "ניתוח שונות דו-כיווני"
-                ],
-                ans: 2,
-                exp: "כאשר אנו רוצים לבדוק קשר בין שני משתנים קטגוריאליים/שמיים (מגדר ותאונה), המבחן המתאים הוא חי בריבוע."
-            },
-            {
-                q: "התבונן בפלט חי בריבוע הבא. מה המסקנה הסטטיסטית?",
-                table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr></thead>
-                    <tbody><tr><td>Pearson Chi-Square</td><td>8.353</td><td>1</td><td>.004</td></tr></tbody>
-                </table>
-                </div>
-                `,
-                options: [
-                    "לא דוחים את H0, מכיוון שה-Sig קטן מ-0.05.",
-                    "דוחים את H0, מכיוון שה-Sig קטן מ-0.05, כלומר יש קשר מובהק בין המשתנים.",
-                    "המבחן לא תקין כי ה-df שווה ל-1.",
-                    "דוחים את H0 כי ה-Value גדול מ-5."
-                ],
-                ans: 1,
-                exp: "ה- Asymp. Sig. הוא 0.004, שזה קטן מ-0.05. לכן דוחים H0 ומסיקים שיש קשר מובהק בין המשתנים הקטגוריאליים."
-            },
-            {
-                q: "בתחתית טבלת Chi-Square Tests באחד המבחנים הופיעה ההערה הבאה:<br><code>a. 2 cells (33.3%) have expected count less than 5.</code><br>כיצד עליך להתייחס להערה זו?",
-                table: "",
-                options: [
-                    "המבחן תקין לחלוטין ויש לקרוא את השורה של Pearson Chi-Square כרגיל.",
-                    "המבחן מובהק כי 33.3% זה גדול מ-5%.",
-                    "המבחן אינו תקין (יותר מ-20% מהתאים עם שכיחות צפויה קטנה מ-5), ולכן יש להסתכל על מבחן פישר (Fisher's Exact Test).",
-                    "דוחים את השערת האפס בגלל ההערה."
-                ],
-                ans: 2,
-                exp: "התנאי לתקינות חי בריבוע הוא שלכל היותר 20% מהתאים יהיו עם תוחלת קטנה מ-5. כאן קיבלנו 33.3% ולכן המבחן הופר."
-            },
-
-            // --- STREAMING_CHUNK: TOPIC: REGRESSION ---
-            {
-                q: "חוקר מעוניין *לנבא* את השכר (משתנה כמותי) על סמך 2 משתנים מסבירים: רמת השכלה ושכר התחלתי. באיזה מבחן ישתמש?",
-                table: "",
-                options: [
-                    "ניתוח שונות דו-כיווני",
-                    "מבחן חי בריבוע",
-                    "רגרסיה ליניארית מרובה (Multiple Regression)",
-                    "מבחן T למדגמים בלתי תלויים"
-                ],
-                ans: 2,
-                exp: "ניבוי של משתנה כמותי על סמך משתנים כמותיים אחרים (2 ומעלה) דורש רגרסיה ליניארית מרובה."
-            },
-            {
-                q: "התבונן בטבלת 'Model Summary' מפלט רגרסיה. מה פירוש המספר המודגש?",
-                table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th></tr></thead>
-                    <tbody><tr><td>1</td><td>.873</td><td><b>.762</b></td><td>.761</td></tr></tbody>
-                </table>
-                </div>
-                `,
-                options: [
-                    "המודל מובהק סטטיסטית ברמה של 76.2%.",
-                    "המודל מסביר 76.2% מהשונות של המשתנה התלוי (Y).",
-                    "המנבא החזק ביותר במודל משפיע בעוצמה של 0.762.",
-                    "ישנה טעות של 76.2% בניבוי."
-                ],
-                ans: 1,
-                exp: "ערך ה- R Square ($R^2$) מייצג את אחוז השונות ב-Y שמוסברת על ידי המשתנים הבלתי תלויים (X). כאן זה 76.2%."
-            },
-            {
-                q: "למה משמשת טבלת ה- ANOVA המופיעה תמיד *כחלק* מפלט של רגרסיה ליניארית?",
-                table: "",
-                options: [
-                    "כדי להרכיב את משוואת הניבוי.",
-                    "כדי להשוות ממוצעים בין גברים לנשים.",
-                    "כדי לבדוק האם המודל כולו (הקשר הליניארי בין כל ה-X ל-Y) מובהק סטטיסטית.",
-                    "כדי לבדוק מהימנות שאלונים."
-                ],
-                ans: 2,
-                exp: "בתוך רגרסיה, תפקידה של טבלת ה-ANOVA הוא אך ורק להראות לנו דרך ה-Sig האם מודל הניבוי כולו תקף ומובהק."
-            },
-            {
-                q: "בטבלת המקדמים (Coefficients) ברגרסיה מרובה, לאיזו עמודה נסתכל כדי לדעת איזה משתנה מנבא הוא *המשפיע והחזק ביותר*?",
-                table: "",
-                options: [
-                    "B (Unstandardized Coefficients)",
-                    "Sig",
-                    "Beta (Standardized Coefficients)",
-                    "t"
-                ],
-                ans: 2,
-                exp: "כדי להשוות עוצמות השפעה בין משתנים שנמדדים ביחידות שונות, מסתכלים תמיד על ה-Beta (המקדם המתוקנן)."
-            },
-            {
-                q: "התבונן בטבלת המקדמים. מי מהמשתנים המסבירים הוא המשפיע ביותר על 'השכר הנוכחי' (המשתנה התלוי), ומדוע?",
-                table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th>Model</th><th>Unstandardized B</th><th>Standardized Beta</th><th>Sig.</th></tr></thead>
+                <div class="spss-container">
+                  <div class="spss-title">Chi-Square Tests</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th><th>Exact Sig. (2-sided)</th><th>Exact Sig. (1-sided)</th></tr>
+                    </thead>
                     <tbody>
-                        <tr><td>(Constant)</td><td>-6335</td><td></td><td>.000</td></tr>
-                        <tr><td>Educational Level</td><td>997</td><td>.195</td><td>.000</td></tr>
-                        <tr><td>Beginning Salary</td><td>1.57</td><td>.732</td><td>.000</td></tr>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>8.353<sup>a</sup></td><td>1</td><td>.004</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Continuity Correction<sup>b</sup></td><td>7.687</td><td>1</td><td>.006</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Likelihood Ratio</td><td>8.674</td><td>1</td><td>.003</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Fisher's Exact Test</td><td></td><td></td><td></td><td>.005</td><td>.002</td></tr>
+                      <tr><td class="row-header">N of Valid Cases</td><td>1059</td><td></td><td></td><td></td><td></td></tr>
                     </tbody>
-                </table>
+                  </table>
+                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5. The minimum expected count is 35.29.<br>b. Computed only for a 2x2 table</div>
                 </div>
                 `,
                 options: [
-                    "רמת השכלה, כי ה- B שלה (997) גדול מה-B של שכר התחלתי (1.57).",
-                    "שכר התחלתי, כי ה- Beta שלו (0.732) גדול מה- Beta של השכלה (0.195).",
-                    "שניהם משפיעים באותה מידה כי ה-Sig של שניהם הוא 0.000.",
-                    "לא ניתן לדעת מטבלה זו."
+                    "לא דוחים את H0, מכיוון שה-Sig קטן מ-0.05. אין קשר בין המשתנים.",
+                    "דוחים את H0, מכיוון שה-Sig של פירסון קטן מ-0.05. קיים קשר מובהק בין המשתנים.",
+                    "המבחן לא תקין ויש להסתכל על שורת Fisher's Exact Test.",
+                    "המודל מסביר 8.35% מהשונות."
                 ],
                 ans: 1,
-                exp: "המשתנה שמשפיע הכי הרבה נקבע אך ורק לפי עמודת ה- Beta (בערך מוחלט). 0.732 > 0.195, לכן שכר התחלתי חזק יותר בניבוי."
+                exp: "מסתכלים על השורה <strong>Pearson Chi-Square</strong> ועמודת <strong>Asymp. Sig</strong>. הערך הוא .004, שזה קטן מ-0.05. לכן <strong>דוחים את השערת האפס</strong> ומסיקים שיש קשר מובהק. המבחן תקין כי ההערה אומרת ש-0 תאים קטנים מ-5."
+            },
+            {
+                q: "בפלט חי בריבוע אחר, הופיעו הנתונים הבאים. האם המבחן שבוצע תקין, ועל איזו שורה יש להסתכל?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Chi-Square Tests</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th><th>Exact Sig. (2-sided)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>4.636<sup>a</sup></td><td>1</td><td>.031</td><td></td></tr>
+                      <tr><td class="row-header">Fisher's Exact Test</td><td></td><td></td><td></td><td>.037</td></tr>
+                      <tr><td class="row-header">N of Valid Cases</td><td>580</td><td></td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">a. 2 cells (50.0%) have expected count less than 5. The minimum expected count is 2.10.</div>
+                </div>
+                `,
+                options: [
+                    "המבחן תקין. נסתכל על פירסון ונקבע ש-Sig = 0.031.",
+                    "המבחן לא תקין כי יש 50% תאים עם שכיחות צפויה קטנה מ-5. נסתכל על מבחן פישר ונקבע ש-Sig = 0.037.",
+                    "המבחן תקין כי יש פחות מ-5 תאים פגומים.",
+                    "דוחים את השערת האפס כי 580 זה מדגם גדול."
+                ],
+                ans: 1,
+                exp: "התנאי למבחן חי בריבוע תקין הוא ש**מקסימום 20% מהתאים** יהיו קטנים מ-5. כאן כתוב 50.0%, לכן התנאי הופר ויש להסתכל על השורה של <strong>Fisher's Exact Test</strong>."
             },
 
-            // --- STREAMING_CHUNK: TOPIC: T-TESTS ---
+            // --- STREAMING_CHUNK: TOPIC: REGRESSION (FULL TABLES) ---
             {
-                q: "חוקר מעוניין לבדוק האם קיים הבדל במשך האשפוז (בימים) בין נפגעי תאונות דרכים לבין נפגעי פעולות איבה. באיזה מבחן ישתמש?",
-                table: "",
-                options: [
-                    "מבחן T למדגמים תלויים (Paired)",
-                    "ניתוח שונות חד-כיווני (ANOVA)",
-                    "מבחן חי בריבוע",
-                    "מבחן T למדגמים בלתי תלויים (Independent)"
-                ],
-                ans: 3,
-                exp: "יש לנו משתנה תלוי כמותי (ימים) ומשתנה בלתי תלוי קטגוריאלי שמורכב מ-2 קבוצות שונות לגמרי. לכן נבחר ב-T בלתי תלויים."
-            },
-            {
-                q: "חוקר שקל 30 מטופלים לפני תחילת דיאטה, ושקל את *אותם המטופלים* שוב לאחר חודש כדי לראות אם ירדו במשקל. באיזה מבחן ישתמש?",
-                table: "",
-                options: [
-                    "מבחן T למדגמים בלתי תלויים",
-                    "מבחן T למדגמים תלויים / מזווגים (Paired)",
-                    "רגרסיה ליניארית",
-                    "חי בריבוע"
-                ],
-                ans: 1,
-                exp: "כאשר מודדים את אותם האנשים פעמיים (לפני ואחרי), הנתונים תלויים זה בזה. לכן נשתמש ב-T למדגמים תלויים."
-            },
-            {
-                q: "התבונן בפלט מבחן T למדגמים בלתי תלויים. בחלק הראשון של הטבלה מופיע מבחן לווין (Levene's Test) לבדיקת שוויון שונויות עם הערך Sig = 0.237. כיצד יש לפעול?",
+                q: "חוקר הריץ רגרסיה מרובה לניבוי 'שכר נוכחי' בעזרת 'רמת השכלה' ו'שכר התחלתי'. התבונן בשתי הטבלאות הראשונות מהפלט. מה אחוז השונות שהמודל מסביר, והאם המודל כולו מובהק?",
                 table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th></th><th>Levene's Test - F</th><th>Levene's Test - Sig.</th></tr></thead>
+                <div class="spss-container">
+                  <div class="spss-title">Model Summary</div>
+                  <table class="spss-table" style="margin-bottom: 20px;">
+                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error of the Estimate</th></tr></thead>
+                    <tbody><tr><td>1</td><td>.873<sup>a</sup></td><td>.762</td><td>.761</td><td>7030.278</td></tr></tbody>
+                  </table>
+                  
+                  <div class="spss-title">ANOVA<sup>b</sup></div>
+                  <table class="spss-table">
+                    <thead><tr><th>Model</th><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                        <tr><td>Equal variances assumed</td><td>1.420</td><td>.237</td></tr>
-                        <tr><td>Equal variances not assumed</td><td></td><td></td></tr>
+                      <tr><td>1</td><td class="row-header">Regression</td><td>7.2E+10</td><td>2</td><td>3.58E+10</td><td>724.397</td><td>.000<sup>a</sup></td></tr>
+                      <tr><td></td><td class="row-header">Residual</td><td>2.2E+10</td><td>452</td><td>4.9E+07</td><td></td><td></td></tr>
+                      <tr><td></td><td class="row-header">Total</td><td>9.4E+10</td><td>454</td><td></td><td></td><td></td></tr>
                     </tbody>
-                </table>
+                  </table>
                 </div>
                 `,
                 options: [
-                    "כיוון ש-Sig > 0.05 במבחן לווין, מניחים שהשונויות שוות ויש לקרוא את תוצאת מבחן T בשורה העליונה (Equal variances assumed).",
-                    "כיוון ש-Sig > 0.05, יש לקרוא את השורה התחתונה.",
-                    "ה-T-test נכשל ואי אפשר להמשיך.",
-                    "כיוון שה-Sig גדול מ-0.05 מסיקים שאין הבדל בין הממוצעים של הקבוצות וסיימנו."
+                    "המודל מסביר 87.3% מהשונות. הוא אינו מובהק כי F גבוה מדי.",
+                    "המודל מסביר 76.2% מהשונות. המודל כולו מובהק סטטיסטית כי ה-Sig ב-ANOVA קטן מ-0.05.",
+                    "המודל מסביר 76.2% מהשונות. המודל אינו מובהק סטטיסטית.",
+                    "המודל מסביר 0.00% מהשונות בגלל ה-Sig."
+                ],
+                ans: 1,
+                exp: "אחוז השונות המוסברת נמצא ב-<strong>R Square</strong> (כאן .762, כלומר 76.2%). מובהקות המודל כולו נבדקת בטבלת ה-<strong>ANOVA</strong>, שם ה-Sig הוא .000 (קטן מ-0.05), ולכן המודל מובהק."
+            },
+            {
+                q: "בהמשך לאותה רגרסיה, התבונן בטבלת המקדמים (Coefficients). מי מבין המשתנים משפיע **יותר** על השכר הנוכחי, ומהי משוואת הניבוי?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Coefficients<sup>a</sup></div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>Model</th><th></th><th colspan="2" style="text-align:center;">Unstandardized Coefficients</th><th>Standardized Coefficients</th><th>t</th><th>Sig.</th></tr>
+                      <tr><th></th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">(Constant)</td><td>-6335.179</td><td>1648.491</td><td></td><td>-3.843</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Education Level</td><td>997.984</td><td>156.583</td><td>.195</td><td>6.374</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Beginning Salary</td><td>1.570</td><td>.065</td><td>.732</td><td>23.976</td><td>.000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "השכלה משפיעה יותר (B=997). המשוואה: Y = 997X1 + 1.57X2 - 6335",
+                    "שכר התחלתי משפיע יותר (Beta=0.732). המשוואה: Y = 0.195X1 + 0.732X2",
+                    "שכר התחלתי משפיע יותר (Beta=0.732). המשוואה: Y = 997.98X1 + 1.57X2 - 6335.17",
+                    "שניהם משפיעים באותה מידה כי ה-Sig של שניהם הוא .000."
+                ],
+                ans: 2,
+                exp: "כדי לדעת **מי משפיע יותר**, מסתכלים על עמודת **Beta** (מקדמים מתוקננים). 0.732 גדול מ-0.195 ולכן שכר התחלתי משפיע יותר. <br>כדי **להרכיב משוואה**, משתמשים אך ורק בעמודת **B** (מקדמים לא מתוקננים): Y = 997.98X1 + 1.57X2 - 6335."
+            },
+
+            // --- STREAMING_CHUNK: TOPIC: T-TESTS (FULL TABLES) ---
+            {
+                q: "חוקר רצה לבדוק האם יש הבדל ב'משך אשפוז' בין נפגעי טרור לנפגעי תאונות דרכים. הוא ביצע מבחן T למדגמים בלתי תלויים. לפי הפלט, האם קיים הבדל מובהק בין הקבוצות?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Independent Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test</th><th colspan="4" style="text-align:center; border-bottom:1px solid #000;">t-test for Equality of Means</th></tr>
+                      <tr><th></th><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th><th>Mean Difference</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="2" style="vertical-align:top;">ICU_days</td><td class="row-header">Equal variances assumed</td><td>5.823</td><td>.057</td><td>2.112</td><td>18</td><td>.049</td><td>1.300</td></tr>
+                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>2.112</td><td>13.016</td><td>.055</td><td>1.300</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "מניחים שהשונויות שוות (Sig של לווין > 0.05). קוראים את השורה העליונה: Sig של מבחן t הוא 0.049. לכן דוחים את H0, ויש הבדל מובהק.",
+                    "מניחים שהשונויות שונות (Sig של לווין < 0.05). קוראים את השורה התחתונה: Sig הוא 0.055. אין הבדל מובהק.",
+                    "ההבדל הממוצע (1.300) גדול מ-0.05 ולכן יש הבדל מובהק.",
+                    "מבחן t אינו רלוונטי כאן כי df=18."
                 ],
                 ans: 0,
-                exp: "במבחן לווין (שבודק שונויות, לא ממוצעים!), Sig > 0.05 אומר שהשונויות שוות. לכן קוראים את מבחן ה-t בשורה העליונה."
+                exp: "שלב 1: מבחן לווין לבדיקת שונויות. ה-Sig שלו הוא .057 (גדול מ-0.05), ולכן מניחים **שוויון שונויות**. <br>שלב 2: קוראים את ה-Sig של ה-t בשורה העליונה (Equal variances assumed). הוא **.049**. כיוון שהוא קטן מ-0.05, דוחים את H0 ומסיקים שיש הבדל מובהק."
             },
             {
-                q: "התבונן בתוצאת מבחן T (למדגמים בלתי תלויים). מה המסקנה הסטטיסטית לגבי הבדל בממוצעים?",
+                q: "תזונאי שקל מטופלים לפני דיאטה ואחרי דיאטה, כדי לבדוק האם חל שינוי במשקל. לפניך פלט מבחן T. מה המסקנה הסטטיסטית?",
                 table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr></thead>
-                    <tbody><tr><td>-2.841</td><td>18</td><td>.006</td></tr></tbody>
-                </table>
+                <div class="spss-container">
+                  <div class="spss-title">Paired Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th></th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">Paired Differences</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                      <tr><th></th><th></th><th>Mean</th><th>Std. Deviation</th><th>Std. Error Mean</th><th></th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Pair 1</td><td class="row-header">Weight Before - Weight After</td><td>8.750</td><td>7.363</td><td>2.603</td><td>3.361</td><td>7</td><td>.012</td></tr>
+                    </tbody>
+                  </table>
                 </div>
                 `,
                 options: [
-                    "לא קיים הבדל מובהק בין הקבוצות.",
-                    "קיים הבדל מובהק בין הקבוצות, מכיוון שה-Sig (0.006) קטן מ-0.05.",
-                    "לא קיים הבדל כי ה-t שלילי.",
-                    "דוחים את H0 כי דרגות החופש (18) זוגיות."
+                    "לא נדחה את H0 כיוון שממוצע ההפרשים הוא 8.75.",
+                    "דוחים את H0 כי t גדול מ-0.05.",
+                    "דוחים את H0. ה-Sig הוא 0.012 (קטן מ-0.05), כלומר חל שינוי מובהק במשקל לאחר הדיאטה.",
+                    "לא דוחים את H0, אין שינוי מובהק במשקל."
                 ],
-                ans: 1,
-                exp: "מסתכלים על Sig. (2-tailed). מכיוון שהוא 0.006 (< 0.05), דוחים את השערת האפס ומסיקים שיש הבדל מובהק בממוצעים."
+                ans: 2,
+                exp: "במבחן למדגמים תלויים (מזווגים) מסתכלים על עמודת **Sig. (2-tailed)**. הערך .012 קטן מ-0.05, לכן יש שינוי מובהק סטטיסטית במשקל."
             },
 
-            // --- STREAMING_CHUNK: TOPIC: ANOVA ---
+            // --- STREAMING_CHUNK: TOPIC: ANOVA & POST HOC (FULL TABLES) ---
             {
-                q: "חוקר בודק את רמת האושר (משתנה כמותי 1-100) אצל תושבי 4 אזורים שונים בארץ. איזה מבחן עליו לבצע?",
-                table: "",
-                options: [
-                    "מבחן חי בריבוע",
-                    "מבחן T למדגמים בלתי תלויים",
-                    "ניתוח שונות חד-כיווני (One-Way ANOVA)",
-                    "ניתוח שונות דו-כיווני"
-                ],
-                ans: 2,
-                exp: "השוואת ממוצעים בין 3 קבוצות או יותר (כאן יש 4 אזורים) מצריכה ניתוח שונות חד-כיווני (ANOVA)."
-            },
-            {
-                q: "למה החוקר מהשאלה הקודמת לא מבצע פשוט 6 מבחני T נפרדים לכל זוג אזורים (צפון-מרכז, מרכז-דרום וכו')?",
-                table: "",
-                options: [
-                    "כי תוכנת SPSS לא מאפשרת להריץ הרבה מבחני T במקביל.",
-                    "כדי לא להגדיל את ההסתברות לטעות מסוג ראשון (דחיית H0 בטעות) שמצטברת מריבוי מבחנים.",
-                    "כי מבחן T מיועד רק למדגמים תלויים.",
-                    "כי זה יקטין את השונות המוסברת של המודל."
-                ],
-                ans: 1,
-                exp: "כל מבחן T טומן סיכוי של 5% לטעות. ריבוי מבחנים במקביל מעלה דרסטית את הסיכוי לטעות מסוג ראשון. ANOVA פותרת זאת בבדיקה אחת."
-            },
-            {
-                q: "התבונן בפלט ה-ANOVA הבא. מהו הצעד הבא שהחוקר צריך לבצע?",
+                q: "חוקר בדק זמן תגובה לתרופה בין 3 יצרנים שונים (A, B, C). הוא ביצע One-Way ANOVA. האם קיים הבדל מובהק בין החברות?",
                 table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th>Source</th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                <div class="spss-container">
+                  <div class="spss-title">Tests of Between-Subjects Effects</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Source</th><th>Type III Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                        <tr><td>Between Groups</td><td>163.33</td><td>2</td><td>81.67</td><td>8.167</td><td>.003</td></tr>
-                        <tr><td>Within Groups</td><td>120.00</td><td>12</td><td>10.00</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Corrected Model</td><td>63.521</td><td>2</td><td>31.761</td><td>7.229</td><td>.006</td></tr>
+                      <tr><td class="row-header">Intercept</td><td>13972.347</td><td>1</td><td>13972.347</td><td>3180.272</td><td>.000</td></tr>
+                      <tr><td class="row-header">manufactor</td><td>63.521</td><td>2</td><td>31.761</td><td>7.229</td><td>.006</td></tr>
+                      <tr><td class="row-header">Error</td><td>65.902</td><td>15</td><td>4.393</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Total</td><td>14101.770</td><td>18</td><td></td><td></td><td></td></tr>
                     </tbody>
-                </table>
+                  </table>
                 </div>
                 `,
                 options: [
-                    "ה-Sig קטן מ-0.05, לכן יש הבדל בין הקבוצות. כעת חובה לבצע מבחן Post Hoc (כמו מבחן Tukey) כדי למצוא אילו זוגות שונים זה מזה.",
-                    "ה-Sig קטן מ-0.05, לכן המבחן נכשל ויש לעבור למבחן חי בריבוע.",
-                    "ה-Sig קטן מ-0.05, לכן אין הבדל בין הקבוצות והניתוח מסתיים.",
-                    "יש לחשב את משוואת הישר על סמך ה-F."
+                    "לא, כיוון שרמת המובהקות של manufactor היא 0.006, כלומר גדולה מאלפא.",
+                    "כן, דוחים את H0 כיוון שה-Sig בשורת manufactor קטן מ-0.05 (.006). יש הבדל לפחות בין זוג יצרנים אחד.",
+                    "אי אפשר לדעת עד שמבצעים מבחן Post Hoc.",
+                    "לא, כי ה-Error גדול."
                 ],
-                ans: 0,
-                exp: "מכיוון שיש הבדל מובהק ב-ANOVA (Sig < 0.05), אנו יודעים שקיים הבדל אך לא יודעים איפה. לכן עוברים למבחן השוואות זוגיות - פוסט-הוק."
+                ans: 1,
+                exp: "מסתכלים על שורת המשתנה (manufactor) ועמודת ה-Sig. המספר 0.006 קטן מ-0.05, ולכן **קיים הבדל מובהק**. (רק *אחרי* שמגלים שיש הבדל, מבצעים Post Hoc כדי לגלות איפה בדיוק הוא נמצא)."
             },
             {
-                q: "אם בפלט ה-ANOVA הקודם ה-Sig היה יוצא 0.482. מה היה הצעד הבא?",
-                table: "",
+                q: "בהמשך לשאלה הקודמת, החוקר ביצע מבחן Tukey Post Hoc. בין אילו יצרנים קיים הבדל מובהק סטטיסטית?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Multiple Comparisons (Tukey HSD)</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>(I) manuf</th><th>(J) manuf</th><th>Mean Difference (I-J)</th><th>Std. Error</th><th>Sig.</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="2" style="vertical-align:top;">A</td><td class="row-header">B</td><td>-4.0500*</td><td>1.21016</td><td>.012</td></tr>
+                      <tr><td class="row-header">C</td><td>-.1333</td><td>1.21016</td><td>.993</td></tr>
+                      <tr><td rowspan="2" style="vertical-align:top; border-top:1px solid #ccc;">B</td><td class="row-header" style="border-top:1px solid #ccc;">A</td><td style="border-top:1px solid #ccc;">4.0500*</td><td style="border-top:1px solid #ccc;">1.21016</td><td style="border-top:1px solid #ccc;">.012</td></tr>
+                      <tr><td class="row-header">C</td><td>3.9167*</td><td>1.21016</td><td>.014</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">* The mean difference is significant at the .05 level.</div>
+                </div>
+                `,
                 options: [
-                    "ביצוע מבחן פוסט-הוק מסוג טוקי.",
-                    "ביצוע מבחן T לכל זוג בנפרד.",
-                    "לא דוחים את H0 (אין הבדל מובהק בין הקבוצות). הניתוח מסתיים ואין טעם ב-Post Hoc.",
-                    "דוחים את H0."
+                    "קיים הבדל רק בין A ל-C.",
+                    "ההבדלים המובהקים הם בין A ל-B, ובין B ל-C (ה-Sig שלהם קטן מ-0.05). בין A ל-C אין הבדל מובהק.",
+                    "אין הבדלים מובהקים בכלל.",
+                    "כולם שונים מכולם."
                 ],
-                ans: 2,
-                exp: "אם ANOVA קובע שאין הבדל (Sig > 0.05), אנחנו עוצרים. אין שום סיבה לחפש מי שונה אם הוכחנו שכולם סטטיסטית זהים."
+                ans: 1,
+                exp: "עוברים על זוגות היצרנים בעמודת ה-Sig: <br>בין A ל-B: ה-Sig הוא .012 (<0.05) -> <strong>יש הבדל</strong>.<br>בין A ל-C: ה-Sig הוא .993 (>0.05) -> אין הבדל.<br>בין B ל-C: ה-Sig הוא .014 (<0.05) -> <strong>יש הבדל</strong>."
             },
 
             // --- STREAMING_CHUNK: TOPIC: TWO-WAY ANOVA ---
             {
-                q: "חוקר בודק כיצד משפיעים המגדר (גבר/אישה) ורמת ההשכלה (תיכון/תואר 1) על השכר. איזה מבחן סטטיסטי מתאים?",
-                table: "",
-                options: [
-                    "ניתוח שונות חד-כיווני",
-                    "ניתוח שונות דו-כיווני (Two-Way ANOVA)",
-                    "מבחן T למדגמים בלתי תלויים",
-                    "רגרסיה פשוטה"
-                ],
-                ans: 1,
-                exp: "כאשר מנבאים משתנה כמותי (שכר) בעזרת שני משתנים בלתי תלויים קטגוריאליים, משתמשים בניתוח שונות דו-כיווני."
-            },
-            {
-                q: "בניתוח שונות דו-כיווני נבדקות 3 השערות: אפקט עיקרי למשתנה א', אפקט עיקרי למשתנה ב', ואפקט נוסף קריטי. מהו?",
-                table: "",
-                options: [
-                    "אפקט פירסון",
-                    "אפקט ההפרשים התלויים",
-                    "אפקט הרגרסיה",
-                    "אפקט האינטראקציה בין שני המשתנים (Interaction Effect)"
-                ],
-                ans: 3,
-                exp: "היתרון הגדול של Two-Way ANOVA הוא היכולת לבדוק האם ההשפעה של משתנה אחד תלויה במשתנה השני (למשל: תואר משפיע על שכר, אבל אצל גברים יותר מאצל נשים)."
-            },
-            {
-                q: "התבונן בפלט הבא מתוך ניתוח שונות דו-כיווני שבדק את השפעת מגדר והשכלה על שכר. האם קיימת אינטראקציה מובהקת?",
+                q: "חוקר בדק את ההשפעה של 'מגדר' (גבר/אישה) ו'תואר' (עם תואר/ללא תואר) על היקף המכירות של מנהלי סניפים. הוא ביצע ניתוח שונות דו-כיווני (Two-Way ANOVA). האם קיימת אינטראקציה מובהקת בין שני המשתנים?",
                 table: `
-                <div class="spss-table-wrapper">
-                <table class="spss-table">
-                    <thead><tr><th>Source</th><th>Sig.</th></tr></thead>
+                <div class="spss-container">
+                  <div class="spss-title">Tests of Between-Subjects Effects</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Source</th><th>Type III Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                        <tr><td>Gender</td><td>.002</td></tr>
-                        <tr><td>Education</td><td>.007</td></tr>
-                        <tr><td>Gender * Education</td><td>.047</td></tr>
+                      <tr><td class="row-header">Gender</td><td>24.200</td><td>1</td><td>24.200</td><td>11.25</td><td>.002</td></tr>
+                      <tr><td class="row-header">Degree</td><td>20.000</td><td>1</td><td>20.000</td><td>9.30</td><td>.007</td></tr>
+                      <tr><td class="row-header">Gender * Degree</td><td>9.800</td><td>1</td><td>9.800</td><td>4.55</td><td>.047</td></tr>
+                      <tr><td class="row-header">Error</td><td>34.400</td><td>16</td><td>2.150</td><td></td><td></td></tr>
                     </tbody>
-                </table>
+                  </table>
                 </div>
                 `,
                 options: [
-                    "לא, כי ה-Sig של המגדר קטן מ-0.05.",
-                    "כן, מכיוון שה-Sig בשורת האינטראקציה (Gender * Education) שווה 0.047 וקטן מ-0.05.",
-                    "לא, כי אין פה שורה של Between Groups.",
-                    "אי אפשר לדעת."
+                    "לא, כי ה-Sig של האינטראקציה קרוב מדי ל-0.05.",
+                    "כן, שורת האינטראקציה מסומנת כ- Gender * Degree, וה-Sig שלה הוא 0.047 (קטן מ-0.05), לכן יש אינטראקציה מובהקת.",
+                    "האינטראקציה נבדקת לפי האפקטים העיקריים, וכיוון ששניהם מובהקים אז אין אינטראקציה.",
+                    "לא ניתן לבדוק אינטראקציה בניתוח שונות."
                 ],
                 ans: 1,
-                exp: "שורת האינטראקציה מסומנת על ידי כפל המשתנים (Gender * Education). מכיוון שה-Sig שלה < 0.05, קיימת אינטראקציה מובהקת."
+                exp: "האינטראקציה תמיד מופיעה כמכפלה של שני המשתנים: <strong>Gender * Degree</strong>. ה-Sig שלה הוא .047, ומכיוון שהוא קטן מ-0.05 (אפילו במעט), אנו דוחים את H0 ומסיקים ש<strong>קיימת אינטראקציה מובהקת</strong> (כלומר, השפעת התואר תלויה במגדר)."
+            },
+
+            // --- STREAMING_CHUNK: TOPIC: RELIABILITY ---
+            {
+                q: "חוקר העביר שאלון הרגלי תזונה ובדק את המהימנות שלו באמצעות 'אלפא של קרונבך'. לפי הטבלה הבאה, האם כדאי לו למחוק שאלה מסוימת כדי לשפר את השאלון?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Item-Total Statistics</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Scale Mean if Item Deleted</th><th>Scale Variance if Item Deleted</th><th>Corrected Item-Total Correlation</th><th>Cronbach's Alpha if Item Deleted</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Q1: אוכלים ביחד</td><td>20.26</td><td>38.36</td><td>.492</td><td>.899</td></tr>
+                      <tr><td class="row-header">Q2: יושבים סביב שולחן</td><td>19.92</td><td>33.59</td><td>.772</td><td>.857</td></tr>
+                      <tr><td class="row-header">Q3: שותים מים</td><td>20.19</td><td>37.68</td><td>.549</td><td>.891</td></tr>
+                      <tr><td class="row-header">Q4: לא צופים בטלוויזיה</td><td>19.92</td><td>33.59</td><td>.772</td><td>.857</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer" style="margin-top:15px;">Overall Cronbach's Alpha = .888</div>
+                </div>
+                `,
+                options: [
+                    "לא, המהימנות הכללית (0.888) גבוהה מספיק ואסור למחוק שאלות.",
+                    "כן, כדאי למחוק את Q1, כי מחיקתה תעלה את המהימנות מ-0.888 ל-0.899.",
+                    "כן, כדאי למחוק את Q2 כי הערך שלה נמוך (0.857).",
+                    "יש למחוק את Q4 כי היא זהה ל-Q2."
+                ],
+                ans: 1,
+                exp: "נסתכל על העמודה <strong>Cronbach's Alpha if Item Deleted</strong>. האלפא הכללית היא 0.888. אם נמחק את שאלה Q1, המהימנות תקפוץ ל-0.899. המשמעות היא ש-Q1 פוגעת בהרמוניה של השאלון, ולכן מבחינה סטטיסטית <strong>כדאי לשקול להסירה</strong>."
             }
         ];
 
-        // --- STREAMING_CHUNK: Handling Quiz Logic & State ---
+        // --- STREAMING_CHUNK: Application Logic ---
         let currentQuestionIndex = 0;
         let score = 0;
-        let answered = false;
-
-        const questionText = document.getElementById('questionText');
-        const tableContainer = document.getElementById('tableContainer');
-        const optionsGrid = document.getElementById('optionsGrid');
-        const feedbackBox = document.getElementById('feedbackBox');
-        const btnNext = document.getElementById('btnNext');
-        const currentQNum = document.getElementById('currentQNum');
-        const totalQNum = document.getElementById('totalQNum');
-        const progressFill = document.getElementById('progressFill');
-        const scoreTracker = document.getElementById('scoreTracker');
+        const userAnswers = new Array(questions.length).fill(null);
 
         function initQuiz() {
-            totalQNum.innerText = questions.length;
-            renderQuestion();
+            renderQuestion(currentQuestionIndex);
+            updateProgress();
         }
 
-        function renderQuestion() {
-            answered = false;
-            const q = questions[currentQuestionIndex];
+        function renderQuestion(index) {
+            const q = questions[index];
+            const container = document.getElementById('optionsGrid');
             
-            // Update UI
-            currentQNum.innerText = currentQuestionIndex + 1;
-            progressFill.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
+            document.getElementById('questionText').innerHTML = `שאלה ${index + 1}: ${q.q}`;
+            document.getElementById('tableContainer').innerHTML = q.table ? q.table : '';
             
-            questionText.innerHTML = q.q;
-            tableContainer.innerHTML = q.table ? q.table : '';
-            feedbackBox.style.display = 'none';
-            btnNext.style.display = 'none';
-            btnNext.innerText = currentQuestionIndex === questions.length - 1 ? 'סיום והצגת ציון' : 'השאלה הבאה ❯';
+            let html = '';
+            q.options.forEach((opt, optIndex) => {
+                // Determine state if already answered
+                let btnClass = 'option-btn';
+                let disabledAttr = '';
+                
+                if (userAnswers[index] !== null) {
+                    disabledAttr = 'disabled';
+                    if (optIndex === q.ans) {
+                        btnClass += ' correct';
+                    } else if (optIndex === userAnswers[index]) {
+                        btnClass += ' wrong';
+                    }
+                }
 
-            // Render options
-            optionsGrid.innerHTML = '';
-            q.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerHTML = `<div style="flex-grow:1; text-align:right;">${opt}</div>`;
-                btn.onclick = () => checkAnswer(index, btn);
-                optionsGrid.appendChild(btn);
+                html += `
+                    <button class="${btnClass}" ${disabledAttr} onclick="checkAnswer(${optIndex}, this)">
+                        <div style="flex-grow:1; text-align:right;">${opt}</div>
+                    </button>
+                `;
             });
+            
+            container.innerHTML = html;
+
+            const feedbackBox = document.getElementById('feedbackBox');
+            if (userAnswers[index] !== null) {
+                showFeedback(index, userAnswers[index]);
+                document.getElementById('btnNext').style.display = 'inline-block';
+            } else {
+                feedbackBox.style.display = 'none';
+                document.getElementById('btnNext').style.display = 'none';
+            }
+
+            if (index === questions.length - 1 && userAnswers[index] !== null) {
+                document.getElementById('btnNext').innerText = 'סיום והצגת ציון 🏆';
+            } else {
+                document.getElementById('btnNext').innerText = 'לשאלה הבאה ❯';
+            }
         }
 
         function checkAnswer(selectedIndex, btnElement) {
-            if (answered) return; // Prevent multiple clicks
-            answered = true;
+            if (userAnswers[currentQuestionIndex] !== null) return; // Prevent double click
 
+            userAnswers[currentQuestionIndex] = selectedIndex;
             const q = questions[currentQuestionIndex];
             const isCorrect = selectedIndex === q.ans;
-            const allBtns = optionsGrid.querySelectorAll('.option-btn');
+            
+            if (isCorrect) score++;
 
-            // Disable all buttons
-            allBtns.forEach(btn => btn.disabled = true);
+            renderQuestion(currentQuestionIndex); // Re-render to show colors
+            updateProgress();
+        }
 
+        function showFeedback(index, selectedIndex) {
+            const q = questions[index];
+            const isCorrect = selectedIndex === q.ans;
+            const feedbackBox = document.getElementById('feedbackBox');
+            
             if (isCorrect) {
-                score++;
-                scoreTracker.innerText = `ציון: ${score}`;
-                btnElement.classList.add('correct');
-                
                 feedbackBox.className = 'feedback-box correct-feedback';
                 feedbackBox.innerHTML = `
-                    <h4><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> מעולה, תשובה נכונה!</h4>
+                    <h4><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> כל הכבוד! תשובה נכונה.</h4>
                     <p>${q.exp}</p>
                 `;
             } else {
-                btnElement.classList.add('wrong');
-                allBtns[q.ans].classList.add('correct'); // Highlight correct answer
-                
                 feedbackBox.className = 'feedback-box wrong-feedback';
                 feedbackBox.innerHTML = `
-                    <h4><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> טעות. שים לב:</h4>
-                    <p>התשובה הנכונה היא: <strong>${q.options[q.ans]}</strong></p>
+                    <h4><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> טעות!</h4>
+                    <p>התשובה הנכונה היא:</p>
+                    <div class="correct-answer-highlight">${q.options[q.ans]}</div>
                     <p><strong>למה?</strong> ${q.exp}</p>
                 `;
             }
-
-            btnNext.style.display = 'inline-block';
         }
 
         function nextQuestion() {
             if (currentQuestionIndex < questions.length - 1) {
                 currentQuestionIndex++;
-                renderQuestion();
+                renderQuestion(currentQuestionIndex);
+                updateProgress();
             } else {
                 showResults();
             }
+        }
+
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(ans => ans !== null).length;
+            document.getElementById('progressText').innerText = `שאלה ${currentQuestionIndex + 1} מתוך ${questions.length}`;
+            document.getElementById('scoreTracker').innerText = `הצלחות: ${score}/${questions.length}`;
+            
+            const percent = ((answeredCount) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = `${percent}%`;
         }
 
         function showResults() {
             document.getElementById('quizScreen').style.display = 'none';
             const resultsScreen = document.getElementById('resultsScreen');
             resultsScreen.style.display = 'block';
-            resultsScreen.style.animation = 'slideUp 0.5s ease-out';
 
             const percent = Math.round((score / questions.length) * 100);
-            document.getElementById('finalScore').innerText = `${percent}%`;
+            
+            // Animation for circle
+            let currentPercent = 0;
+            const scoreElement = document.getElementById('finalScore');
+            const timer = setInterval(() => {
+                currentPercent += 2;
+                if (currentPercent >= percent) {
+                    currentPercent = percent;
+                    clearInterval(timer);
+                }
+                scoreElement.innerText = `${currentPercent}%`;
+            }, 30);
 
             let msg = "";
-            if (percent >= 90) msg = "תותח פלטים! אתה מוכן לחלוטין למבחן. 🏆";
-            else if (percent >= 75) msg = "עבודה טובה מאוד! אתה שולט היטב בחומר. ✨";
-            else if (percent >= 60) msg = "ציון עובר, אבל כדאי לעבור שוב על הטעויות (במיוחד מתי בוחרים באיזה מבחן). 👍";
-            else msg = "אל ייאוש! קרא שוב את המדריך, שנן את חוק ה-Sig, ותעשה את המבחן מחדש. 💪";
+            if (percent === 100) msg = "מאסטר SPSS אמיתי! 🏆<br>אתה מוכן לחלוטין למבחן.";
+            else if (percent >= 80) msg = "עבודה מעולה! 🌟<br>שליטה טובה מאוד בחומר ובקריאת הפלטים.";
+            else if (percent >= 60) msg = "ציון עובר 👍<br>מומלץ לחזור שוב על השאלות שטעית בהן (במיוחד קריאת טבלאות).";
+            else msg = "לא נורא 💪<br>זכור את חוק ה-Sig, קרא שוב את הכללים, ותעשה את המבחן מחדש.";
 
-            document.getElementById('finalMessage').innerText = msg;
+            document.getElementById('finalMessage').innerHTML = msg;
         }
 
-        // Start Quiz
+        // Start App
         initQuiz();
     </script>
 </body>
