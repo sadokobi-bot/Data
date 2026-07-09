@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מאסטר SPSS: הכנה למבחן בסטטיסטיקה יישומית</title>
-    <!-- טעינת גופן מודרני מגוגל -->
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -133,7 +132,6 @@
             padding: 20px;
             margin: 25px 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            /* SPSS Output is usually LTR */
             direction: ltr; 
             text-align: left;
             overflow-x: auto;
@@ -275,7 +273,6 @@
             font-weight: 700;
         }
 
-        /* Navigation */
         .action-container {
             display: flex;
             justify-content: flex-end;
@@ -337,12 +334,11 @@
 
     <header class="app-header">
         <h1>מאסטר SPSS</h1>
-        <p>תרגול סימולציות וקריאת פלטים - סטטיסטיקה יישומית</p>
+        <p>זיהוי וניתוח טבלאות - ממוקד למבחן</p>
     </header>
 
     <div class="container">
         
-        <!-- Quiz Section -->
         <div id="quizScreen">
             <div class="progress-bar-container">
                 <div class="progress-info">
@@ -383,112 +379,56 @@
     </div>
 
     <script>
+        // Data Set: 28 strictly table/output-based questions, no direct naming of tests.
         const questions = [
-            // --- TOPIC: RULES & BASICS ---
             {
-                q: "מהו הכלל המרכזי והחשוב ביותר לדחיית השערת האפס (H0) בכל פלט סטטיסטי של SPSS?",
-                table: "",
-                options: [
-                    "כאשר ערך ה- Sig גדול מ- 0.05",
-                    "כאשר ערך ה- Sig קטן מ- 0.05",
-                    "כאשר מבחן T חיובי",
-                    "כאשר ערך ה- Beta קרוב ל- 1"
-                ],
-                ans: 1,
-                exp: "<strong>חוק הברזל:</strong> תמיד דוחים את H0 (ומסיקים שהמודל/הקשר/ההבדל מובהק) כאשר ה-Sig (רמת המובהקות) <strong>קטן מ-0.05</strong>."
-            },
-            
-            // --- TOPIC: CHI-SQUARE (FULL TABLES) ---
-            {
-                q: "חוקר בדק את הקשר בין 'מגדר' (גברים/נשים) לבין 'הרגלי עישון' (מעשן/לא מעשן). לפניך פלט ה-SPSS. מה המסקנה הסטטיסטית?",
+                q: "חוקר ביצע ניתוח סטטיסטי והתקבל הפלט שלפניך. מה המסקנה הסטטיסטית העולה מטבלה זו?",
                 table: `
                 <div class="spss-container">
                   <div class="spss-title">Chi-Square Tests</div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th><th>Exact Sig. (2-sided)</th><th>Exact Sig. (1-sided)</th></tr>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td class="row-header">Pearson Chi-Square</td><td>8.353<sup>a</sup></td><td>1</td><td>.004</td><td></td><td></td></tr>
-                      <tr><td class="row-header">Continuity Correction<sup>b</sup></td><td>7.687</td><td>1</td><td>.006</td><td></td><td></td></tr>
-                      <tr><td class="row-header">Likelihood Ratio</td><td>8.674</td><td>1</td><td>.003</td><td></td><td></td></tr>
-                      <tr><td class="row-header">Fisher's Exact Test</td><td></td><td></td><td></td><td>.005</td><td>.002</td></tr>
-                      <tr><td class="row-header">N of Valid Cases</td><td>1059</td><td></td><td></td><td></td><td></td></tr>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>14.321<sup>a</sup></td><td>2</td><td>.001</td></tr>
+                      <tr><td class="row-header">N of Valid Cases</td><td>350</td><td></td><td></td></tr>
                     </tbody>
                   </table>
-                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5. The minimum expected count is 35.29.<br>b. Computed only for a 2x2 table</div>
+                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5.</div>
                 </div>
                 `,
                 options: [
-                    "לא דוחים את H0, מכיוון שה-Sig קטן מ-0.05. אין קשר בין המשתנים.",
-                    "דוחים את H0, מכיוון שה-Sig של פירסון קטן מ-0.05. קיים קשר מובהק בין המשתנים.",
-                    "המבחן לא תקין ויש להסתכל על שורת Fisher's Exact Test.",
-                    "המודל מסביר 8.35% מהשונות."
+                    "לא ניתן לדחות את השערת האפס כי אין מספיק נתונים.",
+                    "לא דוחים את השערת האפס. המודל אינו מסביר כלל שונות (0.001).",
+                    "דוחים את השערת האפס, קיים קשר מובהק בין המשתנים.",
+                    "ההבדל בין הממוצעים של הקבוצות מובהק ברמת מובהקות של 0.05."
                 ],
-                ans: 1,
-                exp: "מסתכלים על השורה <strong>Pearson Chi-Square</strong> ועמודת <strong>Asymp. Sig</strong>. הערך הוא .004, שזה קטן מ-0.05. לכן <strong>דוחים את השערת האפס</strong> ומסיקים שיש קשר מובהק. המבחן תקין כי ההערה אומרת ש-0 תאים קטנים מ-5."
+                ans: 2,
+                exp: "איתור הפלט: זוהי טבלת חי-בריבוע. מסתכלים על השורה Pearson Chi-Square ועמודת ה-Sig. המספר 0.001 קטן מ-0.05, לכן דוחים את השערת האפס ומסיקים שקיים קשר מובהק בין המשתנים."
             },
             {
-                q: "בפלט חי בריבוע אחר, הופיעו הנתונים הבאים. האם המבחן שבוצע תקין, ועל איזו שורה יש להסתכל?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Chi-Square Tests</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th><th>Exact Sig. (2-sided)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Pearson Chi-Square</td><td>4.636<sup>a</sup></td><td>1</td><td>.031</td><td></td></tr>
-                      <tr><td class="row-header">Fisher's Exact Test</td><td></td><td></td><td></td><td>.037</td></tr>
-                      <tr><td class="row-header">N of Valid Cases</td><td>580</td><td></td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                  <div class="spss-footer">a. 2 cells (50.0%) have expected count less than 5. The minimum expected count is 2.10.</div>
-                </div>
-                `,
-                options: [
-                    "המבחן תקין. נסתכל על פירסון ונקבע ש-Sig = 0.031.",
-                    "המבחן לא תקין כי יש 50% תאים עם שכיחות צפויה קטנה מ-5. נסתכל על מבחן פישר ונקבע ש-Sig = 0.037.",
-                    "המבחן תקין כי יש פחות מ-5 תאים פגומים.",
-                    "דוחים את השערת האפס כי 580 זה מדגם גדול."
-                ],
-                ans: 1,
-                exp: "התנאי למבחן חי בריבוע תקין הוא ש**מקסימום 20% מהתאים** יהיו קטנים מ-5. כאן כתוב 50.0%, לכן התנאי הופר ויש להסתכל על השורה של <strong>Fisher's Exact Test</strong>."
-            },
-
-            // --- STREAMING_CHUNK: TOPIC: REGRESSION (FULL TABLES) ---
-            {
-                q: "חוקר הריץ רגרסיה מרובה לניבוי 'שכר נוכחי' בעזרת 'רמת השכלה' ו'שכר התחלתי'. התבונן בשתי הטבלאות הראשונות מהפלט. מה אחוז השונות שהמודל מסביר, והאם המודל כולו מובהק?",
+                q: "לפניך טבלה מתוך פלט של SPSS. מה מייצג המספר 0.552, ומה ניתן להסיק ממנו?",
                 table: `
                 <div class="spss-container">
                   <div class="spss-title">Model Summary</div>
-                  <table class="spss-table" style="margin-bottom: 20px;">
-                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error of the Estimate</th></tr></thead>
-                    <tbody><tr><td>1</td><td>.873<sup>a</sup></td><td>.762</td><td>.761</td><td>7030.278</td></tr></tbody>
-                  </table>
-                  
-                  <div class="spss-title">ANOVA<sup>b</sup></div>
                   <table class="spss-table">
-                    <thead><tr><th>Model</th><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td>1</td><td class="row-header">Regression</td><td>7.2E+10</td><td>2</td><td>3.58E+10</td><td>724.397</td><td>.000<sup>a</sup></td></tr>
-                      <tr><td></td><td class="row-header">Residual</td><td>2.2E+10</td><td>452</td><td>4.9E+07</td><td></td><td></td></tr>
-                      <tr><td></td><td class="row-header">Total</td><td>9.4E+10</td><td>454</td><td></td><td></td><td></td></tr>
-                    </tbody>
+                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error of the Estimate</th></tr></thead>
+                    <tbody><tr><td>1</td><td>.743<sup>a</sup></td><td>.552</td><td>.549</td><td>1.230</td></tr></tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "המודל מסביר 87.3% מהשונות. הוא אינו מובהק כי F גבוה מדי.",
-                    "המודל מסביר 76.2% מהשונות. המודל כולו מובהק סטטיסטית כי ה-Sig ב-ANOVA קטן מ-0.05.",
-                    "המודל מסביר 76.2% מהשונות. המודל אינו מובהק סטטיסטית.",
-                    "המודל מסביר 0.00% מהשונות בגלל ה-Sig."
+                    "זהו אחוז התאים שקטן מ-5, המבחן לא תקין.",
+                    "המודל (המשתנים המסבירים) מצליח להסביר 55.2% מהשונות של המשתנה התלוי.",
+                    "המובהקות של המודל היא 0.552, ולכן המודל אינו מובהק כלל.",
+                    "ישנה מהימנות פנימית ברמה בינונית לשאלון."
                 ],
                 ans: 1,
-                exp: "אחוז השונות המוסברת נמצא ב-<strong>R Square</strong> (כאן .762, כלומר 76.2%). מובהקות המודל כולו נבדקת בטבלת ה-<strong>ANOVA</strong>, שם ה-Sig הוא .000 (קטן מ-0.05), ולכן המודל מובהק."
+                exp: "איתור הפלט: טבלת Model Summary מופיעה במבחן הרגרסיה. עמודת R Square מתארת את אחוז השונות המוסברת. 0.552 פירושו שהמודל מסביר 55.2% מהשונות של המשתנה התלוי."
             },
             {
-                q: "בהמשך לאותה רגרסיה, התבונן בטבלת המקדמים (Coefficients). מי מבין המשתנים משפיע **יותר** על השכר הנוכחי, ומהי משוואת הניבוי?",
+                q: "חוקר קיבל את הפלט הבא. איזה מבין שני המשתנים המסבירים (שכר או גיל) תורם בצורה חזקה יותר למודל, והאם יש לכלול את שניהם?",
                 table: `
                 <div class="spss-container">
                   <div class="spss-title">Coefficients<sup>a</sup></div>
@@ -498,52 +438,176 @@
                       <tr><th></th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th></th><th></th></tr>
                     </thead>
                     <tbody>
-                      <tr><td>1</td><td class="row-header">(Constant)</td><td>-6335.179</td><td>1648.491</td><td></td><td>-3.843</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Education Level</td><td>997.984</td><td>156.583</td><td>.195</td><td>6.374</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Beginning Salary</td><td>1.570</td><td>.065</td><td>.732</td><td>23.976</td><td>.000</td></tr>
+                      <tr><td>1</td><td class="row-header">(Constant)</td><td>12.500</td><td>3.100</td><td></td><td>4.032</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Salary</td><td>0.005</td><td>0.001</td><td>.480</td><td>5.000</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Age</td><td>0.120</td><td>0.080</td><td>.150</td><td>1.500</td><td>.138</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "השכלה משפיעה יותר (B=997). המשוואה: Y = 997X1 + 1.57X2 - 6335",
-                    "שכר התחלתי משפיע יותר (Beta=0.732). המשוואה: Y = 0.195X1 + 0.732X2",
-                    "שכר התחלתי משפיע יותר (Beta=0.732). המשוואה: Y = 997.98X1 + 1.57X2 - 6335.17",
-                    "שניהם משפיעים באותה מידה כי ה-Sig של שניהם הוא .000."
+                    "הגיל חזק יותר (כי 0.120 גדול מ-0.005). יש לכלול את שניהם.",
+                    "השכר חזק יותר (לפי Beta של .480), אך יש למחוק את משתנה הגיל מכיוון שהוא אינו מובהק (.138).",
+                    "שניהם חזקים באותה מידה ושניהם מובהקים בגלל הקבוע.",
+                    "השכר חזק יותר ויש לכלול את שניהם כי שניהם חיוביים."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: רגרסיה. עוצמה נמדדת ב-Beta (שכר=0.480, גיל=0.150, לכן שכר חזק יותר). אולם, ה-Sig של גיל הוא 0.138 (גדול מ-0.05). משמע הוא אינו מובהק, ואין לכלול אותו במודל!"
+            },
+            {
+                q: "מה נמליץ לחוקר לעשות בהתבסס על הפלט שלפניך?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Item-Total Statistics</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Corrected Item-Total Correlation</th><th>Cronbach's Alpha if Item Deleted</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Question_1</td><td>.620</td><td>.710</td></tr>
+                      <tr><td class="row-header">Question_2</td><td>.150</td><td>.890</td></tr>
+                      <tr><td class="row-header">Question_3</td><td>.580</td><td>.725</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">Overall Alpha = .740</div>
+                </div>
+                `,
+                options: [
+                    "למחוק את כל השאלות, כי המהימנות גרועה.",
+                    "לשמור את השאלון כמו שהוא, המהימנות מצוינת ואין לשנות דבר.",
+                    "למחוק את Question_2, מכיוון שהסרתה תעלה את המהימנות הכוללת מ-.740 ל-.890.",
+                    "למחוק את Question_1 כי ה-Alpha שלה (.710) הוא הנמוך ביותר."
                 ],
                 ans: 2,
-                exp: "כדי לדעת **מי משפיע יותר**, מסתכלים על עמודת **Beta** (מקדמים מתוקננים). 0.732 גדול מ-0.195 ולכן שכר התחלתי משפיע יותר. <br>כדי **להרכיב משוואה**, משתמשים אך ורק בעמודת **B** (מקדמים לא מתוקננים): Y = 997.98X1 + 1.57X2 - 6335."
+                exp: "איתור הפלט: בדיקת מהימנות (עקיבות פנימית). עמודת 'Alpha if Item Deleted' מראה מה יקרה אם נמחק את הפריט. אם נמחק את שאלה 2, האלפא תקפוץ מ-0.740 ל-0.890. לכן, הפריט פוגע בשאלון ומומלץ למחוק אותו."
             },
-
-            // --- STREAMING_CHUNK: TOPIC: T-TESTS (FULL TABLES) ---
             {
-                q: "חוקר רצה לבדוק האם יש הבדל ב'משך אשפוז' בין נפגעי טרור לנפגעי תאונות דרכים. הוא ביצע מבחן T למדגמים בלתי תלויים. לפי הפלט, האם קיים הבדל מובהק בין הקבוצות?",
+                q: "מתוך הפלט הבא, על איזו שורת תוצאות יש להסתכל (העליונה או התחתונה), ומהי המסקנה הסופית לגבי ההבדלים בממוצעים?",
                 table: `
                 <div class="spss-container">
                   <div class="spss-title">Independent Samples Test</div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th></th><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test</th><th colspan="4" style="text-align:center; border-bottom:1px solid #000;">t-test for Equality of Means</th></tr>
-                      <tr><th></th><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th><th>Mean Difference</th></tr>
+                      <tr><th></th><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">t-test for Equality of Means</th></tr>
+                      <tr><th></th><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td rowspan="2" style="vertical-align:top;">ICU_days</td><td class="row-header">Equal variances assumed</td><td>5.823</td><td>.057</td><td>2.112</td><td>18</td><td>.049</td><td>1.300</td></tr>
-                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>2.112</td><td>13.016</td><td>.055</td><td>1.300</td></tr>
+                      <tr><td rowspan="2" style="vertical-align:top;">Score</td><td class="row-header">Equal variances assumed</td><td>8.512</td><td>.004</td><td>1.450</td><td>80</td><td>.151</td></tr>
+                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>1.320</td><td>65.4</td><td>.191</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "מניחים שהשונויות שוות (Sig של לווין > 0.05). קוראים את השורה העליונה: Sig של מבחן t הוא 0.049. לכן דוחים את H0, ויש הבדל מובהק.",
-                    "מניחים שהשונויות שונות (Sig של לווין < 0.05). קוראים את השורה התחתונה: Sig הוא 0.055. אין הבדל מובהק.",
-                    "ההבדל הממוצע (1.300) גדול מ-0.05 ולכן יש הבדל מובהק.",
-                    "מבחן t אינו רלוונטי כאן כי df=18."
+                    "מסתכלים על השורה העליונה (השונויות שוות), והמסקנה היא שיש הבדל מובהק כי Sig=0.004.",
+                    "מסתכלים על השורה התחתונה (השונויות לא שוות), והמסקנה היא שאין הבדל מובהק כי Sig=0.191.",
+                    "מסתכלים על השורה העליונה, ואין הבדל מובהק כי Sig=0.151.",
+                    "לא ניתן להסיק מסקנות מבלי לראות את הממוצעים תחילה."
                 ],
-                ans: 0,
-                exp: "שלב 1: מבחן לווין לבדיקת שונויות. ה-Sig שלו הוא .057 (גדול מ-0.05), ולכן מניחים **שוויון שונויות**. <br>שלב 2: קוראים את ה-Sig של ה-t בשורה העליונה (Equal variances assumed). הוא **.049**. כיוון שהוא קטן מ-0.05, דוחים את H0 ומסיקים שיש הבדל מובהק."
+                ans: 1,
+                exp: "איתור הפלט: מבחן T למדגמים בלתי תלויים. שלב 1: מבחן לווין. ה-Sig שלו הוא 0.004 (<0.05). משמע: השונויות אינן שוות. לכן יורדים לקרוא את **השורה התחתונה**. בשורה התחתונה ה-Sig (2-tailed) של ה-t הוא 0.191. מספר זה גדול מ-0.05, לכן **לא דוחים את השערת האפס ואין הבדל מובהק**."
             },
             {
-                q: "תזונאי שקל מטופלים לפני דיאטה ואחרי דיאטה, כדי לבדוק האם חל שינוי במשקל. לפניך פלט מבחן T. מה המסקנה הסטטיסטית?",
+                q: "התבונן בפלט שלפניך. האם המודל המוצג בו מתאים ויכול לשמש לניבוי הנתונים באוכלוסייה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">ANOVA<sup>a</sup></div>
+                  <table class="spss-table">
+                    <thead><tr><th>Model</th><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">Regression</td><td>25.100</td><td>2</td><td>12.550</td><td>1.250</td><td>.290<sup>b</sup></td></tr>
+                      <tr><td></td><td class="row-header">Residual</td><td>850.000</td><td>85</td><td>10.000</td><td></td><td></td></tr>
+                      <tr><td></td><td class="row-header">Total</td><td>875.100</td><td>87</td><td></td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "כן, כל עוד המשוואה מחושבת נכון מתוך ה-B.",
+                    "לא, המודל אינו מובהק סטטיסטית, מכיוון שה-Sig הוא 0.290 (גדול מ-0.05).",
+                    "כן, מכיוון שהמודל מסביר 25.1% מהשונות.",
+                    "הטבלה הזו נועדה להשוות 3 קבוצות ולא עוסקת בניבוי."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: טבלת ANOVA מתוך מבחן רגרסיה (שימו לב לשורות Regression/Residual). תפקיד הטבלה הוא לקבוע האם מודל הניבוי כולו מובהק. ה-Sig הוא .290 (>0.05), ולכן המודל אינו מובהק ולא מתאים לניבוי."
+            },
+            {
+                q: "בפלט שלפניך מתואר קשר בין שני משתנים רציפים. מה ניתן לומר על עוצמתו וכיוונו של הקשר?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Correlations</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th></th><th>Stress_Level</th><th>Sleep_Hours</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="3" style="vertical-align:top;">Stress_Level</td><td class="row-header">Pearson Correlation</td><td>1</td><td>-.780**</td></tr>
+                      <tr><td class="row-header">Sig. (2-tailed)</td><td></td><td>.000</td></tr>
+                      <tr><td class="row-header">N</td><td>150</td><td>150</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "קיים קשר שלילי חלש אך מובהק.",
+                    "קיים קשר שלילי חזק ומובהק. ככל ששעות השינה עולות, רמת הלחץ יורדת.",
+                    "קיים קשר חיובי וחזק, רמת הלחץ מגדילה את שעות השינה.",
+                    "הקשר אינו מובהק סטטיסטית, לכן לא ניתן לומר דבר על כיוונו."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: מבחן מתאם פירסון. ערך ה-Pearson Correlation הוא -.780. הסימן מינוס מעיד על קשר שלילי (הפוך), והערך 0.780 מעיד על עוצמה חזקה. ה-Sig הוא .000 ולכן הקשר מובהק."
+            },
+            {
+                q: "חוקר הפיק את הפלט הבא. מהו המבחן המשלים שעליו לבצע כעת, ומדוע?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">ANOVA</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Between Groups</td><td>450.2</td><td>2</td><td>225.1</td><td>8.95</td><td>.001</td></tr>
+                      <tr><td class="row-header">Within Groups</td><td>1500.0</td><td>60</td><td>25.0</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Total</td><td>1950.2</td><td>62</td><td></td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "הניתוח מסתיים כאן, אין צורך במבחן משלים כיוון שלא נמצאו הבדלים (Sig=0.001).",
+                    "עליו לבצע מבחן Post-Hoc (למשל, טוקי) מכיוון שדחינו את השערת האפס וצריך למצוא באילו קבוצות ספציפית קיים ההבדל.",
+                    "עליו לבצע מבחן פישר, כיוון שיש תאים עם ערכים קטנים מ-5.",
+                    "עליו לבצע רגרסיה מרובה כדי לבדוק מי משפיע יותר."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: ניתוח שונות חד-כיווני (ANOVA להשוואת ממוצעים). ה-Sig הוא .001 (קטן מ-0.05), ולכן מסיקים שיש הבדל. כיוון שיש 3 קבוצות או יותר (לפי df=2, כלומר 3 קבוצות), חובה לבצע Post-Hoc כדי לדעת איזה זוגות שונים זה מזה."
+            },
+            {
+                q: "מתוך ההערה המופיעה בתחתית הפלט, האם המבחן שבוצע תקף סטטיסטית להסקת מסקנות?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Chi-Square Tests</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>10.200<sup>a</sup></td><td>1</td><td>.001</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">a. 3 cells (75.0%) have expected count less than 5. The minimum expected count is .50.</div>
+                </div>
+                `,
+                options: [
+                    "תקף לחלוטין, מכיוון שה-Sig קטן מ-0.05.",
+                    "תקף לחלוטין, 75% מעיד על עוצמת ההסבר של המודל.",
+                    "אינו תקף. מעל 20% מהתאים סובלים משכיחות צפויה קטנה מ-5. חובה להשתמש במבחן חלופי (פישר).",
+                    "אינו תקף כי הערך 10.200 גדול מדי."
+                ],
+                ans: 2,
+                exp: "איתור הפלט: חי-בריבוע. כלל אצבע: חי בריבוע אינו תקף אם יותר מ-20% מהתאים הם בעלי שכיחות צפויה של פחות מ-5. כאן קיבלנו 75.0%, ולכן התנאי מופר."
+            },
+            {
+                q: "מה המסקנה הסטטיסטית העולה מהפלט שלפניך?",
                 table: `
                 <div class="spss-container">
                   <div class="spss-title">Paired Samples Test</div>
@@ -553,136 +617,463 @@
                       <tr><th></th><th></th><th>Mean</th><th>Std. Deviation</th><th>Std. Error Mean</th><th></th><th></th><th></th></tr>
                     </thead>
                     <tbody>
-                      <tr><td>Pair 1</td><td class="row-header">Weight Before - Weight After</td><td>8.750</td><td>7.363</td><td>2.603</td><td>3.361</td><td>7</td><td>.012</td></tr>
+                      <tr><td>Pair 1</td><td class="row-header">Anxiety_Before - Anxiety_After</td><td>12.500</td><td>5.100</td><td>1.200</td><td>10.41</td><td>45</td><td>.000</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "לא נדחה את H0 כיוון שממוצע ההפרשים הוא 8.75.",
-                    "דוחים את H0 כי t גדול מ-0.05.",
-                    "דוחים את H0. ה-Sig הוא 0.012 (קטן מ-0.05), כלומר חל שינוי מובהק במשקל לאחר הדיאטה.",
-                    "לא דוחים את H0, אין שינוי מובהק במשקל."
-                ],
-                ans: 2,
-                exp: "במבחן למדגמים תלויים (מזווגים) מסתכלים על עמודת **Sig. (2-tailed)**. הערך .012 קטן מ-0.05, לכן יש שינוי מובהק סטטיסטית במשקל."
-            },
-
-            // --- STREAMING_CHUNK: TOPIC: ANOVA & POST HOC (FULL TABLES) ---
-            {
-                q: "חוקר בדק זמן תגובה לתרופה בין 3 יצרנים שונים (A, B, C). הוא ביצע One-Way ANOVA. האם קיים הבדל מובהק בין החברות?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Tests of Between-Subjects Effects</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Source</th><th>Type III Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td class="row-header">Corrected Model</td><td>63.521</td><td>2</td><td>31.761</td><td>7.229</td><td>.006</td></tr>
-                      <tr><td class="row-header">Intercept</td><td>13972.347</td><td>1</td><td>13972.347</td><td>3180.272</td><td>.000</td></tr>
-                      <tr><td class="row-header">manufactor</td><td>63.521</td><td>2</td><td>31.761</td><td>7.229</td><td>.006</td></tr>
-                      <tr><td class="row-header">Error</td><td>65.902</td><td>15</td><td>4.393</td><td></td><td></td></tr>
-                      <tr><td class="row-header">Total</td><td>14101.770</td><td>18</td><td></td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "לא, כיוון שרמת המובהקות של manufactor היא 0.006, כלומר גדולה מאלפא.",
-                    "כן, דוחים את H0 כיוון שה-Sig בשורת manufactor קטן מ-0.05 (.006). יש הבדל לפחות בין זוג יצרנים אחד.",
-                    "אי אפשר לדעת עד שמבצעים מבחן Post Hoc.",
-                    "לא, כי ה-Error גדול."
+                    "לא היה שינוי ברמות החרדה (Sig=.000).",
+                    "חל שינוי מובהק ברמות החרדה בין שתי המדידות.",
+                    "ההבדל אינו מובהק כיוון שממוצע ההפרשים חיובי.",
+                    "המודל מובהק אך מסביר רק חלק קטן מהשונות."
                 ],
                 ans: 1,
-                exp: "מסתכלים על שורת המשתנה (manufactor) ועמודת ה-Sig. המספר 0.006 קטן מ-0.05, ולכן **קיים הבדל מובהק**. (רק *אחרי* שמגלים שיש הבדל, מבצעים Post Hoc כדי לגלות איפה בדיוק הוא נמצא)."
+                exp: "איתור הפלט: מבחן T למדגמים תלויים (מזווגים), משווה אותו אדם פעמיים (למשל חרדה לפני ואחרי). ה-Sig הוא .000 (<0.05), כלומר דוחים את השערת האפס. חל שינוי מובהק ברמת החרדה בין הזמנים."
             },
             {
-                q: "בהמשך לשאלה הקודמת, החוקר ביצע מבחן Tukey Post Hoc. בין אילו יצרנים קיים הבדל מובהק סטטיסטית?",
+                q: "חוקר ביצע ניתוח סטטיסטי והתקבל הפלט שלפניך. בין אילו שתי קבוצות קיים ההבדל המובהק ביותר (מבחינה סטטיסטית)?",
                 table: `
                 <div class="spss-container">
                   <div class="spss-title">Multiple Comparisons (Tukey HSD)</div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th>(I) manuf</th><th>(J) manuf</th><th>Mean Difference (I-J)</th><th>Std. Error</th><th>Sig.</th></tr>
+                      <tr><th>(I) Group</th><th>(J) Group</th><th>Mean Difference (I-J)</th><th>Sig.</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td rowspan="2" style="vertical-align:top;">A</td><td class="row-header">B</td><td>-4.0500*</td><td>1.21016</td><td>.012</td></tr>
-                      <tr><td class="row-header">C</td><td>-.1333</td><td>1.21016</td><td>.993</td></tr>
-                      <tr><td rowspan="2" style="vertical-align:top; border-top:1px solid #ccc;">B</td><td class="row-header" style="border-top:1px solid #ccc;">A</td><td style="border-top:1px solid #ccc;">4.0500*</td><td style="border-top:1px solid #ccc;">1.21016</td><td style="border-top:1px solid #ccc;">.012</td></tr>
-                      <tr><td class="row-header">C</td><td>3.9167*</td><td>1.21016</td><td>.014</td></tr>
+                      <tr><td rowspan="2" style="vertical-align:top;">A</td><td class="row-header">B</td><td>2.100</td><td>.450</td></tr>
+                      <tr><td class="row-header">C</td><td>-15.500*</td><td>.002</td></tr>
+                      <tr><td rowspan="1" style="vertical-align:top; border-top:1px solid #ccc;">B</td><td class="row-header" style="border-top:1px solid #ccc;">C</td><td style="border-top:1px solid #ccc;">-17.600*</td><td style="border-top:1px solid #ccc;">.001</td></tr>
                     </tbody>
                   </table>
-                  <div class="spss-footer">* The mean difference is significant at the .05 level.</div>
                 </div>
                 `,
                 options: [
-                    "קיים הבדל רק בין A ל-C.",
-                    "ההבדלים המובהקים הם בין A ל-B, ובין B ל-C (ה-Sig שלהם קטן מ-0.05). בין A ל-C אין הבדל מובהק.",
-                    "אין הבדלים מובהקים בכלל.",
-                    "כולם שונים מכולם."
+                    "בין A ל-B בלבד.",
+                    "בין כל הקבוצות ללא יוצא מן הכלל.",
+                    "ישנם הבדלים מובהקים בין A ל-C, ובין B ל-C. בין A ל-B אין הבדל מובהק.",
+                    "לא ניתן להסיק הבדלים מובהקים מטבלה זו כלל."
                 ],
-                ans: 1,
-                exp: "עוברים על זוגות היצרנים בעמודת ה-Sig: <br>בין A ל-B: ה-Sig הוא .012 (<0.05) -> <strong>יש הבדל</strong>.<br>בין A ל-C: ה-Sig הוא .993 (>0.05) -> אין הבדל.<br>בין B ל-C: ה-Sig הוא .014 (<0.05) -> <strong>יש הבדל</strong>."
+                ans: 2,
+                exp: "איתור הפלט: טבלת פוסט-הוק (Tukey) המופיעה אחרי ANOVA מובהקת. מחפשים באילו שורות ה-Sig קטן מ-0.05 (וגם מסומן כוכבית על ממוצע ההפרשים). זה קורה בין A ל-C (.002), ובין B ל-C (.001)."
             },
-
-            // --- STREAMING_CHUNK: TOPIC: TWO-WAY ANOVA ---
             {
-                q: "חוקר בדק את ההשפעה של 'מגדר' (גבר/אישה) ו'תואר' (עם תואר/ללא תואר) על היקף המכירות של מנהלי סניפים. הוא ביצע ניתוח שונות דו-כיווני (Two-Way ANOVA). האם קיימת אינטראקציה מובהקת בין שני המשתנים?",
+                q: "לפניך פלט המראה השפעה של שני משתנים (Method, Time) על תוצאה. ממה עלינו להיזהר ביותר בקריאת פלט זה?",
                 table: `
                 <div class="spss-container">
                   <div class="spss-title">Tests of Between-Subjects Effects</div>
                   <table class="spss-table">
-                    <thead><tr><th>Source</th><th>Type III Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                      <tr><td class="row-header">Gender</td><td>24.200</td><td>1</td><td>24.200</td><td>11.25</td><td>.002</td></tr>
-                      <tr><td class="row-header">Degree</td><td>20.000</td><td>1</td><td>20.000</td><td>9.30</td><td>.007</td></tr>
-                      <tr><td class="row-header">Gender * Degree</td><td>9.800</td><td>1</td><td>9.800</td><td>4.55</td><td>.047</td></tr>
-                      <tr><td class="row-header">Error</td><td>34.400</td><td>16</td><td>2.150</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Method</td><td>2</td><td>12.50</td><td>.000</td></tr>
+                      <tr><td class="row-header">Time</td><td>1</td><td>8.40</td><td>.012</td></tr>
+                      <tr><td class="row-header">Method * Time</td><td>2</td><td>6.20</td><td>.005</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "לא, כי ה-Sig של האינטראקציה קרוב מדי ל-0.05.",
-                    "כן, שורת האינטראקציה מסומנת כ- Gender * Degree, וה-Sig שלה הוא 0.047 (קטן מ-0.05), לכן יש אינטראקציה מובהקת.",
-                    "האינטראקציה נבדקת לפי האפקטים העיקריים, וכיוון ששניהם מובהקים אז אין אינטראקציה.",
-                    "לא ניתן לבדוק אינטראקציה בניתוח שונות."
+                    "מהעובדה שהמשתנים לא מובהקים.",
+                    "מכיוון שהאינטראקציה (Method * Time) מובהקת, יש להיזהר מפירוש של האפקטים העיקריים (Method או Time) לבדם - כי ההשפעה מעורבת ותלויה אחד בשני.",
+                    "ההסבר לא טוב בגלל ש-df=2.",
+                    "ממבחן פישר שצריך לבצע לאחריו."
                 ],
                 ans: 1,
-                exp: "האינטראקציה תמיד מופיעה כמכפלה של שני המשתנים: <strong>Gender * Degree</strong>. ה-Sig שלה הוא .047, ומכיוון שהוא קטן מ-0.05 (אפילו במעט), אנו דוחים את H0 ומסיקים ש<strong>קיימת אינטראקציה מובהקת</strong> (כלומר, השפעת התואר תלויה במגדר)."
+                exp: "איתור הפלט: ניתוח שונות דו-כיווני (Two-Way ANOVA). בשורה של הכפל ביניהם (Method * Time) ה-Sig קטן מ-0.05, לכן יש אינטראקציה מובהקת. משמעות הדבר היא שקשה לבודד השפעה של משתנה אחד, כי היא תלויה לגמרי ברמה של המשתנה השני."
             },
-
-            // --- STREAMING_CHUNK: TOPIC: RELIABILITY ---
             {
-                q: "חוקר העביר שאלון הרגלי תזונה ובדק את המהימנות שלו באמצעות 'אלפא של קרונבך'. לפי הטבלה הבאה, האם כדאי לו למחוק שאלה מסוימת כדי לשפר את השאלון?",
+                q: "מהי המשוואה הנכונה לניבוי הציון (Score) על סמך שעות הלמידה (Hours)?",
                 table: `
                 <div class="spss-container">
-                  <div class="spss-title">Item-Total Statistics</div>
+                  <div class="spss-title">Coefficients<sup>a</sup></div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th></th><th>Scale Mean if Item Deleted</th><th>Scale Variance if Item Deleted</th><th>Corrected Item-Total Correlation</th><th>Cronbach's Alpha if Item Deleted</th></tr>
+                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td class="row-header">Q1: אוכלים ביחד</td><td>20.26</td><td>38.36</td><td>.492</td><td>.899</td></tr>
-                      <tr><td class="row-header">Q2: יושבים סביב שולחן</td><td>19.92</td><td>33.59</td><td>.772</td><td>.857</td></tr>
-                      <tr><td class="row-header">Q3: שותים מים</td><td>20.19</td><td>37.68</td><td>.549</td><td>.891</td></tr>
-                      <tr><td class="row-header">Q4: לא צופים בטלוויזיה</td><td>19.92</td><td>33.59</td><td>.772</td><td>.857</td></tr>
+                      <tr><td>1</td><td class="row-header">(Constant)</td><td>40.000</td><td>5.000</td><td></td><td>8.000</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Hours</td><td>5.500</td><td>0.500</td><td>.850</td><td>11.000</td><td>.000</td></tr>
                     </tbody>
                   </table>
-                  <div class="spss-footer" style="margin-top:15px;">Overall Cronbach's Alpha = .888</div>
                 </div>
                 `,
                 options: [
-                    "לא, המהימנות הכללית (0.888) גבוהה מספיק ואסור למחוק שאלות.",
-                    "כן, כדאי למחוק את Q1, כי מחיקתה תעלה את המהימנות מ-0.888 ל-0.899.",
-                    "כן, כדאי למחוק את Q2 כי הערך שלה נמוך (0.857).",
-                    "יש למחוק את Q4 כי היא זהה ל-Q2."
+                    "Score = 0.850 * Hours + 40.000",
+                    "Score = 5.500 * Hours + 40.000",
+                    "Score = 40.000 * Hours + 5.500",
+                    "Score = 0.850 * Hours + 5.500"
                 ],
                 ans: 1,
-                exp: "נסתכל על העמודה <strong>Cronbach's Alpha if Item Deleted</strong>. האלפא הכללית היא 0.888. אם נמחק את שאלה Q1, המהימנות תקפוץ ל-0.899. המשמעות היא ש-Q1 פוגעת בהרמוניה של השאלון, ולכן מבחינה סטטיסטית <strong>כדאי לשקול להסירה</strong>."
+                exp: "איתור הפלט: טבלת מקדמים (רגרסיה). הנוסחה היא Y = bX + a. את המקדמים לוקחים אך ורק מעמודת ה-B (Unstandardized). הקבוע (a) הוא 40.000. השיפוע של שעות (b) הוא 5.500. ולכן Y = 5.5X + 40."
+            },
+            {
+                q: "איזה מבין הנתונים הבאים בפלט מייצג את ערכו של 'מקדם ההסבר' (אחוז השונות המוסברת)?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Model Summary</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error of the Estimate</th></tr></thead>
+                    <tbody><tr><td>1</td><td>.400<sup>a</sup></td><td>.160</td><td>.155</td><td>15.20</td></tr></tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "R (0.400)",
+                    "R Square (0.160)",
+                    "Std. Error (15.20)",
+                    "Adjusted R Square (0.155)"
+                ],
+                ans: 1,
+                exp: "איתור הפלט: סיכום מודל רגרסיה. מקדם ההסבר הוא המונח בעברית ל-R Square (או $R^2$). הוא מציין איזה חלק מהשונות של Y מוסבר על ידי X. כאן, המודל מסביר רק 16% מהשונות."
+            },
+            {
+                q: "מהי המשמעות המדויקת של הערך 62.4 בפלט שלפניך?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Frequencies: Age Group</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Frequency</th><th>Percent</th><th>Valid Percent</th><th>Cumulative Percent</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Young</td><td>120</td><td>60.0</td><td>62.4</td><td>62.4</td></tr>
+                      <tr><td class="row-header">Old</td><td>72</td><td>36.0</td><td>37.6</td><td>100.0</td></tr>
+                      <tr><td class="row-header">Total</td><td>192</td><td>96.0</td><td>100.0</td><td></td></tr>
+                      <tr><td class="row-header">Missing</td><td>8</td><td>4.0</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Total</td><td>200</td><td>100.0</td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "זהו אחוז הצעירים מתוך המשיבים בפועל, לאחר שניקו את התצפיות החסרות (Missing).",
+                    "זהו אחוז הצעירים מתוך כלל האנשים במדגם המקורי (כולל אלו שלא השיבו לשאלה).",
+                    "זהו מדד המהימנות של קבוצת הגיל.",
+                    "זהו ממוצע הגילאים של קבוצת הצעירים."
+                ],
+                ans: 0,
+                exp: "איתור הפלט: טבלת שכיחויות (סטטיסטיקה תיאורית). עמודת Valid Percent מציגה את האחוזים רק מתוך ה-Valid (אלו שענו), ומנכה החוצה את ה-Missing."
+            },
+            {
+                q: "לפי הפלט הבא, האם נוכל להניח כי שונויות שתי הקבוצות שוות באוכלוסייה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Independent Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test for Equality of Variances</th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">t-test</th></tr>
+                      <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Equal variances assumed</td><td>1.250</td><td>.310</td><td>3.500</td><td>48</td><td>.001</td></tr>
+                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>3.450</td><td>42.5</td><td>.001</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "לא, כיוון שה-Sig של מבחן לווין גדול מ-0.05, לכן השונויות שונות.",
+                    "כן, כיוון שה-Sig של מבחן לווין (0.310) גדול מ-0.05. לכן ההנחה של שוויון שונויות נשמרת.",
+                    "לא ניתן לדעת מטבלה זו.",
+                    "כן, כי ה-t הוא חיובי ומובהק."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: מבחן לווין (Levene) הנמצא בתוך מבחן ה-T הבלתי תלוי. ההשערה בו היא שהשונויות שוות. כיוון שה-Sig שלו כאן הוא 0.310 (מעל 0.05) - לא דוחים את ההשערה. לכן מותר להניח שהשונויות שוות (ואז קוראים את השורה העליונה)."
+            },
+            {
+                q: "מה קובע הפלט הבא לגבי מובהקות ההבדלים, והאם נדרש מבחן פוסט-הוק?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">ANOVA</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Between Groups</td><td>5.100</td><td>3</td><td>1.700</td><td>0.450</td><td>.718</td></tr>
+                      <tr><td class="row-header">Within Groups</td><td>150.000</td><td>40</td><td>3.750</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Total</td><td>155.100</td><td>43</td><td></td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "יש הבדל מובהק בין הקבוצות (כי F קטן מ-1), ויש לבצע מבחן פוסט-הוק.",
+                    "אין הבדל מובהק בין הקבוצות, אך עדיין חובה לבצע פוסט-הוק ליתר ביטחון.",
+                    "אין הבדל מובהק בין הקבוצות (Sig=0.718 > 0.05). הניתוח מסתיים ולא מבצעים פוסט-הוק.",
+                    "ההבדל נמצא בתוך הקבוצות ולכן דוחים את H0."
+                ],
+                ans: 2,
+                exp: "איתור הפלט: טבלת ANOVA. ה-Sig הכללי הוא 0.718 (הרבה מעל 0.05), כך שאין שום הבדל בממוצעים של הקבוצות. כשיש תוצאה לא מובהקת, עוצרים את הניתוח, ואין שום טעם לבצע פוסט-הוק."
+            },
+            {
+                q: "לפניך טריצת מתאמים עבור 3 משתנים (גיל, שכר, ואושר). איזה מהמשפטים הבאים מתאר בצורה הנכונה ביותר את ממצאי הפלט?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Correlations</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th></th><th>Age</th><th>Salary</th><th>Happiness</th></tr></thead>
+                    <tbody>
+                      <tr><td rowspan="2" style="vertical-align:top;">Age</td><td class="row-header">Pearson Correlation</td><td>1</td><td>.450*</td><td>-.120</td></tr>
+                      <tr><td class="row-header">Sig. (2-tailed)</td><td></td><td>.020</td><td>.450</td></tr>
+                      <tr><td rowspan="2" style="vertical-align:top; border-top:1px solid #ccc;">Salary</td><td class="row-header" style="border-top:1px solid #ccc;">Pearson Correlation</td><td style="border-top:1px solid #ccc;">.450*</td><td style="border-top:1px solid #ccc;">1</td><td style="border-top:1px solid #ccc;">.820**</td></tr>
+                      <tr><td class="row-header">Sig. (2-tailed)</td><td>.020</td><td></td><td>.000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "אין שום קשר מובהק בין אף אחד מהמשתנים.",
+                    "הקשר החזק והמובהק ביותר נמצא בין גיל לשכר (.450).",
+                    "קיים קשר מובהק, חיובי וחזק מאוד בין השכר לבין תחושת האושר (r=0.820, Sig=0.000).",
+                    "קיים קשר חזק ושלילי בין גיל לאושר."
+                ],
+                ans: 2,
+                exp: "איתור הפלט: מתאם פירסון מרובה. מצליבים עמודה מול שורה. הקשר בין Salary (שכר) ל-Happiness (אושר) הוא 0.820 (קשר חזק מאוד, חיובי), וה-Sig שלו .000 (מובהק לחלוטין). הקשר בין גיל לאושר אינו מובהק (Sig=0.450)."
+            },
+            {
+                q: "מה קובע הפלט לגבי השפעתם של המשתנים המסבירים על תחושת שביעות הרצון (המשתנה התלוי)?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Coefficients</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">(Constant)</td><td>3.500</td><td>.500</td><td></td><td>7.00</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Income</td><td>1.200</td><td>.300</td><td>.650</td><td>4.00</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Education</td><td>-0.500</td><td>.600</td><td>-.120</td><td>-0.83</td><td>.410</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "הכנסה והשכלה משפיעים שניהם בצורה חיובית ומובהקת.",
+                    "ההכנסה משפיעה באופן מובהק וחיובי, אך ההשכלה אינה משפיעה באופן מובהק (Sig > 0.05).",
+                    "ההשכלה היא המנבא החזק ביותר בגלל סימן המינוס.",
+                    "המודל כולו אינו מובהק."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: מקדמי רגרסיה. המשתנה Income בעל Sig=.000 (לכן הוא מובהק ומשפיע) וה-Beta חיובית. המשתנה Education בעל Sig=.410 (גדול מ-0.05), כלומר לא דוחים את H0, והוא אינו מהווה מנבא מובהק לשביעות רצון במודל זה."
+            },
+            {
+                q: "באיזה מבחן בוצע שימוש בפלט שלפניך, ומהי מטרתו?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Chi-Square Tests</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>0.150<sup>a</sup></td><td>1</td><td>.700</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5.</div>
+                </div>
+                `,
+                options: [
+                    "מבחן T למדגמים בלתי תלויים. המטרה להשוות ממוצעים.",
+                    "מבחן מהימנות פנימית. המטרה לבדוק אם השאלות עקביות.",
+                    "מבחן חי-בריבוע. המטרה לבדוק האם קיים קשר בין שני משתנים קטגוריאליים (שמיים).",
+                    "מבחן ניתוח שונות (ANOVA). המטרה להשוות שונויות של 3 קבוצות."
+                ],
+                ans: 2,
+                exp: "הפלט צועק 'Chi-Square'. זהו מבחן חי בריבוע המיועד בלעדית למציאת קשר/תלות בין שני משתנים המחולקים לקטגוריות (למשל צבע עיניים ומין). אגב, ה-Sig כאן הוא 0.700 ולכן אין קשר מובהק."
+            },
+            {
+                q: "התבונן בפלט בדיקת העקיבות הפנימית הבא. מה המסקנה שלך כחוקר לגבי השאלון?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Reliability Statistics</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Cronbach's Alpha</th><th>N of Items</th></tr></thead>
+                    <tbody><tr><td>.410</td><td>8</td></tr></tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "השאלון מושלם להפצה כי האלפא נמוכה מ-0.05.",
+                    "רמת המהימנות גרועה ובעייתית מאוד (מתחת ל-0.6), הפריטים לא מודדים את אותו הדבר בעקביות.",
+                    "השאלון מכיל 410 שאלות ל-8 אנשים.",
+                    "המהימנות טובה מאוד כי היא חיובית."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: אלפא של קרונבך. כלל ברזל במהימנות: אנחנו רוצים אלפא גבוהה (0.7 ומעלה). אלפא של 0.410 מעידה על כך שהשאלות לא קשורות זו לזו, והשאלון מודד 'תפוחים ותפוזים' ולא מדד אחד עקבי."
+            },
+            {
+                q: "מתוך פלט הרגרסיה שלפניך, כיצד נפרש את השפעת 'שעות פעילות גופנית' (X) על 'תחושת אושר' (Y)?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Coefficients</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">Sport_Hours</td><td>0.388</td><td>0.038</td><td>.263</td><td>6.976</td><td>.000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "כל שעת פעילות גופנית מורידה את תחושת האושר ב-0.388 יחידות.",
+                    "כל שעת פעילות גופנית נוספת מעלה את תחושת האושר בממוצע ב-0.388 יחידות (באופן מובהק).",
+                    "כל שעת פעילות מעלה את תחושת האושר ב-6.976 יחידות.",
+                    "כל שעת פעילות גופנית מעלה את האושר ב-0.263 יחידות."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: מקדמי רגרסיה. העמודה החשובה לפרשנות יחידות (בניית המשוואה) היא Unstandardized B. המקדם חיובי ומובהק (Sig=.000), לכן תוספת של שעת פעילות אחת (1) מנבאת תוספת של 0.388 לתחושת האושר."
+            },
+            {
+                q: "במבחן להשוואת ממוצעי ציונים בין שתי כיתות (א' ו-ב'), הופק הפלט הבא. מה המסקנה הסטטיסטית מהשורה העליונה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Independent Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">t-test for Equality of Means</th></tr>
+                      <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Equal variances assumed</td><td>1.10</td><td>.290</td><td>-1.850</td><td>118</td><td>.067</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "קיימים הבדלים מובהקים בציונים, כיוון שה-t הוא מספר שלילי.",
+                    "ההבדל נמצא ממש על הגבול אבל מכיוון ש- 0.067 גדול מ-0.05, לא דוחים את H0 ואין הבדל מובהק.",
+                    "יש הבדל מובהק כי מבחן לווין גדול מ-0.05.",
+                    "המבחן לא תקף כי אין שורת שונויות שונות."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: מבחן T הבלתי תלוי. ה-Sig הדו-צדדי (של ה-t-test) הוא .067. החוק הסטטיסטי נוקשה - אם זה לא קטן מ-0.05, לא דוחים. לכן המסקנה היא שאין הבדל מובהק סטטיסטית, גם אם הנתון 'קרוב' לסף."
+            },
+            {
+                q: "מה קובע פלט הניתוח הדו-גורמי הבא על המשתנה 'Diet_Type' (סוג דיאטה) כאפקט עיקרי?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Tests of Between-Subjects Effects</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Diet_Type</td><td>2</td><td>2.10</td><td>.130</td></tr>
+                      <tr><td class="row-header">Gender</td><td>1</td><td>5.80</td><td>.020</td></tr>
+                      <tr><td class="row-header">Diet_Type * Gender</td><td>2</td><td>0.90</td><td>.410</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "סוג הדיאטה משפיע באופן מובהק על התוצאה.",
+                    "לסוג הדיאטה (כאפקט עיקרי) אין השפעה מובהקת על התוצאה (Sig=0.130).",
+                    "סוג הדיאטה משפיע רק דרך האינטראקציה.",
+                    "יש לבדוק את השפעת הדיאטה דרך מבחן לווין."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: שורות האפקטים ב-Two-Way ANOVA. מסתכלים ישירות על השורה של המשתנה המבוקש. ה-Sig של Diet_Type הוא .130 (>0.05), לכן אין לו אפקט עיקרי מובהק."
+            },
+            {
+                q: "חוקר רצה לדעת האם קורס רענון נהיגה יעיל. הוא השווה ציון בסימולטור לפני הקורס, וציון אחרי הקורס אצל 30 נהגים. מה מראה הפלט?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Paired Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Paired Differences</th><th>t</th><th>Sig. (2-tailed)</th></tr>
+                      <tr><th></th><th>Mean</th><th>Std. Deviation</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Score_Before - Score_After</td><td>-15.20</td><td>4.50</td><td>-18.40</td><td>.000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "הקורס לא יעיל, הציון ירד ב-15.20 נקודות.",
+                    "אין הבדל מובהק בין המדידות.",
+                    "יש שינוי מובהק: הממוצע של ההפרש הוא -15.20, מה שאומר שהציון אחרי הקורס היה *גבוה* יותר, וזה שינוי מובהק (Sig=.000).",
+                    "יש קשר חיובי בין הציון לפני לציון אחרי."
+                ],
+                ans: 2,
+                exp: "איתור הפלט: מבחן T מזווג. הממוצע המוצג הוא ממוצע ה*הפרש* (לפני פחות אחרי). תוצאה שלילית משמעה שה\"אחרי\" גדול מה\"לפני\". ה-Sig הוא 0.000, לכן השינוי מובהק סטטיסטית. הקורס עבד!"
+            },
+            {
+                q: "איזה מבין המשתנים המנבאים בטבלה הבאה מצדיק את המשך קיומו במשוואת הרגרסיה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Coefficients</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Model</th><th></th><th>Beta</th><th>t</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">(Constant)</td><td></td><td>5.1</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Distance</td><td>-.050</td><td>-0.5</td><td>.620</td></tr>
+                      <tr><td></td><td class="row-header">Traffic</td><td>.410</td><td>4.2</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Weather</td><td>.100</td><td>1.1</td><td>.275</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "רק משתנה המרחק (Distance) כי הוא שלילי.",
+                    "מזג האוויר (Weather) כי יש לו ה-Sig הגבוה ביותר.",
+                    "משתנה התנועה (Traffic) הוא היחיד שמובהק (Sig=0.000) ולכן רק הוא מצדיק כניסה למשוואה מבין השלושה.",
+                    "כל המשתנים חיוניים כיוון שהקבוע מובהק."
+                ],
+                ans: 2,
+                exp: "איתור הפלט: טבלת מקדמי רגרסיה מרובה. משתנה מנבא ראוי להישאר במשוואה אך ורק אם הוא מובהק סטטיסטית (Sig < 0.05). רק ל-Traffic יש Sig כזה. השאר מקריים ולא רלוונטיים סטטיסטית."
+            },
+            {
+                q: "לפניך טבלת שכיחויות מצולבת עבור שני משתנים (מגזר ובעלות על דירה). מהי המסקנה העיקרית מתוך טבלת המבחן שלמטה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Chi-Square Tests</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>1.020<sup>a</sup></td><td>1</td><td>.312</td></tr>
+                      <tr><td class="row-header">Continuity Correction</td><td>0.750</td><td>1</td><td>.386</td></tr>
+                      <tr><td class="row-header">N of Valid Cases</td><td>500</td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5.</div>
+                </div>
+                `,
+                options: [
+                    "יש קשר מובהק בין מגזר לבעלות על דירה.",
+                    "המבחן הסטטיסטי אינו תקין.",
+                    "דוחים את השערת האפס כי Pearson > 1.",
+                    "לא נמצא קשר מובהק בין המגזר לבעלות על הדירה (Sig=0.312 > 0.05)."
+                ],
+                ans: 3,
+                exp: "איתור הפלט: מבחן חי בריבוע. מסתכלים על השורה המרכזית (Pearson Chi-Square). המובהקות היא .312. כיוון שהיא גדולה מ-0.05, המסקנה היא לא לדחות את H0, קרי: אין קשר מובהק."
+            },
+            {
+                q: "איזה משפט מתאר בצורה הנכונה ביותר את מהות הפלט הבא?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">ANOVA</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Between Groups</td><td>55.2</td><td>2</td><td>27.60</td><td>4.10</td><td>.025</td></tr>
+                      <tr><td class="row-header">Within Groups</td><td>250.0</td><td>38</td><td>6.57</td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "המודל מובהק ובו 2 משתנים מסבירים.",
+                    "זהו מבחן המשווה תוחלות של 3 קבוצות. נמצא כי לפחות ממוצע אחד שונה באופן מובהק מהאחרים.",
+                    "המבחן משווה שתי קבוצות, ודוחה את השערת האפס.",
+                    "זהו מבחן לבדיקת מהימנות שאלון שצלח יפה."
+                ],
+                ans: 1,
+                exp: "איתור הפלט: פלט 'Between/Within' מעיד על One-Way ANOVA לבדיקת ממוצעים של 3+ קבוצות. דרגות החופש ב-Between הן 2 (שזה k-1), מה שאומר שיש 3 קבוצות בסך הכל. כיוון שה-Sig הוא .025 (<0.05), המסקנה היא שיש הבדל מובהק בממוצעים."
             }
         ];
 
-        // --- STREAMING_CHUNK: Application Logic ---
+        // --- Application Logic ---
         let currentQuestionIndex = 0;
         let score = 0;
         const userAnswers = new Array(questions.length).fill(null);
@@ -701,7 +1092,6 @@
             
             let html = '';
             q.options.forEach((opt, optIndex) => {
-                // Determine state if already answered
                 let btnClass = 'option-btn';
                 let disabledAttr = '';
                 
@@ -740,7 +1130,7 @@
         }
 
         function checkAnswer(selectedIndex, btnElement) {
-            if (userAnswers[currentQuestionIndex] !== null) return; // Prevent double click
+            if (userAnswers[currentQuestionIndex] !== null) return;
 
             userAnswers[currentQuestionIndex] = selectedIndex;
             const q = questions[currentQuestionIndex];
@@ -748,7 +1138,7 @@
             
             if (isCorrect) score++;
 
-            renderQuestion(currentQuestionIndex); // Re-render to show colors
+            renderQuestion(currentQuestionIndex);
             updateProgress();
         }
 
@@ -800,7 +1190,6 @@
 
             const percent = Math.round((score / questions.length) * 100);
             
-            // Animation for circle
             let currentPercent = 0;
             const scoreElement = document.getElementById('finalScore');
             const timer = setInterval(() => {
