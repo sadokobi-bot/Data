@@ -3,1215 +3,700 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מאסטר SPSS: הכנה למבחן בסטטיסטיקה יישומית</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>שאלון הכנה מתקדם - פיתוח יישומי אינטרנט</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --secondary: #0ea5e9;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-dark: #0f172a;
+            --primary: #4338ca;
+            --primary-light: #6366f1;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-dark: #1e293b;
             --text-muted: #64748b;
             --success: #10b981;
-            --success-light: #d1fae5;
-            --danger: #ef4444;
-            --danger-light: #fee2e2;
-            --border-radius: 20px;
+            --success-bg: #ecfdf5;
+            --error: #ef4444;
+            --error-bg: #fef2f2;
+            --border: #cbd5e1;
+            --explanation-bg: #f8fafc;
+            --alt-ans-color: #0ea5e9;
         }
 
         * {
             box-sizing: border-box;
-            font-family: 'Assistant', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rubik', sans-serif;
         }
 
         body {
-            background: var(--bg-color);
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-color: var(--bg-body);
             color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .app-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), #312e81);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .score-board {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 999px;
+            margin-top: 1.5rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .q-number {
+            display: inline-block;
+            background-color: #e0e7ff;
+            color: var(--primary);
+            padding: 0.25rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .q-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        .options-list {
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-
-        .app-header {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            margin-bottom: 40px;
-        }
-
-        .app-header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-
-        .app-header p {
-            margin: 0;
-            font-size: 1.3rem;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-            padding: 0 20px 60px;
-        }
-
-        .progress-bar-container {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
-            margin-bottom: 30px;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .progress-track {
-            height: 14px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%);
-            width: 0%;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 20px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-            animation: slideUp 0.5s ease-out;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .question-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: var(--text-dark);
-            line-height: 1.5;
-        }
-
-        .spss-container {
-            background: white;
-            border: 1px solid #cbd5e1;
-            padding: 20px;
-            margin: 25px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            direction: ltr; 
-            text-align: left;
-            overflow-x: auto;
-            border-radius: 8px;
-        }
-
-        .spss-title {
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #000;
-        }
-
-        .spss-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: Arial, sans-serif;
-            font-size: 13px;
-            color: #000;
-            min-width: 600px;
-        }
-
-        .spss-table th, .spss-table td {
-            padding: 6px 10px;
-            text-align: right;
-        }
-
-        .spss-table th {
-            border-top: 2px solid #000;
-            border-bottom: 1px solid #000;
-            font-weight: bold;
-            vertical-align: bottom;
-        }
-
-        .spss-table .row-header {
-            text-align: left;
-            font-weight: normal;
-        }
-
-        .spss-table tbody tr:last-child td {
-            border-bottom: 2px solid #000;
-        }
-
-        .spss-footer {
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            color: #333;
-            margin-top: 10px;
-        }
-
-        .options-grid {
-            display: grid;
-            gap: 16px;
+            gap: 1rem;
         }
 
         .option-btn {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 20px;
-            font-size: 1.2rem;
-            font-weight: 600;
             text-align: right;
-            background: white;
+            padding: 1.25rem;
+            background: #f8fafc;
             border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            font-size: 1.05rem;
             color: var(--text-dark);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            line-height: 1.5;
         }
 
         .option-btn:hover:not(:disabled) {
-            border-color: #94a3b8;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
-        }
-
-        .option-btn.correct {
-            background: var(--success-light);
-            border-color: var(--success);
-            color: #064e3b;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
-        }
-
-        .option-btn.wrong {
-            background: var(--danger-light);
-            border-color: var(--danger);
-            color: #7f1d1d;
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
-            opacity: 0.7;
+            border-color: var(--primary-light);
+            background: #eff6ff;
+            transform: translateX(-5px);
         }
 
         .option-btn:disabled {
             cursor: default;
-            transform: none;
         }
 
-        .feedback-box {
+        .option-btn.correct {
+            background: var(--success-bg);
+            border-color: var(--success);
+            color: #064e3b;
+            font-weight: 500;
+        }
+
+        .option-btn.wrong {
+            background: var(--error-bg);
+            border-color: var(--error);
+            color: #7f1d1d;
+            opacity: 0.7;
+        }
+        
+        .explanation-box {
+            margin-top: 1.5rem;
+            padding: 2rem;
+            border-radius: 12px;
+            background: var(--explanation-bg);
+            border: 2px dashed #cbd5e1;
             display: none;
-            margin-top: 30px;
-            padding: 25px;
-            border-radius: 16px;
-            animation: slideUp 0.4s ease-out;
-            font-size: 1.15rem;
-            line-height: 1.6;
+            animation: slideDown 0.4s ease-out;
         }
 
-        .feedback-box h4 {
-            margin: 0 0 15px 0;
-            font-size: 1.4rem;
+        .explanation-box.show {
+            display: block;
+        }
+
+        .explanation-title {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 0.5rem;
         }
 
-        .feedback-box.correct-feedback {
-            display: block;
-            background: #ecfdf5;
-            border-right: 6px solid var(--success);
-            color: #064e3b;
+        .explanation-text {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: #334155;
         }
 
-        .feedback-box.wrong-feedback {
-            display: block;
-            background: #fef2f2;
-            border-right: 6px solid var(--danger);
-            color: #7f1d1d;
-        }
-
-        .correct-answer-highlight {
-            display: inline-block;
-            background: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            border: 1px solid var(--danger);
-            margin: 10px 0;
+        .alt-answers-title {
+            color: var(--alt-ans-color);
             font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
         }
 
-        .action-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 30px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 30px;
+        .alt-answers-list {
+            list-style-type: disc;
+            margin-right: 1.5rem;
+            color: #0f172a;
         }
 
-        .btn-next {
-            display: none;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        .alt-answers-list li {
+            margin-bottom: 0.5rem;
+            background: #e0f2fe;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--text-dark);
             color: white;
             border: none;
-            padding: 16px 40px;
-            font-size: 1.3rem;
+            border-radius: 12px;
+            font-size: 1.25rem;
             font-weight: 700;
-            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
+            margin-top: 3rem;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        .btn-next:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(79, 70, 229, 0.35);
-        }
-
-        #resultsScreen {
-            display: none;
-            text-align: center;
-        }
-
-        .score-circle {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: white;
-            border: 10px solid var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            margin: 0 auto 30px;
-            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.2);
-            position: relative;
-        }
-
-        @media (max-width: 768px) {
-            .card { padding: 25px; }
-            .question-text { font-size: 1.3rem; }
-            .option-btn { font-size: 1.1rem; padding: 15px; }
-            .app-header h1 { font-size: 2.2rem; }
+        
+        .reset-btn:hover {
+            background: #000;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
 
-    <header class="app-header">
-        <h1>מאסטר SPSS</h1>
-        <p>זיהוי וניתוח טבלאות - ממוקד למבחן</p>
+<div class="app-container">
+    <header>
+        <h1>תרגול למבחן: פיתוח יישומי אינטרנט</h1>
+        <p>כולל הסברי עומק וניסוחים חלופיים לבחינה (מועד א' 403563)</p>
+        <div class="score-board">
+            ציון: <span id="score">0</span> / 20
+        </div>
     </header>
 
-    <div class="container">
+    <main id="quiz-container">
+        <!-- השאלות יוזרקו לכאן על ידי JavaScript -->
+    </main>
+
+    <button class="reset-btn" onclick="location.reload()">התחל מחדש וערבב שאלות</button>
+</div>
+
+<script>
+    const questions = [
+        {
+            num: 1,
+            text: "מה נכון בנוגע ל-HTML ?",
+            options: [
+                { text: "שפת תכנות מונחת עצמים הפועלת בצד הלקוח ומיועדת לעיבוד נתונים מתקדם, בניית ממשקי משתמש גרפיים מורכבים וחיבור ישיר למסדי נתונים מקומיים ללא מעורבות שרת.", correct: false },
+                { text: "פרוטוקול תקשורת מאובטח הפועל בשכבת היישום ומשמש להעברת נתונים חסויים בין שרת ללקוח קצה תוך כדי הצפנתם בזמן אמת.", correct: false },
+                { text: "שפת סימון המגדירה את המבנה והתוכן של עמודי אינטרנט בעזרת מערכת תגיות.", correct: true },
+                { text: "סביבת ריצה המאפשרת יצירת פונקציות לוגיות מורכבות ישירות בתוך הדפדפן, ובכך מייתרת לחלוטין את הצורך בשימוש בשפות פיתוח כמו JavaScript.", correct: false },
+                { text: "מסד נתונים פנימי קל משקל השומר את העדפות המשתמש בצורה מקומית כדי לשפר ביצועי רשת ולמנוע זליגת מידע אישי בעת גלישה.", correct: false }
+            ],
+            explanation: "HTML (HyperText Markup Language) אינה שפת תכנות (מפני שאין לה יכולות לוגיות כמו לולאות ותנאים). היא משמשת אך ורק לשם סימון והגדרת ההיררכיה של התוכן במסמך (שלד האתר). כל המסיחים האחרים מנסים לבלבל אתכם עם הגדרות של פרוטוקולי רשת, שפות תכנות (כמו JS) או מסדי נתונים.",
+            altAnswers: [
+                "שפת סימון (Markup Language) המיועדת לתיאור מבנה העמוד.",
+                "שפה המבוססת על תגיות ומשמשת להגדרת היררכיה ושלד התוכן.",
+                "אינה שפת תכנות, משמשת לבניית התוכן הסטטי של אתרי אינטרנט."
+            ]
+        },
+        {
+            num: 2,
+            text: "קטע הקוד <...' > כתוב במסמך HTML. מה נכון בנוגע לו ולאלמנט xxx?",
+            options: [
+                { text: "xxx מייצג מאפיין (Attribute) המספק מידע נוסף על האלמנט או מגדיר את התנהגותו.", correct: true },
+                { text: "xxx הוא הערך הטקסטואלי העיקרי אשר יומר לגרפיקה ויוצג למשתמש הקצה על גבי המסך לאחר שהדפדפן יסיים את תהליך הרינדור (Rendering) של העמוד.", correct: false },
+                { text: "xxx מתאר פונקציית צד-שרת מובנית ונוקשה המופעלת באופן אוטומטי בעת טעינת העמוד, ומאפשרת למשוך נתונים בזמן אמת מה-Backend.", correct: false },
+                { text: "xxx הנו קוד JavaScript לכל דבר המוטמע ישירות בתוך מבנה ה-HTML ורץ באופן סינכרוני לפני שהדפדפן מצייר את האלמנטים הויזואליים.", correct: false },
+                { text: "xxx מייצג משתנה גלובלי חסר טיפוסיות השומר נתונים רגישים כגון מזהה סשן לאורך כל זמן הגלישה באתר.", correct: false }
+            ],
+            explanation: "בתוך תגית הפתיחה של אלמנט HTML אנו כותבים מאפיינים בתבנית name=\"value\". החלק השמאלי, לפני סימן השוויון (ה-xxx בשאלה), הוא ה-Attribute (למשל src, class, href). תפקידו לספק מידע חיוני לדפדפן לגבי כיצד להתייחס לאותו אלמנט.",
+            altAnswers: [
+                "xxx הוא תכונה (Attribute) המספקת נתונים נוספים לתגית.",
+                "מייצג Attribute המרחיב את הפונקציונליות של אלמנט ה-HTML (כגון מזהה ייחודי או מחלקה).",
+                "xxx מוגדר כמאפיין הנמצא בתגית הפתיחה ותפקידו להעביר ערכים לדפדפן."
+            ]
+        },
+        {
+            num: 3,
+            text: "מה נכון בנוגע לאלמנט DIV?",
+            options: [
+                { text: "זהו אלמנט מסוג שורה (Inline) המקבל באופן אוטומטי את הרוחב המדויק של התוכן שבתוכו, מה שמונע שבירת שורות מיותרת במסמך.", correct: false },
+                { text: "תגית בעלת משמעות סמנטית ברורה ומוגדרת ב-HTML5, המציינת אזור מרכזי המכיל טקסט מודגש או מידע קריטי למנועי חיפוש.", correct: false },
+                { text: "תגית המחייבת שימוש בתצורת סגירה-עצמית (Self-closing tag) ונועדה להצגת תמונות ורכיבי גרפיקה בלבד תחת תקן ה-W3C.", correct: false },
+                { text: "מבנה נתונים לוגי המאפשר לדפדפן לאחסן מידע זמני אודות העדפות המשתמש עד לסגירת חלון הגלישה הפעיל.", correct: false },
+                { text: "זהו אלמנט בלוק חסר משמעות סמנטית המשמש בעיקר כמיכל פנימי לארגון אלמנטים אחרים.", correct: true }
+            ],
+            explanation: "תגית DIV היא הבסיס לסידור אתרים. היא אלמנט מסוג Block (מתחילה שורה חדשה ותופסת רוחב מלא). החשוב ביותר לזכור הוא שאין לה משמעות סמנטית (קוראי מסך ומנועי חיפוש לא מייחסים לה חשיבות תוכן), והיא נועדה אך ורק כדי לקבץ אלמנטים יחד לעיצוב (CSS) או שליטה (JS).",
+            altAnswers: [
+                "אלמנט ברמת הבלוק (Block-level) המשמש כקונטיינר גנרי לאלמנטים אחרים.",
+                "תגית ללא משמעות סמנטית שנועדה לאגד רכיבים לצורך עיצוב מרוכז.",
+                "אלמנט המשמש בעיקר לחלוקת העמוד לאזורים ויזואליים."
+            ]
+        },
+        {
+            num: 4,
+            text: "מה נכון בנוגע לשפת תכנות JS) Javascript)",
+            options: [
+                { text: "שפת פיתוח צד-שרת כבדה מאוד המבוססת באופן ישיר על שפת Java ומשמשת בעיקר לפעולות מאובטחות, עסקאות אשראי והצפנה.", correct: false },
+                { text: "שפה המיועדת באופן בלעדי לתכנון, עיצוב וניהול של מסדי נתונים רלציוניים מורכבים במערכות מידע ארגוניות גדולות.", correct: false },
+                { text: "שפת תכנות סטטית וקשיחה הדורשת תהליך קומפילציה ארוך ומורכב מראש לפני שניתן לשלוח אותה לדפדפן של הלקוח.", correct: false },
+                { text: "שפת סקריפטים דינמית המפורשת על ידי הדפדפן ומאפשרת יצירת אינטראקטיביות וניהול מולטימדיה.", correct: true },
+                { text: "ספריית עיצוב צד-לקוח המהווה אלטרנטיבה מודרנית, קלה ופשוטה יותר לשימוש לעומת גיליונות הסגנון של CSS.", correct: false }
+            ],
+            explanation: "JS היא שפת התכנות של צד הלקוח (הדפדפן). היא אינה קשורה ל-Java, ואינה מצריכה קומפילציה (היא Interpreted). מטרתה להפוך את האתר הסטטי (HTML) לדינמי ואינטראקטיבי (האזנה ללחיצות כפתור, שינוי אלמנטים בזמן אמת, משיכת נתונים מהשרת).",
+            altAnswers: [
+                "שפת תכנות צד לקוח המפורשת בזמן אמת (Interpreted) ליצירת עמודים דינמיים.",
+                "שפת סקריפט המאפשרת מניפולציה של ה-DOM והוספת לוגיקה לאתר.",
+                "שפה דינמית מבוססת אירועים הפועלת בסביבת הדפדפן."
+            ]
+        },
+        {
+            num: 5,
+            text: "מה נכון בנוגע למשתנים ב-Javascript",
+            options: [
+                { text: "חובה להגדיר מראש ובמדויק את סוג המשתנה (כגון integer או string) בעת ההכרזה הראשונית עליו כדי למנוע קריסת דפדפן.", correct: false },
+                { text: "משתנה אשר הוגדר באמצעות המילה השמורה const יכול לשנות את ערכו בכל שלב במהלך ריצת התוכנית בתנאי שמדובר במערך.", correct: false },
+                { text: "משתנים המוגדרים בשפה זו יכולים לאחסן אך ורק ערכים מספריים (Numbers) טהורים ולא מחרוזות טקסט או אובייקטים.", correct: false },
+                { text: "נהוג כיום להגדירם באמצעות let או const, להם יש טווח-בלוק, מה שמונע באגים שאפיינו את var.", correct: true },
+                { text: "משתנים המוגדרים באמצעות המילה var קיימים ונגישים אך ורק בתוך פונקציות חץ (Arrow Functions) של ES6 ומעלה.", correct: false }
+            ],
+            explanation: "בעבר השתמשו ב-var, שהיה בעל טווח (Scope) רחב מדי ברמת הפונקציה ויצר המון באגים (זליגת משתנים מתוך לולאות). הסטנדרט כיום (ES6) הוא שימוש ב-let (למשתנה שעשוי להשתנות) ו-const (לקבועים), שניהם מוגבלים לבלוק (Block Scope) שבו הם נוצרו.",
+            altAnswers: [
+                "let ו-const הם בעלי Block Scope לעומת var שהוא בעל Function Scope.",
+                "אין צורך להגדיר טיפוס נתונים מראש (שפה בעלת טיפוסיות חלשה/דינמית).",
+                "const משמש להכרזה על קבוע שערכו אינו ניתן לדריסה לאחר ההשמה הראשונית."
+            ]
+        },
+        {
+            num: 6,
+            text: "מה נכון בנוגע לפונקציות של Javascript",
+            options: [
+                { text: "פונקציה ב-JavaScript חייבת להיות מוצהרת אך ורק בתחילת הקובץ הראשי ללא שום אפשרות ליצירת פונקציות אנונימיות או פנימיות.", correct: false },
+                { text: "הן נחשבות לאובייקטים לכל דבר (First-class) ולכן ניתן להעבירן כארגומנטים לפונקציות אחרות.", correct: true },
+                { text: "על פי כללי השפה הנוקשים, לא ניתן להחזיר ערך נתונים (Return) מפונקציה אל בלוק הקוד הראשי שביצע אליה קריאה.", correct: false },
+                { text: "קריאה לפונקציה תמיד תעצור לחלוטין את פעילות הדפדפן (חסימה סינכרונית) ותמנע כל אינטראקציה של המשתמש עד שתסיים את פעולתה.", correct: false },
+                { text: "כל הפונקציות המוגדרות בקובץ מופעלות תמיד באופן אוטומטי בעת טעינת העמוד ללא כל צורך בקריאה יזומה מצד המפתח.", correct: false }
+            ],
+            explanation: "אחד העקרונות החשובים ב-JS הוא שפונקציות הן אובייקטים 'מדרגה ראשונה' (First-Class Citizens). זה אומר שאפשר לשמור אותן במשתנה, להחזיר אותן כתוצאה של פונקציה אחרת, והכי חשוב – להעביר אותן כפרמטר (Callback function) לשימוש אסינכרוני.",
+            altAnswers: [
+                "מתנהגות כאובייקטים (First-class objects) וניתן לשלוח אותן כ-Callbacks.",
+                "ניתן לשמור פונקציות בתוך משתנים ולהעביר אותן כארגומנט לפונקציה אחרת.",
+                "מאפשרות תכנות אסינכרוני על ידי שימוש בפונקציות קריאה-חוזרת (Callbacks)."
+            ]
+        },
+        {
+            num: 7,
+            text: "מה נכון בנוגע ל- JSON?",
+            options: [
+                { text: "פלטפורמת צד-שרת מתקדמת, המאפשרת הרצת קוד JavaScript באופן מקומי מחוץ לסביבת הדפדפן לטובת ביצועים גבוהים.", correct: false },
+                { text: "בסיס נתונים פנימי מסוג NoSQL המובנה בתוך כל דפדפן מודרני ושומר את נתוני המשתמשים בצורת טבלאות קשיחות.", correct: false },
+                { text: "שפת תכנות חדשנית המיועדת להחליף לחלוטין את השימוש המסורתי בשפות סקריפטים (כמו JS) ברחבי רשת האינטרנט.", correct: false },
+                { text: "ספריית רכיבים מוכנים (UI Framework) המאפשרת למפתחים ליצור טפסים אינטראקטיביים בצורה פשוטה ללא ידע מוקדם ב-HTML.", correct: false },
+                { text: "פורמט טקסטואלי קל-משקל המשמש בעיקר לייצוג והעברת מבני נתונים בין מערכת השרת לבין הלקוח.", correct: true }
+            ],
+            explanation: "JSON (JavaScript Object Notation) הוא הפורמט הנפוץ ביותר היום להעברת נתונים ברשת (החליף את ה-XML). זהו בסך הכל טקסט (מחרוזת) שבנוי בצורה של מפתח:ערך, מה שהופך אותו לקל מאוד לקריאה גם על ידי בני אדם וגם על ידי תוכנות (בכל שפות התכנות).",
+            altAnswers: [
+                "פורמט טקסט ניטרלי להעברת מידע המבוסס על צמדים של מפתח-ערך.",
+                "משמש כסטנדרט להעברת נתוני API מאחר והוא קל לקריאה ולפענוח בכל שפת תכנות.",
+                "פורמט מבוסס מחרוזת (String) לייצוג אובייקטים ומערכים להעברה ברשת."
+            ]
+        },
+        {
+            num: 8,
+            text: "מה נכון בנוגע ל- HTML5?",
+            options: [
+                { text: "היא הציגה לראשונה תגיות סמנטיות המקלות על הבנת מבנה העמוד ותמיכה מובנית בשילוב קבצי מולטימדיה.", correct: true },
+                { text: "גרסה זו ביטלה לחלוטין את התמיכה ההיסטורית בשפת JavaScript לצורך הגברת רמת אבטחת המידע בארגונים גדולים.", correct: false },
+                { text: "תקן פיתוח נוקשה המחייב כתיבת כלל קוד העיצוב (CSS) בתוך קבצי ה-HTML עצמם באמצעות תגיות ייעודיות בלבד.", correct: false },
+                { text: "גרסת פיתוח המיועדת ומותאמת אך ורק למכשירי מובייל קטנים ואינה נתמכת כלל בדפדפני דסקטופ סטנדרטיים.", correct: false },
+                { text: "שדרוג משמעותי לפרוטוקול התקשורת (HTTP) של האינטרנט המספק מהירות טעינת נתונים גבוהה באופן ניכר לעומת גרסאות קודמות.", correct: false }
+            ],
+            explanation: "החידושים המרכזיים של HTML5 שעליהם נשאלים במבחנים הם: 1. סמנטיקה - הוספת תגיות עם משמעות (header, nav, article, footer) שעוזרות לקידום אתרים ונגישות. 2. תמיכה מקומית בוידאו ואודיו ללא צורך בפלאג-אינים. 3. ממשקי אינטרנט מתקדמים כמו Local Storage ו-Canvas.",
+            altAnswers: [
+                "תקן המוסיף אלמנטים סמנטיים (כגון nav, section) וממשקי API למולטימדיה.",
+                "מציעה יכולות ציור (Canvas) ואחסון מקומי מתקדם (Local Storage) כחלק מהתקן.",
+                "מבטלת את התלות בתוספים חיצוניים לצורך הצגת וידאו ואודיו בדפדפן."
+            ]
+        },
+        {
+            num: 9,
+            text: "מה נכון בנוגע לעיצוב רספונסיבי (responsive design)?",
+            options: [
+                { text: "גישת עבודה מיושנת הדורשת יצירת עמודי HTML שונים ונפרדים לחלוטין עבור כל סוג של מכשיר או רזולוציית מסך קיימת בשוק.", correct: false },
+                { text: "מנגנון אוטומטי הפועל בצד-השרת ומבצע חיתוך, דחיסה והקטנה של כל תמונה לפני שליחתה אל דפדפן הלקוח כדי לחסוך ברוחב פס.", correct: false },
+                { text: "יישום קבוע ונוקשה של מידות בפיקסלים לכלל האלמנטים כדי למנוע מצב של שבירת עיצוב האתר במסכים קטנים או גדולים מהממוצע.", correct: false },
+                { text: "סקריפט צד-לקוח בשפת JavaScript המחליף בזמן אמת את מבנה ה-DOM כולו בהתאם לגודל חלון הגלישה הנוכחי של המשתמש.", correct: false },
+                { text: "גישה המתאימה את פריסת האתר ותצוגתו למסך המשתמש בעזרת שימוש ב-Media Queries ביחידות CSS יחסיות.", correct: true }
+            ],
+            explanation: "עיצוב רספונסיבי (Responsive Web Design) אומר שמשתמשים בקוד HTML אחד ויחיד, ונותנים ל-CSS לעשות את ההתאמות למסך. זה מתבצע על ידי שימוש ב'שאילתות מדיה' (Media Queries כמו `@media (max-width: 600px)`) שמאפשרות לשנות עיצוב לפי רוחב המסך, בשילוב יחידות מידה גמישות (אחוזים, vw/vh).",
+            altAnswers: [
+                "שימוש ב-Media Queries כדי לשנות את ה-CSS בהתאם לגודל התצוגה (Viewport).",
+                "שיטה העושה שימוש ביחידות מידה גמישות (Fluid grids) במקום בפיקסלים קבועים.",
+                "מייתרת את הצורך לבנות עמודים נפרדים למובייל ולדסקטופ באמצעות כיוונון העיצוב."
+            ]
+        },
+        {
+            num: 10,
+            text: "מה נכון בנוגע ל-cookies?",
+            options: [
+                { text: "הן נחשבות למקום הבטוח והמוצפן ביותר ברשת לשמירת סיסמאות משתמשים ופרטי כרטיסי אשראי חסויים מפני פריצות.", correct: false },
+                { text: "אלו קבצים פנימיים ומוצפנים הנשמרים אך ורק בזיכרון הפיזי של השרת, ללא שום יכולת גישה או קריאה מצד דפדפן הלקוח.", correct: false },
+                { text: "מנגנון תקשורת מתקדם המאפשר לאחסן קבצי וידאו ושמע גדולים מאוד ישירות בתוך הזיכרון המקומי בדפדפן כדי לאפשר צפייה באופליין.", correct: false },
+                { text: "אלו קבצי טקסט קטנים הנשמרים בדפדפן הלקוח ונשלחים באופן אוטומטי לשרת יחד עם כל בקשת רשת חדשה.", correct: true },
+                { text: "נתונים זמניים אלו נמחקים אוטומטית ממערכת ההפעלה בכל פעם שהמשתמש מבצע רענון (Refresh) לעמוד הפעיל.", correct: false }
+            ],
+            explanation: "עוגיות (Cookies) הן פתרון לבעיית ה-Stateless של פרוטוקול HTTP. השרת מבקש מהדפדפן לשמור קובץ טקסט קטן. מאותו רגע, הדפדפן מצרף את העוגייה הזו לכל בקשת HTTP שהוא שולח לאותו שרת. מכיוון שהעוגייה נשמרת אצל הלקוח וחשופה לקריאה ושינוי, לעולם אין לשמור בה מידע רגיש.",
+            altAnswers: [
+                "נתונים טקסטואליים המאוחסנים אצל הלקוח ומשמשים לרוב לשמירת מזהה סשן או העדפות.",
+                "קבצים קטנים המוגבלים בנפחם (כ-4KB) ונשלחים ב-Header של בקשות ה-HTTP.",
+                "אינם מאובטחים מספיק כדי לשמור נתונים רגישים, שכן המשתמש יכול לקרוא ולשנות אותם."
+            ]
+        },
+        {
+            num: 11,
+            text: "מה נכון בנוגע ליישום Web?",
+            options: [
+                { text: "תוכנת מחשב רגילה (Desktop App) המחייבת תהליך ארוך של הורדה והתקנה מקומית על גבי מערכת ההפעלה של משתמש הקצה לפני השימוש.", correct: false },
+                { text: "אפליקציה דיגיטלית הזמינה להורדה ושימוש דרך חנויות אפליקציות בלבד (כמו Google Play), ולא ניתן לגשת אליה דרך דפדפני אינטרנט סטנדרטיים.", correct: false },
+                { text: "מערכת תוכנה המבוססת על מודל שרת-לקוח אליה יכול המשתמש לגשת ולהפעיל ישירות דרך חלון הדפדפן.", correct: true },
+                { text: "יישום טכנולוגי הרץ אך ורק בסביבת צד-השרת הסגורה והמאובטחת, ואינו דורש כל ממשק משתמש ויזואלי (UI) להפעלתו התקינה.", correct: false },
+                { text: "קוד תכנותי המאחסן את בסיס הנתונים כולו במחשב הקצה המקומי על מנת לחסוך באופן משמעותי בתעבורת הרשת.", correct: false }
+            ],
+            explanation: "אפליקציית Web פועלת על פי מודל Client-Server. המשתמש פותח דפדפן (הלקוח), מקליד כתובת, והדפדפן מתקשר מול מחשב מרוחק (השרת) כדי לקבל את הממשק והנתונים. היתרון המרכזי הוא שאין צורך להתקין שום תוכנה מקומית על המחשב (כמו אופיס הישן).",
+            altAnswers: [
+                "אפליקציה המחולקת לצד שרת (Backend) וצד לקוח (Frontend) המתקשרים על גבי רשת.",
+                "תוכנה המסופקת למשתמש כשירות מקוון (SaaS) ומופעלת באמצעות הדפדפן.",
+                "מערכת שאינה דורשת התקנה מקומית ונסמכת על תקשורת HTTP מול שרת מרוחק."
+            ]
+        },
+        {
+            num: 12,
+            text: "מה נכון בנוגע ל-JSON?",
+            options: [
+                { text: "המפתחות (Keys) בפורמט נתונים זה נכתבים ללא כל סימון מירכאות על מנת לחסוך בתווים מיותרים בשידור תקשורת הנתונים.", correct: false },
+                { text: "זהו פורמט בלעדי וייחודי לחלוטין לשפת JavaScript ואינו נתמך טכנית באף שפת תכנות מערכתית או אינטרנטית אחרת.", correct: false },
+                { text: "על פי כללי התחביר התקין, כל שם של מפתח (Key) בפורמט זה חייב להיות עטוף משני צדדיו במירכאות כפולות.", correct: true },
+                { text: "חוקי התחביר מתירים ומעודדים להעביר ולשמור פונקציות ומתודות ביצועיות כחלק אינטגרלי ממבנה הנתונים שלו לביצוע בצד השני.", correct: false },
+                { text: "הפורמט מכתיב חובה קשיחה להמיר את כל הנתונים, לרבות מחרוזות בודדות ומספרים, למבנה של מערכים לפני שליחתם לשרת.", correct: false }
+            ],
+            explanation: "זוהי שאלת 'דקויות' קלאסית ב-JSON. בעוד שבאובייקט JavaScript רגיל אנו יכולים לכתוב מפתח ללא מירכאות, התקן הרשמי של JSON דורש שכל מפתח יהיה עטוף במירכאות כפולות בלבד (לדוגמה: `{\"age\": 25}`). בנוסף, JSON הוא רק פורמט של טקסט להעברת נתונים – אי אפשר להעביר בו פונקציות.",
+            altAnswers: [
+                "מחייב שימוש במירכאות כפולות (Double Quotes) מסביב לכל מפתח (Key).",
+                "אינו תומך בהעברת נתונים המכילים פונקציות מתמטיות או לוגיות.",
+                "אובייקט טקסטואלי שאינו מוגבל לשפת JavaScript למרות שמו."
+            ]
+        },
+        {
+            num: 13,
+            text: "בהגדרות CSS3 יש קטע ... ואין הגדרות נוספות של צבע. איזה טקסט ... בקוד של HTML להלן יהיה בצבע אדום?",
+            options: [
+                { text: "כלל הטקסטים המופיעים במסמך יצבעו באדום כיוון שזוהי ברירת המחדל החדשה בדפדפנים מודרניים בהיעדר כלל ספציפי אחר.", correct: false },
+                { text: "הצבע הייחודי יעבור בירושה מטה רק לאלמנטים פנימיים המוגדרים ספציפית כאלמנטים מסוג Inline במסמך ה-HTML.", correct: false },
+                { text: "רק טקסט אשר ממוקם בתוך תגיות העיצוב הייעודיות לפסקאות (p) יהיה אדום בעוד שאר האלמנטים ישארו בצבעם המקורי השחור.", correct: false },
+                { text: "הצבע הנתון יוחל באופן אקראי לחלוטין על הפסקה הראשונה המופיעה בקוד ה-HTML בזמן טעינת העמוד בשרת.", correct: false },
+                { text: "הטקסט אשר משויך לאלמנט בעל רמת הספציפיות (Specificity) הגבוהה ביותר מבין כלל ההגדרות הקיימות.", correct: true }
+            ],
+            explanation: "במצב של מספר חוקי עיצוב (CSS) שמתנגשים ומנסים לשנות את אותו אלמנט, הדפדפן מחשב את ה'משקל' או ה'ספציפיות' (Specificity). החוק המנצח הוא זה שיש לו את הספציפיות הגבוהה ביותר. סדר הכוח (מהחזק לחלש) הוא: סגנון בשורה (Inline style) > מזהה (ID) > מחלקה (Class) > תגית רגילה (Tag).",
+            altAnswers: [
+                "העיצוב יוחל על פי חישוב משקלים של סלקטורים (ID מנצח Class, שמנצח תגית).",
+                "אלמנט שיש לו Inline Style יקבל עדיפות וייצבע באדום על פני הגדרות חיצוניות.",
+                "המנצח ייקבע על ידי מנגנון ה-Specificity והירושה (Inheritance) של ה-CSS."
+            ]
+        },
+        {
+            num: 14,
+            text: "מה נכון בנוגע ל-DOM?",
+            options: [
+                { text: "מערכת ניהול פנימית מורכבת האחראית על ארגון מסדי נתונים רלציוניים מקומיים בצורה מאובטחת בתוך דפדפן המשתמש.", correct: false },
+                { text: "מנגנון אבטחת מידע מתקדם של הדפדפן, שמונע לחלוטין מאתרים בעלי קוד זדוני לגשת לקבצים המקומיים במחשב הלקוח.", correct: false },
+                { text: "מודל היררכי המייצג את מבנה העמוד ומאפשר לסקריפטים כמו JavaScript לגשת לאלמנטים השונים ולשנותם.", correct: true },
+                { text: "אובייקט תכנותי ייחודי ומבודד אשר זמין לשימוש מפתחים אך ורק בסביבת הריצה של שרתי Node.js במערכת ההפעלה.", correct: false },
+                { text: "מתודה מובנית בדפדפן המשמשת לסריקה רוחבית של העמוד במטרה למצוא ולתקן אוטומטית שגיאות סינטקס בקוד ה-HTML המוצג.", correct: false }
+            ],
+            explanation: "ה-DOM (Document Object Model) הוא למעשה API. כשהדפדפן קורא את קובץ ה-HTML הסטטי, הוא בונה ממנו בזיכרון עץ של אובייקטים (למשל: תגית body היא הורה שמכילה div שהוא אבא ל-p). שפת JavaScript משתמשת בעץ ה-DOM הזה כדי לתפוס אלמנטים ולשנות אותם בזמן אמת.",
+            altAnswers: [
+                "ממשק תכנות (API) שהדפדפן מייצר המייצג את קובץ ה-HTML כעץ אובייקטים.",
+                "מאפשר ל-JavaScript לבצע מניפולציות ושינויים על אלמנטים במסמך ללא רענון העמוד.",
+                "הייצוג בזיכרון (Object tree) של מבנה התוכן המאפשר אינטראקטיביות צד-לקוח."
+            ]
+        },
+        {
+            num: 15,
+            text: "מהו התפקיד של מתודת JavaScript-fetch",
+            options: [
+                { text: "מתודה זו מבצעת חיפוש טקסטואלי מורכב ומהיר בתוך רכיבי ה-DOM הרלוונטיים כדי לאתר מילים ספציפיות שהמשתמש הזין.", correct: false },
+                { text: "ביצוע של בקשות רשת לתקשורת אסינכרונית מול שרתים חיצוניים, פעולה המחזירה בסופה אובייקט מסוג Promise.", correct: true },
+                { text: "פונקציה ייעודית ומאובטחת שכל מטרתה היא שליפת נתונים מוצפנים השמורים בעוגיות המקומיות של דפדפן הלקוח.", correct: false },
+                { text: "פקודה תכנותית המיועדת בראש ובראשונה לעצירת הטעינה של סקריפטים חיצוניים בצורה סינכרונית חוסמת עד לסיום רינדור העמוד.", correct: false },
+                { text: "פונקציית מערכת ב-Node.js המיועדת אך ורק לקריאת קבצי טקסט ממחשב השרת המקומי והצגתם במסוף פקודות (Terminal).", correct: false }
+            ],
+            explanation: "בעבר השתמשו ב-AJAX (XMLHttpRequest) כדי לדבר עם השרת מאחורי הקלעים. היום הסטנדרט המודרני הוא פונקציית `fetch()`. פונקציה זו שולחת בקשת HTTP (כדי להביא נתונים או לשמור נתונים). מאחר ולוקח זמן עד שהרשת עונה, היא עובדת בצורה אסינכרונית ומחזירה Promise (הבטחה שהנתונים יגיעו בעתיד).",
+            altAnswers: [
+                "מנגנון מודרני מבוסס Promise המשמש להוצאת קריאות HTTP (AJAX) לשרת.",
+                "ביצוע בקשות רשת (לרוב למשיכת נתוני JSON) מבלי לחסום את חוט הריצה של הדפדפן.",
+                "מאפשרת תקשורת אסינכרונית בין צד הלקוח לממשקי API חיצוניים."
+            ]
+        },
+        {
+            num: 16,
+            text: "מה נכון בנוגע Node.js",
+            options: [
+                { text: "שפת תכנות מודרנית וחדשה לחלוטין שפותחה במטרה מוצהרת להחליף את השימוש המיושן והלא בטוח ב-JavaScript בדפדפנים.", correct: false },
+                { text: "סביבת עבודה סגורה המיועדת ספציפית לבניית ממשקי משתמש חזותיים וגרפיים מתקדמים (UI) למכשירי מובייל טבעיים בלבד.", correct: false },
+                { text: "מערכת מסד נתונים מסוג NoSQL מהירה במיוחד המותקנת כברירת מחדל יחד עם תוכנת הדפדפן אצל משתמש הקצה.", correct: false },
+                { text: "ספריית עזר המשמשת לעיצוב מתקדם ומודרני של עמודי אינטרנט סטטיים לחלוטין ללא כל צורך בכתיבת פקודות CSS ארוכות.", correct: false },
+                { text: "סביבת ריצה המבוססת על מנוע ה-V8, המאפשרת הרצת קוד JavaScript בצד השרת לרוב בארכיטקטורה אסינכרונית.", correct: true }
+            ],
+            explanation: "קריטי לזכור: Node.js היא **לא** שפת תכנות חדשה! היא בסך הכל סביבה שלוקחת את מנוע ה-V8 (שנמצא בכרום) ומאפשרת למפתחים לכתוב קוד JavaScript שירוץ על שרת (Backend) במקום על הדפדפן. היא מאופיינת בעבודה עם חוט יחיד (Single Thread) והרבה פעולות אסינכרוניות.",
+            altAnswers: [
+                "סביבת ריצה (Runtime Environment) המאפשרת פיתוח צד שרת באמצעות JavaScript.",
+                "מערכת שרת המאופיינת בפעולות I/O שאינן חוסמות (Non-blocking) ומודל של חוט ריצה יחיד.",
+                "מאפשרת להשתמש בשפת JS מחוץ לדפדפן (לניהול שרתים ובסיסי נתונים)."
+            ]
+        },
+        {
+            num: 17,
+            text: "מה נכון בנוגע ל-session ?",
+            options: [
+                { text: "נתוני המצב (State) במערכת זו מנוהלים ונשמרים באופן בלעדי על מחשב הלקוח המקומי בקבצים גלויים, ולשרת אין שום מעורבות בכך.", correct: false },
+                { text: "פרוטוקול תקשורת רשת חדשני ואמין המאפשר שידור רציף של קבצי וידאו ושמע בזמן אמת מדפדפן משתמש אחד למשנהו בטופולוגיית Peer-to-Peer.", correct: false },
+                { text: "מבנה נתונים לוקאלי קטן ודחוס האחראי על עיצוב הממשק הויזואלי, ומופעל אך ורק לאחר ביצוע התחברות מוצלחת לאתר מאובטח.", correct: false },
+                { text: "מנגנון מאובטח בו המידע נשמר בשרת, כאשר הלקוח מזוהה לרוב באמצעות מזהה (Session ID) השמור אצלו בעוגייה.", correct: true },
+                { text: "קובץ מערכת זמני ביותר השומר את היסטוריית הגלישה המלאה של המשתמש ברשת, ונמחק לצמיתות מיד בעת סגירת חלון הדפדפן הפעיל.", correct: false }
+            ],
+            explanation: "בגלל שפרוטוקול האינטרנט לא זוכר משתמשים ממעבר דף לדף (Stateless), הומצא ה-Session. כדי שמשתמשים לא יכלו לזייף נתונים (כמו בעוגיות), הנתונים הרגישים והחשובים נשמרים מאובטחים בתוך השרת. השרת רק נותן ללקוח 'מפתח' (Session ID אקראי) שבעזרתו השרת מזהה מי הלקוח בפעם הבאה שהוא פונה אליו.",
+            altAnswers: [
+                "אמצעי לשמירת State בצד השרת, המאובטח יותר בהשוואה לעוגיות (Cookies).",
+                "שמירת נתוני משתמש אצל השרת תוך שימוש במזהה ייחודי (Token/Session ID) המאוחסן אצל הלקוח.",
+                "מנגנון בו השרת זוכר משתמש מחובר על פני בקשות רשת מרובות."
+            ]
+        },
+        {
+            num: 18,
+            text: "מה נכון בנוגע לשימוש בבסיסי נתונים ב-Node.js",
+            options: [
+                { text: "הגישה למסד הנתונים מתבצעת תמיד באופן סינכרוני (חוסם - Blocking) וזאת על מנת למנוע באופן מוחלט קריסות ואובדן של מידע רגיש.", correct: false },
+                { text: "פעולות השליפה, העדכון והכתיבה מבוצעות תמיד בארכיטקטורה אסינכרונית כדי שחוט הביצוע היחיד לא ייעצר בזמן ההמתנה.", correct: true },
+                { text: "מערכת Node.js מסוגלת לתקשר באופן טבעי אך ורק עם מסדי נתונים רלציוניים מסוג SQL ישן, ולא תומכת בסביבות NoSQL מודרניות כגון מונגו.", correct: false },
+                { text: "עבור כל שאילתת מידע הנשלחת למסד הנתונים מרחוק, מערכת ההפעלה של השרת מחויבת ליצור חוט ביצוע (Thread) חדש ועצמאי בזיכרון הראשי.", correct: false },
+                { text: "מסד הנתונים מוטמע תמיד כחלק בלתי נפרד מקוד קצה-הלקוח (דפדפן), ולכן הפעולות מולו אינן דורשות כלל חיבורי רשת לשרתים חיצוניים.", correct: false }
+            ],
+            explanation: "Node.js רץ על חוט ביצוע יחיד (Single Thread). משמעות הדבר היא שאם השרת שולח שאילתה למסד הנתונים (מה שלוקח זמן רב במונחי מחשוב), ואם הפעולה הייתה סינכרונית, השרת היה קופא ואף משתמש אחר לא היה יכול לגלוש באתר. לכן, הפעולות מול מסדי נתונים מבוצעות תמיד באופן אסינכרוני (ברקע).",
+            altAnswers: [
+                "גישה אסינכרונית המונעת את חסימת השרת (Non-blocking I/O).",
+                "שימוש ב-Promises או Callbacks כדי להמשיך לטפל בבקשות אחרות עד לקבלת התשובה מה-DB.",
+                "עבודה המותאמת למודל ה-Event Loop כדי לחסוך ביצירת Threads חדשים לכל שאילתה."
+            ]
+        },
+        {
+            num: 19,
+            text: "מה נכון בנוגע לפיתוח backend?",
+            options: [
+                { text: "תחום פיתוח טכנולוגי המתמקד באופן בלעדי בעיצוב החזותי של הממשק הדיגיטלי ובשיפור מתמיד של חווית המשתמש באתר (UX) עבור לקוחות קצה.", correct: false },
+                { text: "קוד זה מאופיין בכך שהוא גלוי וזמין לחלוטין לכל משתמש קצה באמצעות שימוש בכלים סטנדרטיים המובנים בכל דפדפן אינטרנט ('הצג קור מקור').", correct: false },
+                { text: "הפיתוח בסביבה זו מתבצע תוך שימוש שוטף בשפות הסימון והעיצוב HTML ו-CSS בלבד, וללא שום צורך בהטמעת לוגיקה תכנותית או אלגוריתמיקה מורכבת.", correct: false },
+                { text: "אחראי על מימוש הלוגיקה העסקית שמאחורי הקלעים, ביצוע פעולות אימות משתמשים ותקשורת מאובטחת מול מסד הנתונים המרוחק.", correct: true },
+                { text: "תחום ייעודי וממוקד המיועד אך ורק להנגשת אתרי אינטרנט לאוכלוסיות מיוחדות בעלות מוגבלויות תוך שמירה קפדנית על תקינות העיצוב הויזואלי בהם.", correct: false }
+            ],
+            explanation: "ה-Backend הוא ה'מוח' הנסתר של המערכת. הוא מנהל את כל מה שלא ניתן להפקיד בידי הדפדפן של הלקוח מטעמי אבטחה ויעילות: קשר עם בסיס הנתונים (שמירת פרטים, הזמנות), לוגיקה מסחרית, אימות (האם המשתמש הוא מנהל או אורח) וניהול אבטחה. הלקוח לעולם לא רואה את קוד ה-Backend.",
+            altAnswers: [
+                "צד השרת המטפל בעיבוד נתונים, אבטחת מידע וניהול התקשורת מול מאגרי המידע.",
+                "קוד סמוי מן המשתמש האחראי על ה-Business Logic והרשאות האפליקציה.",
+                "רכיב האפליקציה שפועל בשרת המרוחק וחושף ממשקי API לצד הלקוח."
+            ]
+        },
+        {
+            num: 20,
+            text: "מה נכון בנוגע לאפליקציית WEB ?",
+            options: [
+                { text: "היא דורשת מהמשתמש הורדה ידנית של קובץ ההתקנה הרשמי (כדוגמת EXE) והרצה מקומית מלאה על מערכת ההפעלה של המחשב לפני שיוכל לעשות בה שימוש.", correct: false },
+                { text: "זוהי מערכת מתקדמת המופעלת בסביבת שורת פקודה (CLI) על שרתים מרוחקים בלבד, ואינה מציגה כל חלון תצוגה חזותי או ממשק גרפי (UI) למשתמש.", correct: false },
+                { text: "תוכנה הנגישה למשתמש באמצעות דפדפן האינטרנט ופועלת לפי ארכיטקטורה של שליחת בקשות וקבלת תגובות מול שרת מרוחק.", correct: true },
+                { text: "אפליקציה דיגיטלית שניתנת לגישה ולהורדה אך ורק דרך חנויות יישומים ייעודיות לטלפונים ניידים וטאבלטים תומכים המריצים מערכות iOS או אנדרואיד.", correct: false },
+                { text: "היא מתוכננת מראש כך שהיא תמיד שומרת את בסיס הנתונים העסקי המלא של החברה בתוך זיכרון הדפדפן של הלקוח כדי להבטיח זמני תגובה מהירים ביותר במצב אופליין.", correct: false }
+            ],
+            explanation: "אפליקציית ווב היא פתרון שאינו דורש התקנה. המשתמש פותח דפדפן רגיל שניגש דרך האינטרנט לשרת. היא פועלת בארכיטקטורת שרת-לקוח (Client-Server): הלקוח שולח בקשה (Request), והשרת מחזיר לו את הממשק והנתונים הדרושים בתגובה (Response).",
+            altAnswers: [
+                "מערכת הבנויה בארכיטקטורת Client-Server שבה הממשק מוצג בדפדפן הלקוח.",
+                "שירות הזמין דרך רשת האינטרנט ואינו מצריך התקנת תוכנה ייעודית על המחשב המקומי.",
+                "תוכנה הפועלת על בסיס פרוטוקול HTTP תוך שימוש בדפדפן כצד לקוח קצה."
+            ]
+        }
+    ];
+
+    // פונקציה לערבוב מערך (לערבוב התשובות והשאלות)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    
+    // נערבב גם את סדר השאלות כדי שהתרגול יהיה אקראי
+    shuffleArray(questions);
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreElement = document.getElementById('score');
+    let currentScore = 0;
+
+    questions.forEach((q, index) => {
+        // יצירת הכרטיסייה לכל שאלה
+        const card = document.createElement('div');
+        card.className = 'question-card';
         
-        <div id="quizScreen">
-            <div class="progress-bar-container">
-                <div class="progress-info">
-                    <span id="progressText">שאלה 1 מתוך X</span>
-                    <span id="scoreTracker">הצלחות: 0</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-            </div>
+        const qTitle = document.createElement('span');
+        qTitle.className = 'q-number';
+        qTitle.innerText = `שאלה ${index + 1} מתוך ${questions.length}`;
+        
+        const qText = document.createElement('h3');
+        qText.className = 'q-text';
+        qText.innerText = q.text;
 
-            <div class="card" id="questionCard">
-                <div class="question-text" id="questionText">טוען שאלה...</div>
-                <div id="tableContainer"></div>
-                
-                <div class="options-grid" id="optionsGrid">
-                    <!-- Options injected via JS -->
-                </div>
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
 
-                <div id="feedbackBox" class="feedback-box">
-                    <!-- Feedback injected via JS -->
-                </div>
+        // העתקת האופציות וערבוב שלהן שלא יהיו באותו סדר תמיד
+        const shuffledOptions = [...q.options];
+        shuffleArray(shuffledOptions);
 
-                <div class="action-container">
-                    <button class="btn-next" id="btnNext" onclick="nextQuestion()">לשאלה הבאה ❯</button>
-                </div>
-            </div>
-        </div>
+        // יצירת תיבת ההסבר (מוסתרת בהתחלה)
+        const explanationBox = document.createElement('div');
+        explanationBox.className = 'explanation-box';
+        
+        const explanationTitle = document.createElement('div');
+        explanationTitle.className = 'explanation-title';
+        explanationTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> הסבר מעמיק:`;
+        
+        const explanationText = document.createElement('div');
+        explanationText.className = 'explanation-text';
+        explanationText.innerText = q.explanation;
+        
+        const altAnsTitle = document.createElement('div');
+        altAnsTitle.className = 'alt-answers-title';
+        altAnsTitle.innerText = "ניסוחים נוספים שיכולים להיות התשובה הנכונה במבחן:";
+        
+        const altAnsList = document.createElement('ul');
+        altAnsList.className = 'alt-answers-list';
+        q.altAnswers.forEach(ans => {
+            const li = document.createElement('li');
+            li.innerText = ans;
+            altAnsList.appendChild(li);
+        });
 
-        <div id="resultsScreen" class="card">
-            <h2>סיום המבחן!</h2>
-            <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px;">הנה התוצאה הסופית שלך:</p>
-            <div class="score-circle" id="finalScore">0%</div>
-            <h3 id="finalMessage" style="font-size: 1.8rem; margin-bottom: 40px; color: var(--text-dark);"></h3>
-            <button class="btn-next" style="display: inline-block;" onclick="location.reload()">↻ התחל תרגול מחדש</button>
-        </div>
+        explanationBox.appendChild(explanationTitle);
+        explanationBox.appendChild(explanationText);
+        explanationBox.appendChild(altAnsTitle);
+        explanationBox.appendChild(altAnsList);
 
-    </div>
-
-    <script>
-        // Data Set: 28 strictly table/output-based questions, no direct naming of tests.
-        const questions = [
-            {
-                q: "חוקר ביצע ניתוח סטטיסטי והתקבל הפלט שלפניך. מה המסקנה הסטטיסטית העולה מטבלה זו?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Chi-Square Tests</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Pearson Chi-Square</td><td>14.321<sup>a</sup></td><td>2</td><td>.001</td></tr>
-                      <tr><td class="row-header">N of Valid Cases</td><td>350</td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5.</div>
-                </div>
-                `,
-                options: [
-                    "לא ניתן לדחות את השערת האפס כי אין מספיק נתונים.",
-                    "לא דוחים את השערת האפס. המודל אינו מסביר כלל שונות (0.001).",
-                    "דוחים את השערת האפס, קיים קשר מובהק בין המשתנים.",
-                    "ההבדל בין הממוצעים של הקבוצות מובהק ברמת מובהקות של 0.05."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: זוהי טבלת חי-בריבוע. מסתכלים על השורה Pearson Chi-Square ועמודת ה-Sig. המספר 0.001 קטן מ-0.05, לכן דוחים את השערת האפס ומסיקים שקיים קשר מובהק בין המשתנים."
-            },
-            {
-                q: "לפניך טבלה מתוך פלט של SPSS. מה מייצג המספר 0.552, ומה ניתן להסיק ממנו?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Model Summary</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error of the Estimate</th></tr></thead>
-                    <tbody><tr><td>1</td><td>.743<sup>a</sup></td><td>.552</td><td>.549</td><td>1.230</td></tr></tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "זהו אחוז התאים שקטן מ-5, המבחן לא תקין.",
-                    "המודל (המשתנים המסבירים) מצליח להסביר 55.2% מהשונות של המשתנה התלוי.",
-                    "המובהקות של המודל היא 0.552, ולכן המודל אינו מובהק כלל.",
-                    "ישנה מהימנות פנימית ברמה בינונית לשאלון."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: טבלת Model Summary מופיעה במבחן הרגרסיה. עמודת R Square מתארת את אחוז השונות המוסברת. 0.552 פירושו שהמודל מסביר 55.2% מהשונות של המשתנה התלוי."
-            },
-            {
-                q: "חוקר קיבל את הפלט הבא. איזה מבין שני המשתנים המסבירים (שכר או גיל) תורם בצורה חזקה יותר למודל, והאם יש לכלול את שניהם?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Coefficients<sup>a</sup></div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th>Model</th><th></th><th colspan="2" style="text-align:center;">Unstandardized Coefficients</th><th>Standardized Coefficients</th><th>t</th><th>Sig.</th></tr>
-                      <tr><th></th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th></th><th></th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>1</td><td class="row-header">(Constant)</td><td>12.500</td><td>3.100</td><td></td><td>4.032</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Salary</td><td>0.005</td><td>0.001</td><td>.480</td><td>5.000</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Age</td><td>0.120</td><td>0.080</td><td>.150</td><td>1.500</td><td>.138</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "הגיל חזק יותר (כי 0.120 גדול מ-0.005). יש לכלול את שניהם.",
-                    "השכר חזק יותר (לפי Beta של .480), אך יש למחוק את משתנה הגיל מכיוון שהוא אינו מובהק (.138).",
-                    "שניהם חזקים באותה מידה ושניהם מובהקים בגלל הקבוע.",
-                    "השכר חזק יותר ויש לכלול את שניהם כי שניהם חיוביים."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: רגרסיה. עוצמה נמדדת ב-Beta (שכר=0.480, גיל=0.150, לכן שכר חזק יותר). אולם, ה-Sig של גיל הוא 0.138 (גדול מ-0.05). משמע הוא אינו מובהק, ואין לכלול אותו במודל!"
-            },
-            {
-                q: "מה נמליץ לחוקר לעשות בהתבסס על הפלט שלפניך?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Item-Total Statistics</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th>Corrected Item-Total Correlation</th><th>Cronbach's Alpha if Item Deleted</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Question_1</td><td>.620</td><td>.710</td></tr>
-                      <tr><td class="row-header">Question_2</td><td>.150</td><td>.890</td></tr>
-                      <tr><td class="row-header">Question_3</td><td>.580</td><td>.725</td></tr>
-                    </tbody>
-                  </table>
-                  <div class="spss-footer">Overall Alpha = .740</div>
-                </div>
-                `,
-                options: [
-                    "למחוק את כל השאלות, כי המהימנות גרועה.",
-                    "לשמור את השאלון כמו שהוא, המהימנות מצוינת ואין לשנות דבר.",
-                    "למחוק את Question_2, מכיוון שהסרתה תעלה את המהימנות הכוללת מ-.740 ל-.890.",
-                    "למחוק את Question_1 כי ה-Alpha שלה (.710) הוא הנמוך ביותר."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: בדיקת מהימנות (עקיבות פנימית). עמודת 'Alpha if Item Deleted' מראה מה יקרה אם נמחק את הפריט. אם נמחק את שאלה 2, האלפא תקפוץ מ-0.740 ל-0.890. לכן, הפריט פוגע בשאלון ומומלץ למחוק אותו."
-            },
-            {
-                q: "מתוך הפלט הבא, על איזו שורת תוצאות יש להסתכל (העליונה או התחתונה), ומהי המסקנה הסופית לגבי ההבדלים בממוצעים?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Independent Samples Test</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">t-test for Equality of Means</th></tr>
-                      <tr><th></th><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td rowspan="2" style="vertical-align:top;">Score</td><td class="row-header">Equal variances assumed</td><td>8.512</td><td>.004</td><td>1.450</td><td>80</td><td>.151</td></tr>
-                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>1.320</td><td>65.4</td><td>.191</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "מסתכלים על השורה העליונה (השונויות שוות), והמסקנה היא שיש הבדל מובהק כי Sig=0.004.",
-                    "מסתכלים על השורה התחתונה (השונויות לא שוות), והמסקנה היא שאין הבדל מובהק כי Sig=0.191.",
-                    "מסתכלים על השורה העליונה, ואין הבדל מובהק כי Sig=0.151.",
-                    "לא ניתן להסיק מסקנות מבלי לראות את הממוצעים תחילה."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: מבחן T למדגמים בלתי תלויים. שלב 1: מבחן לווין. ה-Sig שלו הוא 0.004 (<0.05). משמע: השונויות אינן שוות. לכן יורדים לקרוא את **השורה התחתונה**. בשורה התחתונה ה-Sig (2-tailed) של ה-t הוא 0.191. מספר זה גדול מ-0.05, לכן **לא דוחים את השערת האפס ואין הבדל מובהק**."
-            },
-            {
-                q: "התבונן בפלט שלפניך. האם המודל המוצג בו מתאים ויכול לשמש לניבוי הנתונים באוכלוסייה?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">ANOVA<sup>a</sup></div>
-                  <table class="spss-table">
-                    <thead><tr><th>Model</th><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td>1</td><td class="row-header">Regression</td><td>25.100</td><td>2</td><td>12.550</td><td>1.250</td><td>.290<sup>b</sup></td></tr>
-                      <tr><td></td><td class="row-header">Residual</td><td>850.000</td><td>85</td><td>10.000</td><td></td><td></td></tr>
-                      <tr><td></td><td class="row-header">Total</td><td>875.100</td><td>87</td><td></td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "כן, כל עוד המשוואה מחושבת נכון מתוך ה-B.",
-                    "לא, המודל אינו מובהק סטטיסטית, מכיוון שה-Sig הוא 0.290 (גדול מ-0.05).",
-                    "כן, מכיוון שהמודל מסביר 25.1% מהשונות.",
-                    "הטבלה הזו נועדה להשוות 3 קבוצות ולא עוסקת בניבוי."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: טבלת ANOVA מתוך מבחן רגרסיה (שימו לב לשורות Regression/Residual). תפקיד הטבלה הוא לקבוע האם מודל הניבוי כולו מובהק. ה-Sig הוא .290 (>0.05), ולכן המודל אינו מובהק ולא מתאים לניבוי."
-            },
-            {
-                q: "בפלט שלפניך מתואר קשר בין שני משתנים רציפים. מה ניתן לומר על עוצמתו וכיוונו של הקשר?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Correlations</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th></th><th>Stress_Level</th><th>Sleep_Hours</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td rowspan="3" style="vertical-align:top;">Stress_Level</td><td class="row-header">Pearson Correlation</td><td>1</td><td>-.780**</td></tr>
-                      <tr><td class="row-header">Sig. (2-tailed)</td><td></td><td>.000</td></tr>
-                      <tr><td class="row-header">N</td><td>150</td><td>150</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "קיים קשר שלילי חלש אך מובהק.",
-                    "קיים קשר שלילי חזק ומובהק. ככל ששעות השינה עולות, רמת הלחץ יורדת.",
-                    "קיים קשר חיובי וחזק, רמת הלחץ מגדילה את שעות השינה.",
-                    "הקשר אינו מובהק סטטיסטית, לכן לא ניתן לומר דבר על כיוונו."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: מבחן מתאם פירסון. ערך ה-Pearson Correlation הוא -.780. הסימן מינוס מעיד על קשר שלילי (הפוך), והערך 0.780 מעיד על עוצמה חזקה. ה-Sig הוא .000 ולכן הקשר מובהק."
-            },
-            {
-                q: "חוקר הפיק את הפלט הבא. מהו המבחן המשלים שעליו לבצע כעת, ומדוע?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">ANOVA</div>
-                  <table class="spss-table">
-                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td class="row-header">Between Groups</td><td>450.2</td><td>2</td><td>225.1</td><td>8.95</td><td>.001</td></tr>
-                      <tr><td class="row-header">Within Groups</td><td>1500.0</td><td>60</td><td>25.0</td><td></td><td></td></tr>
-                      <tr><td class="row-header">Total</td><td>1950.2</td><td>62</td><td></td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "הניתוח מסתיים כאן, אין צורך במבחן משלים כיוון שלא נמצאו הבדלים (Sig=0.001).",
-                    "עליו לבצע מבחן Post-Hoc (למשל, טוקי) מכיוון שדחינו את השערת האפס וצריך למצוא באילו קבוצות ספציפית קיים ההבדל.",
-                    "עליו לבצע מבחן פישר, כיוון שיש תאים עם ערכים קטנים מ-5.",
-                    "עליו לבצע רגרסיה מרובה כדי לבדוק מי משפיע יותר."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: ניתוח שונות חד-כיווני (ANOVA להשוואת ממוצעים). ה-Sig הוא .001 (קטן מ-0.05), ולכן מסיקים שיש הבדל. כיוון שיש 3 קבוצות או יותר (לפי df=2, כלומר 3 קבוצות), חובה לבצע Post-Hoc כדי לדעת איזה זוגות שונים זה מזה."
-            },
-            {
-                q: "מתוך ההערה המופיעה בתחתית הפלט, האם המבחן שבוצע תקף סטטיסטית להסקת מסקנות?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Chi-Square Tests</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Pearson Chi-Square</td><td>10.200<sup>a</sup></td><td>1</td><td>.001</td></tr>
-                    </tbody>
-                  </table>
-                  <div class="spss-footer">a. 3 cells (75.0%) have expected count less than 5. The minimum expected count is .50.</div>
-                </div>
-                `,
-                options: [
-                    "תקף לחלוטין, מכיוון שה-Sig קטן מ-0.05.",
-                    "תקף לחלוטין, 75% מעיד על עוצמת ההסבר של המודל.",
-                    "אינו תקף. מעל 20% מהתאים סובלים משכיחות צפויה קטנה מ-5. חובה להשתמש במבחן חלופי (פישר).",
-                    "אינו תקף כי הערך 10.200 גדול מדי."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: חי-בריבוע. כלל אצבע: חי בריבוע אינו תקף אם יותר מ-20% מהתאים הם בעלי שכיחות צפויה של פחות מ-5. כאן קיבלנו 75.0%, ולכן התנאי מופר."
-            },
-            {
-                q: "מה המסקנה הסטטיסטית העולה מהפלט שלפניך?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Paired Samples Test</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th></th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">Paired Differences</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
-                      <tr><th></th><th></th><th>Mean</th><th>Std. Deviation</th><th>Std. Error Mean</th><th></th><th></th><th></th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>Pair 1</td><td class="row-header">Anxiety_Before - Anxiety_After</td><td>12.500</td><td>5.100</td><td>1.200</td><td>10.41</td><td>45</td><td>.000</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "לא היה שינוי ברמות החרדה (Sig=.000).",
-                    "חל שינוי מובהק ברמות החרדה בין שתי המדידות.",
-                    "ההבדל אינו מובהק כיוון שממוצע ההפרשים חיובי.",
-                    "המודל מובהק אך מסביר רק חלק קטן מהשונות."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: מבחן T למדגמים תלויים (מזווגים), משווה אותו אדם פעמיים (למשל חרדה לפני ואחרי). ה-Sig הוא .000 (<0.05), כלומר דוחים את השערת האפס. חל שינוי מובהק ברמת החרדה בין הזמנים."
-            },
-            {
-                q: "חוקר ביצע ניתוח סטטיסטי והתקבל הפלט שלפניך. בין אילו שתי קבוצות קיים ההבדל המובהק ביותר (מבחינה סטטיסטית)?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Multiple Comparisons (Tukey HSD)</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th>(I) Group</th><th>(J) Group</th><th>Mean Difference (I-J)</th><th>Sig.</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td rowspan="2" style="vertical-align:top;">A</td><td class="row-header">B</td><td>2.100</td><td>.450</td></tr>
-                      <tr><td class="row-header">C</td><td>-15.500*</td><td>.002</td></tr>
-                      <tr><td rowspan="1" style="vertical-align:top; border-top:1px solid #ccc;">B</td><td class="row-header" style="border-top:1px solid #ccc;">C</td><td style="border-top:1px solid #ccc;">-17.600*</td><td style="border-top:1px solid #ccc;">.001</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "בין A ל-B בלבד.",
-                    "בין כל הקבוצות ללא יוצא מן הכלל.",
-                    "ישנם הבדלים מובהקים בין A ל-C, ובין B ל-C. בין A ל-B אין הבדל מובהק.",
-                    "לא ניתן להסיק הבדלים מובהקים מטבלה זו כלל."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: טבלת פוסט-הוק (Tukey) המופיעה אחרי ANOVA מובהקת. מחפשים באילו שורות ה-Sig קטן מ-0.05 (וגם מסומן כוכבית על ממוצע ההפרשים). זה קורה בין A ל-C (.002), ובין B ל-C (.001)."
-            },
-            {
-                q: "לפניך פלט המראה השפעה של שני משתנים (Method, Time) על תוצאה. ממה עלינו להיזהר ביותר בקריאת פלט זה?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Tests of Between-Subjects Effects</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td class="row-header">Method</td><td>2</td><td>12.50</td><td>.000</td></tr>
-                      <tr><td class="row-header">Time</td><td>1</td><td>8.40</td><td>.012</td></tr>
-                      <tr><td class="row-header">Method * Time</td><td>2</td><td>6.20</td><td>.005</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "מהעובדה שהמשתנים לא מובהקים.",
-                    "מכיוון שהאינטראקציה (Method * Time) מובהקת, יש להיזהר מפירוש של האפקטים העיקריים (Method או Time) לבדם - כי ההשפעה מעורבת ותלויה אחד בשני.",
-                    "ההסבר לא טוב בגלל ש-df=2.",
-                    "ממבחן פישר שצריך לבצע לאחריו."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: ניתוח שונות דו-כיווני (Two-Way ANOVA). בשורה של הכפל ביניהם (Method * Time) ה-Sig קטן מ-0.05, לכן יש אינטראקציה מובהקת. משמעות הדבר היא שקשה לבודד השפעה של משתנה אחד, כי היא תלויה לגמרי ברמה של המשתנה השני."
-            },
-            {
-                q: "מהי המשוואה הנכונה לניבוי הציון (Score) על סמך שעות הלמידה (Hours)?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Coefficients<sup>a</sup></div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>1</td><td class="row-header">(Constant)</td><td>40.000</td><td>5.000</td><td></td><td>8.000</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Hours</td><td>5.500</td><td>0.500</td><td>.850</td><td>11.000</td><td>.000</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "Score = 0.850 * Hours + 40.000",
-                    "Score = 5.500 * Hours + 40.000",
-                    "Score = 40.000 * Hours + 5.500",
-                    "Score = 0.850 * Hours + 5.500"
-                ],
-                ans: 1,
-                exp: "איתור הפלט: טבלת מקדמים (רגרסיה). הנוסחה היא Y = bX + a. את המקדמים לוקחים אך ורק מעמודת ה-B (Unstandardized). הקבוע (a) הוא 40.000. השיפוע של שעות (b) הוא 5.500. ולכן Y = 5.5X + 40."
-            },
-            {
-                q: "איזה מבין הנתונים הבאים בפלט מייצג את ערכו של 'מקדם ההסבר' (אחוז השונות המוסברת)?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Model Summary</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error of the Estimate</th></tr></thead>
-                    <tbody><tr><td>1</td><td>.400<sup>a</sup></td><td>.160</td><td>.155</td><td>15.20</td></tr></tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "R (0.400)",
-                    "R Square (0.160)",
-                    "Std. Error (15.20)",
-                    "Adjusted R Square (0.155)"
-                ],
-                ans: 1,
-                exp: "איתור הפלט: סיכום מודל רגרסיה. מקדם ההסבר הוא המונח בעברית ל-R Square (או $R^2$). הוא מציין איזה חלק מהשונות של Y מוסבר על ידי X. כאן, המודל מסביר רק 16% מהשונות."
-            },
-            {
-                q: "מהי המשמעות המדויקת של הערך 62.4 בפלט שלפניך?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Frequencies: Age Group</div>
-                  <table class="spss-table">
-                    <thead><tr><th></th><th>Frequency</th><th>Percent</th><th>Valid Percent</th><th>Cumulative Percent</th></tr></thead>
-                    <tbody>
-                      <tr><td class="row-header">Young</td><td>120</td><td>60.0</td><td>62.4</td><td>62.4</td></tr>
-                      <tr><td class="row-header">Old</td><td>72</td><td>36.0</td><td>37.6</td><td>100.0</td></tr>
-                      <tr><td class="row-header">Total</td><td>192</td><td>96.0</td><td>100.0</td><td></td></tr>
-                      <tr><td class="row-header">Missing</td><td>8</td><td>4.0</td><td></td><td></td></tr>
-                      <tr><td class="row-header">Total</td><td>200</td><td>100.0</td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "זהו אחוז הצעירים מתוך המשיבים בפועל, לאחר שניקו את התצפיות החסרות (Missing).",
-                    "זהו אחוז הצעירים מתוך כלל האנשים במדגם המקורי (כולל אלו שלא השיבו לשאלה).",
-                    "זהו מדד המהימנות של קבוצת הגיל.",
-                    "זהו ממוצע הגילאים של קבוצת הצעירים."
-                ],
-                ans: 0,
-                exp: "איתור הפלט: טבלת שכיחויות (סטטיסטיקה תיאורית). עמודת Valid Percent מציגה את האחוזים רק מתוך ה-Valid (אלו שענו), ומנכה החוצה את ה-Missing."
-            },
-            {
-                q: "לפי הפלט הבא, האם נוכל להניח כי שונויות שתי הקבוצות שוות באוכלוסייה?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Independent Samples Test</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test for Equality of Variances</th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">t-test</th></tr>
-                      <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Equal variances assumed</td><td>1.250</td><td>.310</td><td>3.500</td><td>48</td><td>.001</td></tr>
-                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>3.450</td><td>42.5</td><td>.001</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "לא, כיוון שה-Sig של מבחן לווין גדול מ-0.05, לכן השונויות שונות.",
-                    "כן, כיוון שה-Sig של מבחן לווין (0.310) גדול מ-0.05. לכן ההנחה של שוויון שונויות נשמרת.",
-                    "לא ניתן לדעת מטבלה זו.",
-                    "כן, כי ה-t הוא חיובי ומובהק."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: מבחן לווין (Levene) הנמצא בתוך מבחן ה-T הבלתי תלוי. ההשערה בו היא שהשונויות שוות. כיוון שה-Sig שלו כאן הוא 0.310 (מעל 0.05) - לא דוחים את ההשערה. לכן מותר להניח שהשונויות שוות (ואז קוראים את השורה העליונה)."
-            },
-            {
-                q: "מה קובע הפלט הבא לגבי מובהקות ההבדלים, והאם נדרש מבחן פוסט-הוק?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">ANOVA</div>
-                  <table class="spss-table">
-                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td class="row-header">Between Groups</td><td>5.100</td><td>3</td><td>1.700</td><td>0.450</td><td>.718</td></tr>
-                      <tr><td class="row-header">Within Groups</td><td>150.000</td><td>40</td><td>3.750</td><td></td><td></td></tr>
-                      <tr><td class="row-header">Total</td><td>155.100</td><td>43</td><td></td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "יש הבדל מובהק בין הקבוצות (כי F קטן מ-1), ויש לבצע מבחן פוסט-הוק.",
-                    "אין הבדל מובהק בין הקבוצות, אך עדיין חובה לבצע פוסט-הוק ליתר ביטחון.",
-                    "אין הבדל מובהק בין הקבוצות (Sig=0.718 > 0.05). הניתוח מסתיים ולא מבצעים פוסט-הוק.",
-                    "ההבדל נמצא בתוך הקבוצות ולכן דוחים את H0."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: טבלת ANOVA. ה-Sig הכללי הוא 0.718 (הרבה מעל 0.05), כך שאין שום הבדל בממוצעים של הקבוצות. כשיש תוצאה לא מובהקת, עוצרים את הניתוח, ואין שום טעם לבצע פוסט-הוק."
-            },
-            {
-                q: "לפניך טריצת מתאמים עבור 3 משתנים (גיל, שכר, ואושר). איזה מהמשפטים הבאים מתאר בצורה הנכונה ביותר את ממצאי הפלט?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Correlations</div>
-                  <table class="spss-table">
-                    <thead><tr><th></th><th></th><th>Age</th><th>Salary</th><th>Happiness</th></tr></thead>
-                    <tbody>
-                      <tr><td rowspan="2" style="vertical-align:top;">Age</td><td class="row-header">Pearson Correlation</td><td>1</td><td>.450*</td><td>-.120</td></tr>
-                      <tr><td class="row-header">Sig. (2-tailed)</td><td></td><td>.020</td><td>.450</td></tr>
-                      <tr><td rowspan="2" style="vertical-align:top; border-top:1px solid #ccc;">Salary</td><td class="row-header" style="border-top:1px solid #ccc;">Pearson Correlation</td><td style="border-top:1px solid #ccc;">.450*</td><td style="border-top:1px solid #ccc;">1</td><td style="border-top:1px solid #ccc;">.820**</td></tr>
-                      <tr><td class="row-header">Sig. (2-tailed)</td><td>.020</td><td></td><td>.000</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "אין שום קשר מובהק בין אף אחד מהמשתנים.",
-                    "הקשר החזק והמובהק ביותר נמצא בין גיל לשכר (.450).",
-                    "קיים קשר מובהק, חיובי וחזק מאוד בין השכר לבין תחושת האושר (r=0.820, Sig=0.000).",
-                    "קיים קשר חזק ושלילי בין גיל לאושר."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: מתאם פירסון מרובה. מצליבים עמודה מול שורה. הקשר בין Salary (שכר) ל-Happiness (אושר) הוא 0.820 (קשר חזק מאוד, חיובי), וה-Sig שלו .000 (מובהק לחלוטין). הקשר בין גיל לאושר אינו מובהק (Sig=0.450)."
-            },
-            {
-                q: "מה קובע הפלט לגבי השפעתם של המשתנים המסבירים על תחושת שביעות הרצון (המשתנה התלוי)?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Coefficients</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>1</td><td class="row-header">(Constant)</td><td>3.500</td><td>.500</td><td></td><td>7.00</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Income</td><td>1.200</td><td>.300</td><td>.650</td><td>4.00</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Education</td><td>-0.500</td><td>.600</td><td>-.120</td><td>-0.83</td><td>.410</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "הכנסה והשכלה משפיעים שניהם בצורה חיובית ומובהקת.",
-                    "ההכנסה משפיעה באופן מובהק וחיובי, אך ההשכלה אינה משפיעה באופן מובהק (Sig > 0.05).",
-                    "ההשכלה היא המנבא החזק ביותר בגלל סימן המינוס.",
-                    "המודל כולו אינו מובהק."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: מקדמי רגרסיה. המשתנה Income בעל Sig=.000 (לכן הוא מובהק ומשפיע) וה-Beta חיובית. המשתנה Education בעל Sig=.410 (גדול מ-0.05), כלומר לא דוחים את H0, והוא אינו מהווה מנבא מובהק לשביעות רצון במודל זה."
-            },
-            {
-                q: "באיזה מבחן בוצע שימוש בפלט שלפניך, ומהי מטרתו?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Chi-Square Tests</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Pearson Chi-Square</td><td>0.150<sup>a</sup></td><td>1</td><td>.700</td></tr>
-                    </tbody>
-                  </table>
-                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5.</div>
-                </div>
-                `,
-                options: [
-                    "מבחן T למדגמים בלתי תלויים. המטרה להשוות ממוצעים.",
-                    "מבחן מהימנות פנימית. המטרה לבדוק אם השאלות עקביות.",
-                    "מבחן חי-בריבוע. המטרה לבדוק האם קיים קשר בין שני משתנים קטגוריאליים (שמיים).",
-                    "מבחן ניתוח שונות (ANOVA). המטרה להשוות שונויות של 3 קבוצות."
-                ],
-                ans: 2,
-                exp: "הפלט צועק 'Chi-Square'. זהו מבחן חי בריבוע המיועד בלעדית למציאת קשר/תלות בין שני משתנים המחולקים לקטגוריות (למשל צבע עיניים ומין). אגב, ה-Sig כאן הוא 0.700 ולכן אין קשר מובהק."
-            },
-            {
-                q: "התבונן בפלט בדיקת העקיבות הפנימית הבא. מה המסקנה שלך כחוקר לגבי השאלון?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Reliability Statistics</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Cronbach's Alpha</th><th>N of Items</th></tr></thead>
-                    <tbody><tr><td>.410</td><td>8</td></tr></tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "השאלון מושלם להפצה כי האלפא נמוכה מ-0.05.",
-                    "רמת המהימנות גרועה ובעייתית מאוד (מתחת ל-0.6), הפריטים לא מודדים את אותו הדבר בעקביות.",
-                    "השאלון מכיל 410 שאלות ל-8 אנשים.",
-                    "המהימנות טובה מאוד כי היא חיובית."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: אלפא של קרונבך. כלל ברזל במהימנות: אנחנו רוצים אלפא גבוהה (0.7 ומעלה). אלפא של 0.410 מעידה על כך שהשאלות לא קשורות זו לזו, והשאלון מודד 'תפוחים ותפוזים' ולא מדד אחד עקבי."
-            },
-            {
-                q: "מתוך פלט הרגרסיה שלפניך, כיצד נפרש את השפעת 'שעות פעילות גופנית' (X) על 'תחושת אושר' (Y)?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Coefficients</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>1</td><td class="row-header">Sport_Hours</td><td>0.388</td><td>0.038</td><td>.263</td><td>6.976</td><td>.000</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "כל שעת פעילות גופנית מורידה את תחושת האושר ב-0.388 יחידות.",
-                    "כל שעת פעילות גופנית נוספת מעלה את תחושת האושר בממוצע ב-0.388 יחידות (באופן מובהק).",
-                    "כל שעת פעילות מעלה את תחושת האושר ב-6.976 יחידות.",
-                    "כל שעת פעילות גופנית מעלה את האושר ב-0.263 יחידות."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: מקדמי רגרסיה. העמודה החשובה לפרשנות יחידות (בניית המשוואה) היא Unstandardized B. המקדם חיובי ומובהק (Sig=.000), לכן תוספת של שעת פעילות אחת (1) מנבאת תוספת של 0.388 לתחושת האושר."
-            },
-            {
-                q: "במבחן להשוואת ממוצעי ציונים בין שתי כיתות (א' ו-ב'), הופק הפלט הבא. מה המסקנה הסטטיסטית מהשורה העליונה?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Independent Samples Test</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #000;">t-test for Equality of Means</th></tr>
-                      <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Equal variances assumed</td><td>1.10</td><td>.290</td><td>-1.850</td><td>118</td><td>.067</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "קיימים הבדלים מובהקים בציונים, כיוון שה-t הוא מספר שלילי.",
-                    "ההבדל נמצא ממש על הגבול אבל מכיוון ש- 0.067 גדול מ-0.05, לא דוחים את H0 ואין הבדל מובהק.",
-                    "יש הבדל מובהק כי מבחן לווין גדול מ-0.05.",
-                    "המבחן לא תקף כי אין שורת שונויות שונות."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: מבחן T הבלתי תלוי. ה-Sig הדו-צדדי (של ה-t-test) הוא .067. החוק הסטטיסטי נוקשה - אם זה לא קטן מ-0.05, לא דוחים. לכן המסקנה היא שאין הבדל מובהק סטטיסטית, גם אם הנתון 'קרוב' לסף."
-            },
-            {
-                q: "מה קובע פלט הניתוח הדו-גורמי הבא על המשתנה 'Diet_Type' (סוג דיאטה) כאפקט עיקרי?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Tests of Between-Subjects Effects</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td class="row-header">Diet_Type</td><td>2</td><td>2.10</td><td>.130</td></tr>
-                      <tr><td class="row-header">Gender</td><td>1</td><td>5.80</td><td>.020</td></tr>
-                      <tr><td class="row-header">Diet_Type * Gender</td><td>2</td><td>0.90</td><td>.410</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "סוג הדיאטה משפיע באופן מובהק על התוצאה.",
-                    "לסוג הדיאטה (כאפקט עיקרי) אין השפעה מובהקת על התוצאה (Sig=0.130).",
-                    "סוג הדיאטה משפיע רק דרך האינטראקציה.",
-                    "יש לבדוק את השפעת הדיאטה דרך מבחן לווין."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: שורות האפקטים ב-Two-Way ANOVA. מסתכלים ישירות על השורה של המשתנה המבוקש. ה-Sig של Diet_Type הוא .130 (>0.05), לכן אין לו אפקט עיקרי מובהק."
-            },
-            {
-                q: "חוקר רצה לדעת האם קורס רענון נהיגה יעיל. הוא השווה ציון בסימולטור לפני הקורס, וציון אחרי הקורס אצל 30 נהגים. מה מראה הפלט?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Paired Samples Test</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #000;">Paired Differences</th><th>t</th><th>Sig. (2-tailed)</th></tr>
-                      <tr><th></th><th>Mean</th><th>Std. Deviation</th><th></th><th></th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Score_Before - Score_After</td><td>-15.20</td><td>4.50</td><td>-18.40</td><td>.000</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "הקורס לא יעיל, הציון ירד ב-15.20 נקודות.",
-                    "אין הבדל מובהק בין המדידות.",
-                    "יש שינוי מובהק: הממוצע של ההפרש הוא -15.20, מה שאומר שהציון אחרי הקורס היה *גבוה* יותר, וזה שינוי מובהק (Sig=.000).",
-                    "יש קשר חיובי בין הציון לפני לציון אחרי."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: מבחן T מזווג. הממוצע המוצג הוא ממוצע ה*הפרש* (לפני פחות אחרי). תוצאה שלילית משמעה שה\"אחרי\" גדול מה\"לפני\". ה-Sig הוא 0.000, לכן השינוי מובהק סטטיסטית. הקורס עבד!"
-            },
-            {
-                q: "איזה מבין המשתנים המנבאים בטבלה הבאה מצדיק את המשך קיומו במשוואת הרגרסיה?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Coefficients</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Model</th><th></th><th>Beta</th><th>t</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td>1</td><td class="row-header">(Constant)</td><td></td><td>5.1</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Distance</td><td>-.050</td><td>-0.5</td><td>.620</td></tr>
-                      <tr><td></td><td class="row-header">Traffic</td><td>.410</td><td>4.2</td><td>.000</td></tr>
-                      <tr><td></td><td class="row-header">Weather</td><td>.100</td><td>1.1</td><td>.275</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "רק משתנה המרחק (Distance) כי הוא שלילי.",
-                    "מזג האוויר (Weather) כי יש לו ה-Sig הגבוה ביותר.",
-                    "משתנה התנועה (Traffic) הוא היחיד שמובהק (Sig=0.000) ולכן רק הוא מצדיק כניסה למשוואה מבין השלושה.",
-                    "כל המשתנים חיוניים כיוון שהקבוע מובהק."
-                ],
-                ans: 2,
-                exp: "איתור הפלט: טבלת מקדמי רגרסיה מרובה. משתנה מנבא ראוי להישאר במשוואה אך ורק אם הוא מובהק סטטיסטית (Sig < 0.05). רק ל-Traffic יש Sig כזה. השאר מקריים ולא רלוונטיים סטטיסטית."
-            },
-            {
-                q: "לפניך טבלת שכיחויות מצולבת עבור שני משתנים (מגזר ובעלות על דירה). מהי המסקנה העיקרית מתוך טבלת המבחן שלמטה?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">Chi-Square Tests</div>
-                  <table class="spss-table">
-                    <thead>
-                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td class="row-header">Pearson Chi-Square</td><td>1.020<sup>a</sup></td><td>1</td><td>.312</td></tr>
-                      <tr><td class="row-header">Continuity Correction</td><td>0.750</td><td>1</td><td>.386</td></tr>
-                      <tr><td class="row-header">N of Valid Cases</td><td>500</td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5.</div>
-                </div>
-                `,
-                options: [
-                    "יש קשר מובהק בין מגזר לבעלות על דירה.",
-                    "המבחן הסטטיסטי אינו תקין.",
-                    "דוחים את השערת האפס כי Pearson > 1.",
-                    "לא נמצא קשר מובהק בין המגזר לבעלות על הדירה (Sig=0.312 > 0.05)."
-                ],
-                ans: 3,
-                exp: "איתור הפלט: מבחן חי בריבוע. מסתכלים על השורה המרכזית (Pearson Chi-Square). המובהקות היא .312. כיוון שהיא גדולה מ-0.05, המסקנה היא לא לדחות את H0, קרי: אין קשר מובהק."
-            },
-            {
-                q: "איזה משפט מתאר בצורה הנכונה ביותר את מהות הפלט הבא?",
-                table: `
-                <div class="spss-container">
-                  <div class="spss-title">ANOVA</div>
-                  <table class="spss-table">
-                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td class="row-header">Between Groups</td><td>55.2</td><td>2</td><td>27.60</td><td>4.10</td><td>.025</td></tr>
-                      <tr><td class="row-header">Within Groups</td><td>250.0</td><td>38</td><td>6.57</td><td></td><td></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "המודל מובהק ובו 2 משתנים מסבירים.",
-                    "זהו מבחן המשווה תוחלות של 3 קבוצות. נמצא כי לפחות ממוצע אחד שונה באופן מובהק מהאחרים.",
-                    "המבחן משווה שתי קבוצות, ודוחה את השערת האפס.",
-                    "זהו מבחן לבדיקת מהימנות שאלון שצלח יפה."
-                ],
-                ans: 1,
-                exp: "איתור הפלט: פלט 'Between/Within' מעיד על One-Way ANOVA לבדיקת ממוצעים של 3+ קבוצות. דרגות החופש ב-Between הן 2 (שזה k-1), מה שאומר שיש 3 קבוצות בסך הכל. כיוון שה-Sig הוא .025 (<0.05), המסקנה היא שיש הבדל מובהק בממוצעים."
-            }
-        ];
-
-        // --- Application Logic ---
-        let currentQuestionIndex = 0;
-        let score = 0;
-        const userAnswers = new Array(questions.length).fill(null);
-
-        function initQuiz() {
-            renderQuestion(currentQuestionIndex);
-            updateProgress();
-        }
-
-        function renderQuestion(index) {
-            const q = questions[index];
-            const container = document.getElementById('optionsGrid');
+        shuffledOptions.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt.text;
             
-            document.getElementById('questionText').innerHTML = `שאלה ${index + 1}: ${q.q}`;
-            document.getElementById('tableContainer').innerHTML = q.table ? q.table : '';
-            
-            let html = '';
-            q.options.forEach((opt, optIndex) => {
-                let btnClass = 'option-btn';
-                let disabledAttr = '';
-                
-                if (userAnswers[index] !== null) {
-                    disabledAttr = 'disabled';
-                    if (optIndex === q.ans) {
-                        btnClass += ' correct';
-                    } else if (optIndex === userAnswers[index]) {
-                        btnClass += ' wrong';
-                    }
+            btn.addEventListener('click', () => {
+                // נעילת כל הכפתורים בשאלה זו בלבד
+                const allButtons = optionsList.querySelectorAll('.option-btn');
+                allButtons.forEach(b => b.disabled = true);
+
+                if (opt.correct) {
+                    btn.classList.add('correct');
+                    currentScore++;
+                    scoreElement.innerText = currentScore;
+                } else {
+                    btn.classList.add('wrong');
+                    // מציאת התשובה הנכונה והדגשתה
+                    allButtons.forEach(b => {
+                        if (shuffledOptions.find(o => o.text === b.innerText).correct) {
+                            b.classList.add('correct');
+                        }
+                    });
                 }
-
-                html += `
-                    <button class="${btnClass}" ${disabledAttr} onclick="checkAnswer(${optIndex}, this)">
-                        <div style="flex-grow:1; text-align:right;">${opt}</div>
-                    </button>
-                `;
+                
+                // חשיפת ההסבר
+                explanationBox.classList.add('show');
             });
-            
-            container.innerHTML = html;
 
-            const feedbackBox = document.getElementById('feedbackBox');
-            if (userAnswers[index] !== null) {
-                showFeedback(index, userAnswers[index]);
-                document.getElementById('btnNext').style.display = 'inline-block';
-            } else {
-                feedbackBox.style.display = 'none';
-                document.getElementById('btnNext').style.display = 'none';
-            }
+            optionsList.appendChild(btn);
+        });
 
-            if (index === questions.length - 1 && userAnswers[index] !== null) {
-                document.getElementById('btnNext').innerText = 'סיום והצגת ציון 🏆';
-            } else {
-                document.getElementById('btnNext').innerText = 'לשאלה הבאה ❯';
-            }
-        }
-
-        function checkAnswer(selectedIndex, btnElement) {
-            if (userAnswers[currentQuestionIndex] !== null) return;
-
-            userAnswers[currentQuestionIndex] = selectedIndex;
-            const q = questions[currentQuestionIndex];
-            const isCorrect = selectedIndex === q.ans;
-            
-            if (isCorrect) score++;
-
-            renderQuestion(currentQuestionIndex);
-            updateProgress();
-        }
-
-        function showFeedback(index, selectedIndex) {
-            const q = questions[index];
-            const isCorrect = selectedIndex === q.ans;
-            const feedbackBox = document.getElementById('feedbackBox');
-            
-            if (isCorrect) {
-                feedbackBox.className = 'feedback-box correct-feedback';
-                feedbackBox.innerHTML = `
-                    <h4><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> כל הכבוד! תשובה נכונה.</h4>
-                    <p>${q.exp}</p>
-                `;
-            } else {
-                feedbackBox.className = 'feedback-box wrong-feedback';
-                feedbackBox.innerHTML = `
-                    <h4><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> טעות!</h4>
-                    <p>התשובה הנכונה היא:</p>
-                    <div class="correct-answer-highlight">${q.options[q.ans]}</div>
-                    <p><strong>למה?</strong> ${q.exp}</p>
-                `;
-            }
-        }
-
-        function nextQuestion() {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                renderQuestion(currentQuestionIndex);
-                updateProgress();
-            } else {
-                showResults();
-            }
-        }
-
-        function updateProgress() {
-            const answeredCount = userAnswers.filter(ans => ans !== null).length;
-            document.getElementById('progressText').innerText = `שאלה ${currentQuestionIndex + 1} מתוך ${questions.length}`;
-            document.getElementById('scoreTracker').innerText = `הצלחות: ${score}/${questions.length}`;
-            
-            const percent = ((answeredCount) / questions.length) * 100;
-            document.getElementById('progressFill').style.width = `${percent}%`;
-        }
-
-        function showResults() {
-            document.getElementById('quizScreen').style.display = 'none';
-            const resultsScreen = document.getElementById('resultsScreen');
-            resultsScreen.style.display = 'block';
-
-            const percent = Math.round((score / questions.length) * 100);
-            
-            let currentPercent = 0;
-            const scoreElement = document.getElementById('finalScore');
-            const timer = setInterval(() => {
-                currentPercent += 2;
-                if (currentPercent >= percent) {
-                    currentPercent = percent;
-                    clearInterval(timer);
-                }
-                scoreElement.innerText = `${currentPercent}%`;
-            }, 30);
-
-            let msg = "";
-            if (percent === 100) msg = "מאסטר SPSS אמיתי! 🏆<br>אתה מוכן לחלוטין למבחן.";
-            else if (percent >= 80) msg = "עבודה מעולה! 🌟<br>שליטה טובה מאוד בחומר ובקריאת הפלטים.";
-            else if (percent >= 60) msg = "ציון עובר 👍<br>מומלץ לחזור שוב על השאלות שטעית בהן (במיוחד קריאת טבלאות).";
-            else msg = "לא נורא 💪<br>זכור את חוק ה-Sig, קרא שוב את הכללים, ותעשה את המבחן מחדש.";
-
-            document.getElementById('finalMessage').innerHTML = msg;
-        }
-
-        // Start App
-        initQuiz();
-    </script>
+        card.appendChild(qTitle);
+        card.appendChild(qText);
+        card.appendChild(optionsList);
+        card.appendChild(explanationBox);
+        
+        quizContainer.appendChild(card);
+    });
+</script>
 </body>
 </html>
